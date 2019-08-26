@@ -11,7 +11,8 @@ console.log("us", us);
 console.log("counties", counties);
 console.log("states", states);
 export interface WorldMapState {
-  worldData: any;
+  countyFeatures: any;
+  stateFeatures: any;
   mode: "state" | "county";
 }
 
@@ -19,7 +20,8 @@ class WorldMap extends Component<any, WorldMapState> {
   constructor(props: any) {
     super(props);
     this.state = {
-      worldData: null,
+      countyFeatures: null,
+      stateFeatures: null,
       mode: "county"
     };
   }
@@ -36,24 +38,35 @@ class WorldMap extends Component<any, WorldMapState> {
     return projection;
   }
   componentDidMount() {
-    const features: any = feature(
+    const countyFeatures: any = feature(
       (us as unknown) as any,
       us.objects.counties as any
     );
+    const stateFeatures: any = feature(
+      (us as unknown) as any,
+      us.objects.states as any
+    );
     this.setState({
-      worldData: features.features.map((el: any) => {
+      countyFeatures: countyFeatures.features.map((el: any) => {
         const county = counties.find(county => county.fips === el.id);
         return {
           d: el,
           meta: { county }
+        };
+      }),
+      stateFeatures: stateFeatures.features.map((el: any) => {
+        return {
+          d: el,
+          meta: {}
         };
       })
     });
   }
   render() {
     const { containerHeight, containerWidth } = this.props;
-    if (!this.state.worldData) return null;
+    if (!this.state.countyFeatures) return null;
     const statesList = Object.keys(states).sort();
+    const proj = this.projection();
     return (
       <React.Fragment>
         <a
@@ -73,10 +86,10 @@ class WorldMap extends Component<any, WorldMapState> {
           height={containerHeight}
           viewBox={`0 0 ${containerWidth} ${containerHeight}`}
         >
-          <g className="countries">
-            {this.state.worldData.map(({ d, meta }: any, i: number) => {
+          <g className="counties">
+            {this.state.countyFeatures.map(({ d, meta }: any, i: number) => {
               const county = meta.county;
-              const m = geoPath(this.projection())(d);
+              const m = geoPath(proj)(d);
               let alpha = 1;
               if (county) {
                 alpha =
