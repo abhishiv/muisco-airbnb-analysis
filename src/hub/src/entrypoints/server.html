@@ -43,29 +43,31 @@
     ></script>
     -->
     <style>
-        html, body {
-            padding: 0;
-            margin: 0;
-        }
-        #root {
-            height: 100vh;
-            width: 100vw;
-            overflow: hidden;
-        }
-        #root > div {
-            height: 100vh;
-            width: 100vw;
-            overflow: hidden;
-        }
+      html,
+      body {
+        padding: 0;
+        margin: 0;
+      }
+      #root {
+        height: 100vh;
+        width: 100vw;
+        overflow: hidden;
+      }
+      #root > div {
+        height: 100vh;
+        width: 100vw;
+        overflow: hidden;
+      }
+      path {
+        transition: fill 2s ease-in-out;
+      }
     </style>
   </head>
   <body>
     <div id="root">
       {{{MARKUP}}}
     </div>
-    <script type="text/javascript">
-      window.__APOLLO_STATE__={{{STATE}}}
-    </script>
+    <script type="text/javascript"></script>
     <script src="{{{APPLICATION_HOST}}}/hub.bundle.js"></script>
   </body>
 </html>

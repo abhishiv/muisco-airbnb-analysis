@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import Dimensions from "react-dimensions";
+//import { animated } from "react-spring/renderprops.cjs";
+
 import { geoAlbersUsa, geoMercator, geoPath } from "d3-geo";
 import { feature } from "topojson-client";
 import us from "./us.json";
@@ -39,7 +41,13 @@ class WorldMap extends Component<any, WorldMapState> {
       us.objects.counties as any
     );
     this.setState({
-      worldData: features.features
+      worldData: features.features.map((el: any) => {
+        const county = counties.find(county => county.fips === el.id);
+        return {
+          d: el,
+          meta: { county }
+        };
+      })
     });
   }
   render() {
@@ -66,9 +74,8 @@ class WorldMap extends Component<any, WorldMapState> {
           viewBox={`0 0 ${containerWidth} ${containerHeight}`}
         >
           <g className="countries">
-            {this.state.worldData.map((d: any, i: number) => {
-              const county = counties.find(el => el.fips === d.id);
-              county;
+            {this.state.worldData.map(({ d, meta }: any, i: number) => {
+              const county = meta.county;
               const m = geoPath(this.projection())(d);
               let alpha = 1;
               if (county) {
@@ -80,7 +87,6 @@ class WorldMap extends Component<any, WorldMapState> {
               }
               return (
                 <path
-                  key={`path-${i}`}
                   d={m as any}
                   className="country"
                   fill={`rgba(38,50,56,${alpha})`}
