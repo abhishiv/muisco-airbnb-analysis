@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="gratico_javascript_host" content="{{{APPLICATION_HOST}}}" />
+    <meta name="gratico_hub" content="{{{DOMAIN}}}" />
+    <meta
+      name="title"
+      content="grati.co / Heavenly IDE and DSL workbench for earthlings"
+    />
+    <meta
+      name="description"
+      content="Together, the powerful static code analysis and ergonomic design make development not only productive but also an enjoyable experience"
+    />
+    <meta name="version" content="{{DEPLOYMENT_VERSION}}" />
+    <title>
+      Gratico / Sandbox
+    </title>
+    <link rel="icon" href="{{{CDN_BASE}}}/server/assets/images/origami.png" />
+    {{#IS_PROD}}
+    <link rel="stylesheet" href="{{{CDN_BASE}}}/kernel.bundle.css" />
+    {{/IS_PROD}}
+
+    <script
+      src="{{{CDN_BASE}}}/server/assets/javascripts/spatial-navigation/index.js"
+      type="text/javascript"
+    ></script>
+    <!-- 
+    <script 
+      src="{{{CDN_BASE}}}/server/assets/javascripts/system.src.js"
+      type="text/javascript"
+    ></script>
+    <script 
+      src="https://cdn.jsdelivr.net/npm/systemjs@0.20.6/dist/system.src.js"
+      type="text/javascript"
+    ></script>
+      -->
+    <!--
+    <script 
+      src="https://cdn.jsdelivr.net/npm/systemjs@0.19.37/dist/system.src.js"
+      type="text/javascript"
+    ></script>
+    -->
+    <style>
+        html, body {
+            padding: 0;
+            margin: 0;
+        }
+        #root {
+            height: 100vh;
+            width: 100vw;
+            overflow: hidden;
+        }
+        #root > div {
+            height: 100vh;
+            width: 100vw;
+            overflow: hidden;
+        }
+    </style>
+  </head>
+  <body>
+    <div id="root">
+      {{{MARKUP}}}
+    </div>
+    <script type="text/javascript">
+      window.__APOLLO_STATE__={{{STATE}}}
+    </script>
+    <script src="{{{APPLICATION_HOST}}}/hub.bundle.js"></script>
+  </body>
+</html>

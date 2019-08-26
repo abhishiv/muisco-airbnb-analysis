@@ -1,0 +1,53 @@
+{
+  "compilerOptions": {
+    "downlevelIteration": true,
+    "outDir": "build",
+    "alwaysStrict": true,
+    "jsx": "preserve",
+    "target": "es5",
+    "module": "esnext",
+    "lib": [
+      "es2015",
+      "es5",
+      "dom",
+      "scripthost",
+      "esnext.asynciterable",
+      "esnext"
+    ],
+    "jsxFactory": "React.createElement",
+    "noEmitHelpers": false,
+    "importHelpers": true,
+    "noUnusedLocals": true,
+    "noImplicitAny": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "moduleResolution": "node",
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "allowJs": true,
+    "declaration": false,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "noEmit": true
+  },
+  "compileOnSave": true,
+  "include": [
+    "src"
+  ],
+  "typeRoots": [
+    "./node_modules/@types",
+    "./src/types"
+  ],
+  "exclude": [
+    "node_modules/browserfs/dist/node/backend/HTML5FS.d.ts",
+    "node_modules/browserfs/dist/node/core/node_fs_stats.d.ts",
+    "node_modules/browserfs/dist/node/backend/Emscripten.d.ts",
+    "node_modules/browserfs/dist/node/backend/Dropbox.d.ts",
+    "node_modules/@types/mocha/index.d.ts",
+    "node_modules",
+    "build"
+  ]
+}
