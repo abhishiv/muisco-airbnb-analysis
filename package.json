@@ -48,7 +48,8 @@
   },
   "scripts": {
     "start": "bash ./tools/scripts/start.sh",
-    "webpack": "./node_modules/.bin/webpack-dev-server --config ./tools/webpack/webpack.config.js --watch --hot --port 7080"
+    "webpack": "./node_modules/.bin/webpack-dev-server --config ./tools/webpack/webpack.config.js --watch --hot --port 7080",
+    "postinstall": "bash ./tools/scripts/build.sh"
   },
   "browserslist": [
     ">0.2%",
