@@ -42,20 +42,7 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.tsx?$/,
-        use: [
-          {
-            loader: "ts-loader",
-            options: {
-              transpileOnly: true,
-              experimentalWatchApi: true
-            }
-          }
-        ],
-        exclude: /node_modules/
-      },
-      {
-        test: /\.(js)$/,
+        test: /\.(tsx?)$/,
         exclude: /node_modules/,
         use: {
           loader: "babel-loader"
