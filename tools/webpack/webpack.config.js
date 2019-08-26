@@ -9,7 +9,7 @@ module.exports = {
         ...(key.match(/sw$/)
           ? []
           : [
-              "webpack-dev-server/client?https://www.grati.local:8080",
+              "webpack-dev-server/client?http://localhost:7080",
               "webpack/hot/only-dev-server"
             ]),
         common.entry[key]
@@ -22,7 +22,7 @@ module.exports = {
   devServer: {
     disableHostCheck: true,
     contentBase: "./dist",
-    publicPath: "https://www.grati.local:7080",
+    publicPath: "http://localhost:7080",
     headers: { "Access-Control-Allow-Origin": "*" }
   },
   module: {

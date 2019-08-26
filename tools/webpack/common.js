@@ -9,7 +9,7 @@ module.exports = {
     child_process: "empty"
   },
   entry: {
-    hub: "./src/hub/src/entrypoints/browser.tsx",
+    hub: "./src/hub/src/entrypoints/browser.tsx"
   },
   resolve: {
     extensions: [".tsx", ".ts", ".js", ".json", ".scss"]
@@ -17,7 +17,7 @@ module.exports = {
   output: {
     filename: "[name].bundle.js",
     path: path.resolve(__dirname, "..", "..", "build"),
-    publicPath: "https://www.grati.local:7080/",
+    publicPath: "http://localhost:7080/",
     globalObject: "this",
     pathinfo: false
   }
