@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import Dimensions from "react-dimensions";
-//import { animated } from "react-spring/renderprops.cjs";
+import { animated, Spring } from "react-spring/renderprops.cjs";
 
 import { geoAlbersUsa, geoMercator, geoPath } from "d3-geo";
 import { feature } from "topojson-client";
@@ -92,11 +92,7 @@ class WorldMap extends Component<any, WorldMapState> {
               const m = geoPath(proj)(d);
               let alpha = 1;
               if (county) {
-                alpha =
-                  this.state.mode === "county"
-                    ? i * (1 / counties.length)
-                    : (statesList.indexOf(county.state) + 1) *
-                      (1 / statesList.length);
+                alpha = i * (1 / counties.length);
               }
               return (
                 <path
@@ -106,6 +102,34 @@ class WorldMap extends Component<any, WorldMapState> {
                   stroke="#FFFFFF"
                   strokeWidth={0.5}
                 />
+              );
+            })}
+          </g>
+          <g key="s" className="states">
+            {this.state.stateFeatures.map(({ d, meta }: any, i: number) => {
+              let alpha = 1;
+              alpha = d.id * (1 / 80);
+              return (
+                <Spring
+                  native={true}
+                  key={i}
+                  from={{ x: 0 }}
+                  to={{ x: this.state.mode === "county" ? 0 : alpha }}
+                >
+                  {style => {
+                    const m = geoPath(proj)(d);
+                    return (
+                      <animated.path
+                        d={m as any}
+                        className="country"
+                        opacity={style.x}
+                        fill={`rgba(38,50,56,${1})`}
+                        stroke="#FFFFFF"
+                        strokeWidth={0.5}
+                      />
+                    );
+                  }}
+                </Spring>
               );
             })}
           </g>
