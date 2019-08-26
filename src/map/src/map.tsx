@@ -37,7 +37,6 @@ class WorldMap extends Component<any, WorldMapState> {
   }
   render() {
     const { containerHeight, containerWidth } = this.props;
-    console.log("t", this.state);
     if (!this.state.worldData) return null;
     return (
       <svg
