@@ -4,17 +4,21 @@ import { geoAlbersUsa, geoMercator, geoPath } from "d3-geo";
 import { feature } from "topojson-client";
 import us from "./us.json";
 import counties from "./counties.json";
+import states from "./states.json";
 console.log("us", us);
 console.log("counties", counties);
+console.log("states", states);
 export interface WorldMapState {
   worldData: any;
+  mode: "state" | "county";
 }
 
 class WorldMap extends Component<any, WorldMapState> {
   constructor(props: any) {
     super(props);
     this.state = {
-      worldData: null
+      worldData: null,
+      mode: "county"
     };
   }
   projection() {
@@ -41,30 +45,53 @@ class WorldMap extends Component<any, WorldMapState> {
   render() {
     const { containerHeight, containerWidth } = this.props;
     if (!this.state.worldData) return null;
+    const statesList = Object.keys(states).sort();
     return (
-      <svg
-        width={containerWidth}
-        height={containerHeight}
-        viewBox={`0 0 ${containerWidth} ${containerHeight}`}
-      >
-        <g className="countries">
-          {this.state.worldData.map((d: any, i: number) => {
-            const county = counties.find(el => el.fips === d.id);
-            county;
-            const m = geoPath(this.projection())(d);
-            return (
-              <path
-                key={`path-${i}`}
-                d={m as any}
-                className="country"
-                fill={`rgba(38,50,56,1`}
-                stroke="#FFFFFF"
-                strokeWidth={0.5}
-              />
-            );
-          })}
-        </g>
-      </svg>
+      <React.Fragment>
+        <a
+          href="#"
+          onClick={e => {
+            e.preventDefault();
+            this.setState({
+              mode: this.state.mode === "county" ? "state" : "county"
+            });
+          }}
+        >
+          {" "}
+          toggle{" "}
+        </a>
+        <svg
+          width={containerWidth}
+          height={containerHeight}
+          viewBox={`0 0 ${containerWidth} ${containerHeight}`}
+        >
+          <g className="countries">
+            {this.state.worldData.map((d: any, i: number) => {
+              const county = counties.find(el => el.fips === d.id);
+              county;
+              const m = geoPath(this.projection())(d);
+              let alpha = 1;
+              if (county) {
+                alpha =
+                  this.state.mode === "county"
+                    ? i * (1 / counties.length)
+                    : (statesList.indexOf(county.state) + 1) *
+                      (1 / statesList.length);
+              }
+              return (
+                <path
+                  key={`path-${i}`}
+                  d={m as any}
+                  className="country"
+                  fill={`rgba(38,50,56,${alpha})`}
+                  stroke="#FFFFFF"
+                  strokeWidth={0.5}
+                />
+              );
+            })}
+          </g>
+        </svg>
+      </React.Fragment>
     );
   }
 }
