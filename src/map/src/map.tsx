@@ -2,10 +2,14 @@ import React, { Component } from "react";
 import Dimensions from "react-dimensions";
 import { geoAlbersUsa, geoMercator, geoPath } from "d3-geo";
 import { feature } from "topojson-client";
-import us from "./10m.json";
+import us from "./us.json";
+import counties from "./counties.json";
+console.log("us", us);
+console.log("counties", counties);
 export interface WorldMapState {
   worldData: any;
 }
+
 class WorldMap extends Component<any, WorldMapState> {
   constructor(props: any) {
     super(props);
@@ -20,13 +24,12 @@ class WorldMap extends Component<any, WorldMapState> {
       .translate([containerWidth / 2, containerHeight / 2]);
     b;
     const projection = geoAlbersUsa()
-      .scale(100)
+      .scale(1000)
       .translate([containerWidth / 2, containerHeight / 2]);
     projection;
     return projection;
   }
   componentDidMount() {
-    console.log("us", us);
     const features: any = feature(
       (us as unknown) as any,
       us.objects.counties as any
@@ -46,13 +49,15 @@ class WorldMap extends Component<any, WorldMapState> {
       >
         <g className="countries">
           {this.state.worldData.map((d: any, i: number) => {
-            const m = geoPath()(d);
+            const county = counties.find(el => el.fips === d.id);
+            county;
+            const m = geoPath(this.projection())(d);
             return (
               <path
                 key={`path-${i}`}
                 d={m as any}
                 className="country"
-                fill={`rgba(38,50,56,${(1 / this.state.worldData.length) * i})`}
+                fill={`rgba(38,50,56,1`}
                 stroke="#FFFFFF"
                 strokeWidth={0.5}
               />
@@ -65,4 +70,3 @@ class WorldMap extends Component<any, WorldMapState> {
 }
 export default Dimensions()(WorldMap);
 // src/components/WorldMap.js
-

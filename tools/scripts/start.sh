@@ -9,6 +9,6 @@ then
 else
   echo "starting server in development"
   export NODE_TLS_REJECT_UNAUTHORIZED='0'
-  ./node_modules/.bin/babel-node --extensions '.ts,.tsx,.js,.jsx' src/server/index.ts
+  ./node_modules/.bin/babel-node --extensions '.ts,.tsx,.js,.jsx' src/server/server.ts
   
 fi
