@@ -46,17 +46,20 @@ class WorldMap extends Component<any, WorldMapState> {
       (us as unknown) as any,
       us.objects.states as any
     );
+    const proj = this.projection();
     this.setState({
       countyFeatures: countyFeatures.features.map((el: any) => {
         const county = counties.find(county => county.fips === el.id);
         return {
           d: el,
-          meta: { county }
+          meta: { county },
+          p: geoPath(proj)(el)
         };
       }),
       stateFeatures: stateFeatures.features.map((el: any) => {
         return {
           d: el,
+          p: geoPath(proj)(el),
           meta: {}
         };
       })
@@ -65,8 +68,7 @@ class WorldMap extends Component<any, WorldMapState> {
   render() {
     const { containerHeight, containerWidth } = this.props;
     if (!this.state.countyFeatures) return null;
-    const statesList = Object.keys(states).sort();
-    const proj = this.projection();
+    //const statesList = Object.keys(states).sort();
     return (
       <React.Fragment>
         <a
@@ -86,8 +88,28 @@ class WorldMap extends Component<any, WorldMapState> {
           height={containerHeight}
           viewBox={`0 0 ${containerWidth} ${containerHeight}`}
         >
+          <g className="counties">
+            {this.state.countyFeatures.map(({ d, meta, p }: any, i: number) => {
+              const county = meta.county;
+              let alpha = 1;
+              if (county) {
+                alpha = Math.random() + i * (1 / counties.length);
+              }
+              return (
+                <path
+                  d={p}
+                  className="country"
+                  fill={`rgba(38,50,56,${
+                    this.state.mode === "county" ? alpha : 0
+                  })`}
+                  stroke="#FFFFFF"
+                  strokeWidth={0.5}
+                />
+              );
+            })}
+          </g>
           <g key="s" className="states">
-            {this.state.stateFeatures.map(({ d, meta }: any, i: number) => {
+            {this.state.stateFeatures.map(({ d, meta, p }: any, i: number) => {
               let alpha = 1;
               alpha = d.id * (1 / 80);
               return (
@@ -98,10 +120,9 @@ class WorldMap extends Component<any, WorldMapState> {
                   to={{ x: this.state.mode === "county" ? 0 : alpha }}
                 >
                   {style => {
-                    const m = geoPath(proj)(d);
                     return (
                       <animated.path
-                        d={m as any}
+                        d={p}
                         className="country"
                         opacity={style.x}
                         fill={`rgba(38,50,56,${1})`}
