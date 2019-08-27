@@ -86,25 +86,6 @@ class WorldMap extends Component<any, WorldMapState> {
           height={containerHeight}
           viewBox={`0 0 ${containerWidth} ${containerHeight}`}
         >
-          <g className="counties">
-            {this.state.countyFeatures.map(({ d, meta }: any, i: number) => {
-              const county = meta.county;
-              const m = geoPath(proj)(d);
-              let alpha = 1;
-              if (county) {
-                alpha = i * (1 / counties.length);
-              }
-              return (
-                <path
-                  d={m as any}
-                  className="country"
-                  fill={`rgba(38,50,56,${alpha})`}
-                  stroke="#FFFFFF"
-                  strokeWidth={0.5}
-                />
-              );
-            })}
-          </g>
           <g key="s" className="states">
             {this.state.stateFeatures.map(({ d, meta }: any, i: number) => {
               let alpha = 1;
