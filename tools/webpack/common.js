@@ -13,13 +13,12 @@ module.exports = {
     sw: "./src/hub/src/entrypoints/sw.ts"
   },
   resolve: {
-    extensions: [".tsx", ".ts", ".js", ".json", ".scss"]
+    extensions: [".tsx", ".ts", ".js", ".json"]
   },
   output: {
     filename: "[name].bundle.js",
     path: path.resolve(__dirname, "..", "..", "build"),
     publicPath: "http://localhost:7080/",
-    globalObject: "this",
-    pathinfo: false
+    globalObject: "this"
   }
 };
