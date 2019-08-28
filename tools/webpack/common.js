@@ -9,7 +9,8 @@ module.exports = {
     child_process: "empty"
   },
   entry: {
-    hub: "./src/hub/src/entrypoints/browser.tsx"
+    hub: "./src/hub/src/entrypoints/browser.tsx",
+    sw: "./src/hub/src/entrypoints/sw.ts"
   },
   resolve: {
     extensions: [".tsx", ".ts", ".js", ".json", ".scss"]

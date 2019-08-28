@@ -68,5 +68,14 @@
     </div>
     <script type="text/javascript"></script>
     <script src="{{{APPLICATION_HOST}}}/hub.bundle.js"></script>
+    <script>
+      // Check that service workers are supported
+      if ("serviceWorker" in navigator) {
+        // Use the window load event to keep the page load performant
+        window.addEventListener("load", () => {
+          navigator.serviceWorker.register("{{{APPLICATION_HOST}}}/sw.bundle.js");
+        });
+      }
+    </script>
   </body>
 </html>

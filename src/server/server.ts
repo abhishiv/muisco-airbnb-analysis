@@ -11,11 +11,19 @@ import path from "path";
 const assetsDir = process.env.NODE_ENV === "production" ? "build" : "src";
 server.use(
   "/_static/",
-  express.static(path.join(__dirname, "..", "..", assetsDir), {})
+  express.static(path.join(__dirname, "..", "..", assetsDir), {
+    setHeaders: function(header) {
+      header.setHeader("Service-Worker-Allowed", "/");
+    }
+  })
 );
 server.use(
   "/_static/:version/",
-  express.static(path.join(__dirname, "..", "..", assetsDir), {})
+  express.static(path.join(__dirname, "..", "..", assetsDir), {
+    setHeaders: function(header) {
+      header.setHeader("Service-Worker-Allowed", "/");
+    }
+  })
 );
 
 server.use(
