@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useDrag } from "react-use-gesture";
 
-import { feature } from "topojson-client";
 import { geoMercator } from "d3-geo";
-import styles from "./map.scss";
-import w from "../../world-countries.json";
+import { Dashboard, AtlasMap } from "../../../specs/index";
+
 import Political from "./political";
 import Tiles from "./tiles";
 
@@ -66,6 +65,8 @@ export function compute(
 export interface TilesProps {
   width: number;
   height: number;
+  dashboard: Dashboard;
+  getNextEntity: Function;
 }
 export interface ProjectionParams {
   tx: number;
@@ -73,29 +74,26 @@ export interface ProjectionParams {
   k: number;
 }
 export interface TilesParams extends ProjectionParams {
-  features: any;
   delta: [number, number];
 }
 function Atlas(props: TilesProps) {
-  const { width, height } = props;
+  const { width, height, dashboard } = props;
   const [tilesParams, setParams] = useState({
     delta: [0, 0]
   } as TilesParams);
-  const { features, k, tx, ty, delta } = tilesParams;
+  const { k, tx, ty, delta } = tilesParams;
 
   useEffect(() => {
-    const features: any = feature(
-      (w as unknown) as any,
-      w.objects.countries1 as any
-    );
-    const { k, tx, ty } = compute(width, height, [100, 30], 20, [0, 0]);
-    setParams({
-      k,
-      tx,
-      ty,
-      features,
-      delta: [0, 0]
-    });
+    const { map }: { map: AtlasMap | null } = dashboard.atlas;
+    if (map) {
+      const { k, tx, ty } = compute(width, height, [100, 30], 20, [0, 0]);
+      setParams({
+        k,
+        tx,
+        ty,
+        delta: [0, 0]
+      });
+    }
   }, []);
 
   const bind = useDrag(({ down, xy, delta, last }) => {
@@ -125,26 +123,28 @@ function Atlas(props: TilesProps) {
         overflow: "hidden"
       }}
     >
-      <Tiles
-        tileSize={256}
-        {...{
-          k,
-          tx: tx + delta[0],
-          ty: ty + delta[1],
-          width,
-          height,
-          features
-        }}
-      />
-      {features && (
-        <Political
+      {dashboard.atlas.map && (
+        <Tiles
+          tileSize={256}
           {...{
             k,
             tx: tx + delta[0],
             ty: ty + delta[1],
             width,
-            height,
-            features
+            height
+          }}
+        />
+      )}
+      {dashboard.atlas.map && (
+        <Political
+          getNextEntity={props.getNextEntity}
+          map={dashboard.atlas.map}
+          {...{
+            k,
+            tx: tx + delta[0],
+            ty: ty + delta[1],
+            width,
+            height
           }}
         />
       )}

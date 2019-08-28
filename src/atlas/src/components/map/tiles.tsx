@@ -6,7 +6,6 @@ export interface TilesProps {
   ty: number;
   width: number;
   height: number;
-  features: any;
   tileSize: number;
 }
 export default function Tiles({
