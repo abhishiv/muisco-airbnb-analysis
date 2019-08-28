@@ -5,6 +5,7 @@ import Map from "./components/map/index";
 import { Dashboard, AtlasMap } from "../specs/index";
 import dashboard from "./dashboard";
 import { feature } from "topojson-client";
+import "./styles.scss";
 
 export interface WorldMapProps {
   containerWidth: number;

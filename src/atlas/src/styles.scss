@@ -8,18 +8,17 @@ body {
   padding: 0;
   margin: 0;
 }
-:global {
-  #root {
-    height: 100vh;
-    width: 100vw;
-    overflow: hidden;
-  }
-  #root > div {
-    height: 100vh;
-    width: 100vw;
-    overflow: hidden;
-  }
+body > div:first-child {
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
 }
+body > div:first-child > div {
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+}
+
 .App {
   font-family: sans-serif;
   text-align: center;
