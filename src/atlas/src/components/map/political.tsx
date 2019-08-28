@@ -19,7 +19,7 @@ export default function Political(props: PoliticalProps) {
   const p = geoPath(projection);
   return (
     <svg
-      style={{ position: "absolute" }}
+      className={styles.svgMap}
       width={width}
       height={height}
       viewBox={`0 0 ${width} ${height}`}
