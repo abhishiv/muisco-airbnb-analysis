@@ -31,7 +31,7 @@ export default function Tiles({
           top: (tile[1] + tiles.translate[1]) * tiles.scale + "px"
         };
         const src =
-          "http://" +
+          "https://" +
           "abc"[tile[1] % 3] +
           ".tile.openstreetmap.org/" +
           tile[2] +
