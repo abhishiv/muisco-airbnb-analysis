@@ -19,7 +19,7 @@
     </title>
     <link rel="icon" href="{{{CDN_BASE}}}/server/assets/images/origami.png" />
     {{#IS_PROD}}
-    <link rel="stylesheet" href="{{{CDN_BASE}}}/kernel.bundle.css" />
+    <link rel="stylesheet" href="{{{CDN_BASE}}}/hub.bundle.css" />
     {{/IS_PROD}}
 
     <script
@@ -42,25 +42,7 @@
       type="text/javascript"
     ></script>
     -->
-    <style>
-      html,
-      body {
-        padding: 0;
-        margin: 0;
-      }
-      #root {
-        height: 100vh;
-        width: 100vw;
-        overflow: hidden;
-      }
-      #root > div {
-        height: 100vh;
-        width: 100vw;
-        overflow: hidden;
-      }
-      path {
-      }
-    </style>
+    <style></style>
   </head>
   <body>
     <div id="root">
@@ -73,7 +55,9 @@
       if ("serviceWorker" in navigator) {
         // Use the window load event to keep the page load performant
         window.addEventListener("load", () => {
-          navigator.serviceWorker.register("{{{APPLICATION_HOST}}}/sw.bundle.js");
+          navigator.serviceWorker.register(
+            "{{{APPLICATION_HOST}}}/sw.bundle.js"
+          );
         });
       }
     </script>
