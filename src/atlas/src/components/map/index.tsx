@@ -3,7 +3,7 @@ import { useDrag } from "react-use-gesture";
 
 import { feature } from "topojson-client";
 import { geoMercator } from "d3-geo";
-
+import styles from "./map.scss";
 import w from "../../world-countries.json";
 import Political from "./political";
 import Tiles from "./tiles";

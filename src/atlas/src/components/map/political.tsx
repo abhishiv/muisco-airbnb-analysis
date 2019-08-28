@@ -8,6 +8,7 @@ export interface PoliticalProps {
   height: number;
   features: any;
 }
+import styles from "./map.scss";
 export default function Political(props: PoliticalProps) {
   const { k, tx, ty, width, height, features } = props;
   const tau = 2 * Math.PI; //
@@ -29,8 +30,10 @@ export default function Political(props: PoliticalProps) {
             <path
               key={i}
               d={p(d) as any}
-              className="country"
-              onClick={() => {}}
+              className={styles.politicalPath}
+              onClick={() => {
+                console.log("d", d);
+              }}
               fill={`rgba(38,50,56,${0})`}
               stroke="#000"
               strokeWidth={0.5}
