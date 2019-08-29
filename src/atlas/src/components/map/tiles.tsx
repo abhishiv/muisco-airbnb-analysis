@@ -164,15 +164,7 @@ export default function Tiles({
                 stroke="orange"
                 d={path(geojson(d, d.layers.admin))}
               ></path>
-              {false && (
-                <path
-                  fill="darkseagreen"
-                  key="landuse"
-                  stroke="green"
-                  strokeWidth="2"
-                  d={path(geojson(d, d.layers.landuse))}
-                ></path>
-              )}
+
               <path
                 key="road"
                 d={path(filter(geojson(d, d.layers.road), d => isHighway(d)))}
@@ -188,6 +180,7 @@ export default function Tiles({
               ></path>
               <path
                 key="waterline"
+                stroke="orange"
                 strokeWidth={2}
                 d={path(filter(geojson(d, d.layers.water), is_water_line))}
               ></path>
