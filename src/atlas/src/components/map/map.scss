@@ -2,7 +2,7 @@
   position: absolute;
 }
 
-.politicalPath {
+.lastPath {
   cursor: pointer;
   &:hover {
     fill: rgba(0, 0, 0, 0.1);
@@ -15,6 +15,7 @@
   }
   > g:last-child > .politicalPath {
     stroke: brown;
+    stroke: black;
   }
 }
 .label {
