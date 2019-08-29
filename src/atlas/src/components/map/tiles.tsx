@@ -119,25 +119,27 @@ export default function Tiles({
   tileSize
 }: TilesProps) {
   const [vectorTiles, setVectorTiles] = useState();
-  const tiler = tile()
-    .size([width, height])
-    .tileSize(tileSize)
-    .scale(k)
-    .translate([tx, ty]);
   const tau = 2 * Math.PI; //
   const projection = geoMercator()
     .scale(k / tau)
     .translate([tx, ty]);
   const path = geoPath(projection);
-  const tiles = tiler();
   const worker = async () => {
+    const tiler = tile()
+      .size([width, height])
+      .tileSize(tileSize)
+      .scale(k)
+      .translate([tx, ty]);
+    const tiles = tiler();
     const vtiles = await getVectorTiles(tiles);
-    console.log("vt", vtiles, tiles);
     setVectorTiles(vtiles);
   };
   useEffect(() => {
     worker();
   }, []);
+  useEffect(() => {
+    worker();
+  }, [k, tx, ty]);
 
   return (
     <React.Fragment>
@@ -148,13 +150,57 @@ export default function Tiles({
             ["canal", "ditch", "drain", "river", "stream"].indexOf(
               d.properties.kind
             ) > -1;
-          console.log(d.layers.water, geojson(d, d.layers.water));
           return (
             <g>
               <path
+                key="earth"
+                fill="brown"
+                stroke="brown"
+                d={path(geojson(d, d.layers.earth))}
+              ></path>
+              <path
+                fill="green"
+                key="landuse"
+                stroke="green"
+                stroke-width="2"
+                d={path(geojson(d, d.layers.landuse))}
+              ></path>
+              <path
+                key="wat"
+                key="water"
                 fill="blue"
-                d={path(geojson(d, d.layers.water))}
+                d={path(
+                  filter(geojson(d, d.layers.water), d => !is_water_line(d))
+                )}
                 stroke="orange"
+              ></path>
+              <path
+                fill="none"
+                key="waterline"
+                stroke="lightblue"
+                stroke-width={2}
+                d={path(filter(geojson(d, d.layers.water), is_water_line))}
+              ></path>
+              <path
+                fill="none"
+                key="roads"
+                stroke="#000"
+                stroke-width="1"
+                d={path(geojson(d, d.layers.roads))}
+              ></path>
+              <path
+                fill="none"
+                key="buildings"
+                stroke="#000"
+                stroke-width="1"
+                d={path(geojson(d, d.layers.buildings))}
+              ></path>
+              <path
+                fill="none"
+                stroke="#000"
+                key="places"
+                stroke-width="1"
+                d={path(geojson(d, d.layers.places))}
               ></path>
             </g>
           );
