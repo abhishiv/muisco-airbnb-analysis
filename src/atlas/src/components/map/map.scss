@@ -1,5 +1,8 @@
 .svgMap {
   position: absolute;
+  text {
+    user-select: none;
+  }
 }
 
 .lastPath {
