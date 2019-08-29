@@ -63,6 +63,25 @@ server.use(
     }
   })
 );
+server.use(
+  "/_data/airbnb/",
+  proxy({
+    target: "http://data.insideairbnb.com",
+    pathRewrite: { "^/_data/airbnb": "" },
+    changeOrigin: true,
+    secure: false,
+    xfwd: true,
+    logLevel: "debug",
+    ws: true,
+    onProxyRes: function(proxyRes, _, res) {
+      res.setHeader("Access-Control-Allow-Origin", "*");
+      res.setHeader("Service-Worker-Allowed", "/");
+      Object.keys(proxyRes.headers).forEach(function(key) {
+        res.setHeader(key, proxyRes.headers[key] as any);
+      });
+    }
+  })
+);
 
 server.use("/", siteRouter);
 
