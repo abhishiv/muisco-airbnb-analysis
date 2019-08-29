@@ -133,6 +133,7 @@ function Atlas(props: TilesProps) {
       >
         {Number.isFinite(k) && dashboard.atlas.entityPath.length > 0 && (
           <Tiles
+            dashboard={dashboard}
             tileSize={256}
             {...{
               k,

@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import { tile } from "d3-tile";
 import { geoPath, geoMercator } from "d3-geo";
 import Protobuf from "pbf";
+import { Dashboard } from "../../../specs/index";
+import styles from "./map.scss";
 function position(tile: any, tiles: any) {
   const [x, y] = tile;
   const {
@@ -17,16 +19,20 @@ export interface TilesProps {
   width: number;
   height: number;
   tileSize: number;
+  dashboard: Dashboard;
 }
 const mapbox_access_token =
   "pk.eyJ1IjoiYWJvdXRhYXJvbiIsImEiOiJsRTRpMGJnIn0.aprlJ6wE1JQqBx4EH1lkMQ";
 import vt from "@mapbox/vector-tile";
 
-function filter({ features }, test) {
-  return {
-    type: "FeatureCollection",
-    features: features ? features.filter(test) : []
-  };
+function filter(param: any, test: Function) {
+  if (param) {
+    const { features } = param;
+    return {
+      type: "FeatureCollection",
+      features: features ? features.filter(test) : []
+    };
+  }
 }
 export async function getVectorTiles(tiles) {
   return await Promise.all(
@@ -115,7 +121,8 @@ export default function Tiles({
   ty,
   width,
   height,
-  tileSize
+  tileSize,
+  dashboard
 }: TilesProps) {
   const [vectorTiles, setVectorTiles] = useState();
   const tau = 2 * Math.PI; //
@@ -144,10 +151,9 @@ export default function Tiles({
       {vectorTiles &&
         vectorTiles.map((d: any, i: number) => {
           const is_water_line = d =>
-            d.properties.boundary ||
-            ["canal", "ditch", "drain", "river", "stream"].indexOf(
-              d.properties.kind
-            ) > -1;
+            ["canal", "drain", "river", "stream"].indexOf(d.properties.kind) >
+            -1;
+          const is_boundry = d => d.properties.boundary;
           return (
             <g key={i}>
               <path
@@ -172,7 +178,7 @@ export default function Tiles({
                 d={path(
                   filter(geojson(d, d.layers.water), d => !is_water_line(d))
                 )}
-                stroke="orange"
+                stroke="aliceblue"
               ></path>
               <path
                 fill="none"
@@ -193,15 +199,60 @@ export default function Tiles({
                 key="buildings"
                 stroke="#000"
                 strokeWidth="1"
-                d={path(geojson(d, d.layers.buildings))}
+                d={path(geojson(d, d.layers.building))}
               ></path>
-              <path
-                fill="none"
-                stroke="#000"
-                key="places"
-                strokeWidth="1"
-                d={path(geojson(d, d.layers.places))}
-              ></path>
+
+              {d.layers.place_label &&
+                (() => {
+                  const [x, y, z] = d;
+                  const layer = d.layers.place_label;
+                  const features = [];
+                  const dom = [];
+                  for (let i = 0; i < layer.length; ++i) {
+                    const f = layer.feature(i).toGeoJSON(x, y, z);
+                    const c = path.centroid(f.geometry);
+                    const fontSize = 19 - f.properties.symbolrank - 3;
+
+                    const ranked = (filterrank, symbolrank) => {
+                      if (dashboard.atlas.entityPath.length === 1) {
+                        if (symbolrank < 5) {
+                          return true;
+                        }
+                      } else if (dashboard.atlas.entityPath.length === 2) {
+                        if (symbolrank < 6) {
+                          return true;
+                        }
+                      } else {
+                        if (filterrank < 6) {
+                          return true;
+                        }
+                      }
+                    };
+                    const rank = ranked(
+                      f.properties.filterrank,
+                      f.properties.symbolrank
+                    );
+                    rank &&
+                      dom.push(
+                        <g>
+                          <text
+                            className={styles.label}
+                            textRendering="geometricPrecision"
+                            textAnchor={f.properties.text_anchor}
+                            fontSize={fontSize}
+                            x={c[0]}
+                            y={c[1]}
+                          >
+                            {f.properties.name_en}
+                          </text>
+                        </g>
+                      );
+                    rank && features.push(f);
+                  }
+                  //console.log("k", k / tau);
+                  //console.log(features);
+                  return dom;
+                })()}
             </g>
           );
         })}
