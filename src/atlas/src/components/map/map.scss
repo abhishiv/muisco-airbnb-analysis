@@ -19,10 +19,11 @@
   > g:last-child > .politicalPath {
     stroke: brown;
     stroke: black;
+    stroke-width: 1px;
   }
 }
 .label {
-  fill: rgba(0, 0, 0, 0.2);
+  fill: rgba(0, 0, 0, 0.3);
 }
 .adminPath {
   stroke: rgba(0, 0, 0, 0.2);
