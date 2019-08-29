@@ -4,14 +4,6 @@ import { geoPath, geoMercator } from "d3-geo";
 import Protobuf from "pbf";
 import { Dashboard } from "../../../specs/index";
 import styles from "./map.scss";
-function position(tile: any, tiles: any) {
-  const [x, y] = tile;
-  const {
-    translate: [tx, ty],
-    scale: k
-  } = tiles;
-  return [(x + tx) * k, (y + ty) * k];
-}
 export interface TilesProps {
   k: number;
   tx: number;
@@ -202,7 +194,7 @@ export default function Tiles({
                   for (let i = 0; i < layer.length; ++i) {
                     const f = layer.feature(i).toGeoJSON(x, y, z);
                     const c = path.centroid(f.geometry);
-                    const fontSize = 22 - f.properties.symbolrank - 3;
+                    const fontSize = 20 - f.properties.symbolrank - 3;
 
                     const ranked = (filterrank, symbolrank) => {
                       if (dashboard.atlas.entityPath.length === 1) {

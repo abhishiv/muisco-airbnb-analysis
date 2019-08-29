@@ -13,6 +13,7 @@ export interface PoliticalProps {
   onChangeCenter: Function;
   dashboard: Dashboard;
 }
+
 import styles from "./map.scss";
 export default function Political(props: PoliticalProps) {
   const { k, tx, ty, width, height, map, onChangeCenter, dashboard } = props;
