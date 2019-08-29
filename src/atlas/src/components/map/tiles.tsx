@@ -233,6 +233,7 @@ export default function Tiles({
                       f.properties.symbolrank
                     );
                     rank &&
+                      fontSize > 5 &&
                       dom.push(
                         <g>
                           <text
