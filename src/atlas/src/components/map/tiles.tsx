@@ -163,7 +163,8 @@ export default function Tiles({
                 className={styles.adminPath}
                 d={path(
                   filter(geojson(d, d.layers.admin), d => {
-                    if (dashboard.atlas.entityPath.length < 2) {
+                    return false;
+                    if (dashboard.atlas.entityPath.length < 3) {
                       return d.properties.admin_level < 2;
                     } else {
                       return d.properties.admin_level < 5;
@@ -201,7 +202,7 @@ export default function Tiles({
                   for (let i = 0; i < layer.length; ++i) {
                     const f = layer.feature(i).toGeoJSON(x, y, z);
                     const c = path.centroid(f.geometry);
-                    const fontSize = 19 - f.properties.symbolrank - 3;
+                    const fontSize = 22 - f.properties.symbolrank - 3;
 
                     const ranked = (filterrank, symbolrank) => {
                       if (dashboard.atlas.entityPath.length === 1) {

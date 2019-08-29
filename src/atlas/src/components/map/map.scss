@@ -11,10 +11,10 @@
 
 .svgMap {
   > g > .politicalPath {
-    stroke: rgba(0, 0, 0, 0);
+    stroke: transparent;
   }
   > g:last-child > .politicalPath {
-    stroke: rgba(0, 0, 0, 0);
+    stroke: brown;
   }
 }
 .label {
