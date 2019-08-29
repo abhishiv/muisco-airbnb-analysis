@@ -11,13 +11,12 @@
 
 .svgMap {
   > g > .politicalPath {
-    stroke: #ffa50061;
+    stroke: rgba(0, 0, 0, 0);
   }
   > g:last-child > .politicalPath {
-    stroke: orange;
+    stroke: rgba(0, 0, 0, 0);
   }
 }
 .label {
-  fill: rgba(0, 0, 0, 0.3);
-  font-family: "Open Sans";
+  fill: rgba(0, 0, 0, 0.2);
 }

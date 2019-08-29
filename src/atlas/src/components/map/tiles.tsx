@@ -150,21 +150,20 @@ export default function Tiles({
     <React.Fragment>
       {vectorTiles &&
         vectorTiles.map((d: any, i: number) => {
-          const is_water_line = d =>
+          const is_water_line = (d: any) =>
             ["canal", "drain", "river", "stream"].indexOf(d.properties.kind) >
             -1;
-          const is_boundry = d => d.properties.boundary;
           return (
             <g key={i}>
               <path
                 key="earth"
-                fill="brown"
-                stroke="brown"
-                d={path(geojson(d, d.layers.earth))}
+                fill="transparent"
+                stroke="orange"
+                d={path(geojson(d, d.layers.admin))}
               ></path>
-              {false && (
+              {true && (
                 <path
-                  fill="green"
+                  fill="darkseagreen"
                   key="landuse"
                   stroke="green"
                   strokeWidth="2"
@@ -172,7 +171,11 @@ export default function Tiles({
                 ></path>
               )}
               <path
-                key="wat"
+                key="road"
+                d={path(geojson(d, d.layers.road))}
+                stroke="brown"
+              ></path>
+              <path
                 key="water"
                 fill="aliceblue"
                 d={path(
@@ -181,25 +184,9 @@ export default function Tiles({
                 stroke="aliceblue"
               ></path>
               <path
-                fill="none"
                 key="waterline"
-                stroke="lightblue"
                 strokeWidth={2}
                 d={path(filter(geojson(d, d.layers.water), is_water_line))}
-              ></path>
-              <path
-                fill="none"
-                key="roads"
-                stroke="#000"
-                strokeWidth="1"
-                d={path(geojson(d, d.layers.roads))}
-              ></path>
-              <path
-                fill="none"
-                key="buildings"
-                stroke="#000"
-                strokeWidth="1"
-                d={path(geojson(d, d.layers.building))}
               ></path>
 
               {d.layers.place_label &&
@@ -251,7 +238,6 @@ export default function Tiles({
                     rank && features.push(f);
                   }
                   //console.log("k", k / tau);
-                  //console.log(features);
                   return dom;
                 })()}
             </g>
