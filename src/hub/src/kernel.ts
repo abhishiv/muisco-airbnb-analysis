@@ -22,8 +22,29 @@ export function parseCSV(text: string) {
   });
 }
 declare var lf: any;
-export async function loadIntoDB(list: any[], headers: any[]): Promise<any[]> {
-  var schemaBuilder = lf.schema.create("items", 1);
+export async function loadIntoLFDb(
+  db: any,
+  item: any,
+  list: any[],
+  headers: any[]
+): Promise<any> {
+  const rows = list.map(el => {
+    return item.createRow({
+      id: el[0] + "/" + el[1],
+      listing_id: el[0],
+      date: new Date(el[1])
+    });
+  });
+  await db
+    .insertOrReplace()
+    .into(item)
+    .values(rows)
+    .exec();
+  return db;
+}
+
+export async function lfTest(list: any, header: any) {
+  var schemaBuilder = lf.schema.create("items2323", 3);
 
   schemaBuilder
     .createTable("reviews")
@@ -36,29 +57,24 @@ export async function loadIntoDB(list: any[], headers: any[]): Promise<any[]> {
 
   const db = await schemaBuilder.connect();
   const item = db.getSchema().table("reviews");
-  const rows = list.map(el => {
-    return item.createRow({
-      id: el[0] + el[1],
-      listing_id: el[0],
-      date: el[1]
-    });
-  });
-  await db
-    .insertOrReplace()
-    .into(item)
-    .values(rows)
-    .exec();
-  const res = await db
-    .select(item.id)
+  await loadIntoLFDb(db, item, list, header);
+  console.timeEnd("insert_csv");
+  console.log("db", db);
+  console.time("group");
+  const group = await db
+    .select(lf.fn.count(item.id), item.listing_id)
     .from(item)
+    .groupBy(item.done)
     .exec();
-  return res;
+  console.time("group");
+  console.log("group", group);
 }
 
 export default async function boot() {
   console.time("donwload_csv");
-  const url =
+  let url =
     "/_data/airbnb/italy/lombardy/milan/2019-07-12/visualisations/reviews.csv";
+  url = "/_data/airbnb/belgium/vlg/ghent/2019-07-15/visualisations/reviews.csv";
   const fileReq = await fetch(url);
   const text = await fileReq.text();
   console.timeEnd("donwload_csv");
@@ -69,7 +85,4 @@ export default async function boot() {
   console.time("insert_csv");
   const header = parsed.slice(0, 1)[0];
   const list = parsed.slice(1, parsed.length);
-  const res = await loadIntoDB(list, header);
-  console.timeEnd("insert_csv");
-  console.log("res", res);
 }
