@@ -143,9 +143,10 @@ function Atlas(props: TilesProps) {
             }}
           />
         )}
-        {dashboard.atlas.entities.map(map => {
+        {dashboard.atlas.entities.map((map, i) => {
           return (
             <Political
+              key={i}
               getNextEntity={props.getNextEntity}
               onChangeCenter={(scale: number, translate: [number, number]) => {
                 console.log(" onChangeCenter", scale, translate);

@@ -31,7 +31,6 @@ function filter({ features }, test) {
 export async function getVectorTiles(tiles) {
   return await Promise.all(
     tiles.map(async t => {
-      console.log("t", t);
       const req = await fetch(
         `https://a.tiles.mapbox.com/v4/mapbox.mapbox-streets-v8/${t[2]}/${t[0]}/${t[1]}.mvt?access_token=${mapbox_access_token}`
       );
@@ -151,7 +150,7 @@ export default function Tiles({
               d.properties.kind
             ) > -1;
           return (
-            <g>
+            <g key={i}>
               <path
                 key="earth"
                 fill="brown"
@@ -162,7 +161,7 @@ export default function Tiles({
                 fill="green"
                 key="landuse"
                 stroke="green"
-                stroke-width="2"
+                strokeWidth="2"
                 d={path(geojson(d, d.layers.landuse))}
               ></path>
               <path
@@ -178,28 +177,28 @@ export default function Tiles({
                 fill="none"
                 key="waterline"
                 stroke="lightblue"
-                stroke-width={2}
+                strokeWidth={2}
                 d={path(filter(geojson(d, d.layers.water), is_water_line))}
               ></path>
               <path
                 fill="none"
                 key="roads"
                 stroke="#000"
-                stroke-width="1"
+                strokeWidth="1"
                 d={path(geojson(d, d.layers.roads))}
               ></path>
               <path
                 fill="none"
                 key="buildings"
                 stroke="#000"
-                stroke-width="1"
+                strokeWidth="1"
                 d={path(geojson(d, d.layers.buildings))}
               ></path>
               <path
                 fill="none"
                 stroke="#000"
                 key="places"
-                stroke-width="1"
+                strokeWidth="1"
                 d={path(geojson(d, d.layers.places))}
               ></path>
             </g>
