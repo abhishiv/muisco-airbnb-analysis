@@ -1,5 +1,5 @@
 import React from "react";
-import { geoPath, geoMercator } from "d3-geo";
+import { geoPath, geoEquirectangular } from "d3-geo";
 import get from "lodash.get";
 import { AtlasMap } from "../../../specs/index";
 export interface PoliticalProps {
@@ -13,12 +13,11 @@ export interface PoliticalProps {
 }
 import styles from "./map.scss";
 export default function Political(props: PoliticalProps) {
-  const { k, tx, ty, width, height, map } = props;
+  const { k, tx, ty, width, height, map, onChangeCenter } = props;
   const tau = 2 * Math.PI; //
-  const projection = geoMercator()
-    .scale(1 / tau)
-    .translate([0, 0]);
-  projection.scale(k / tau).translate([tx, ty]);
+  const projection = geoEquirectangular()
+    .scale(k / tau)
+    .translate([tx, ty]);
   const p = geoPath(projection);
   return (
     <svg
@@ -35,7 +34,12 @@ export default function Political(props: PoliticalProps) {
               d={p(d) as any}
               className={styles.politicalPath}
               onClick={() => {
-                console.log("d", d);
+                const projection = geoEquirectangular()
+                  .scale(k / tau)
+                  .translate([tx, ty])
+                  .fitSize([width, height], d);
+                console.log("d", d, projection.scale(), projection.translate());
+                onChangeCenter(projection.scale(), projection.translate());
                 const id = get(d, props.map.topojsonIdProp);
                 props.getNextEntity(id);
               }}

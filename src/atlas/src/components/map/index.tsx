@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useDrag } from "react-use-gesture";
 
-import { geoMercator } from "d3-geo";
+import { geoEquirectangular } from "d3-geo";
 import { Dashboard, AtlasMap } from "../../../specs/index";
 
 import Political from "./political";
@@ -20,7 +20,7 @@ export function getProjectionParams(
 ): ProjectionParams {
   const center = [lat, long];
   const tau = Math.PI * 2;
-  const projection = geoMercator()
+  const projection = geoEquirectangular()
     .scale(1 / tau)
     .translate([0, 0]);
 
@@ -86,7 +86,7 @@ function Atlas(props: TilesProps) {
   useEffect(() => {
     const { map }: { map: AtlasMap | null } = dashboard.atlas;
     if (map) {
-      const { k, tx, ty } = compute(width, height, [100, 30], 20, [0, 0]);
+      const { k, tx, ty } = compute(width, height, [110, 35], 35, [0, 0]);
       setParams({
         k,
         tx,
@@ -138,6 +138,15 @@ function Atlas(props: TilesProps) {
       {dashboard.atlas.map && (
         <Political
           getNextEntity={props.getNextEntity}
+          onChangeCenter={(scale, translate) => {
+            console.log(" onChangeCenter", scale, translate);
+            setParams({
+              ...tilesParams,
+              k: scale * Math.PI * 2,
+              tx: translate[0],
+              ty: translate[1]
+            });
+          }}
           map={dashboard.atlas.map}
           {...{
             k,

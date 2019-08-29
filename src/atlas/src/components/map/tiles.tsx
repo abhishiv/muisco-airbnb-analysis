@@ -1,5 +1,6 @@
 import React from "react";
 import { tile } from "d3-tile";
+import { geoEquirectangular } from "d3-geo";
 export interface TilesProps {
   k: number;
   tx: number;
@@ -21,7 +22,7 @@ export default function Tiles({
     .scale(k)
     .tileSize(tileSize)
     .translate([tx, ty])(); //
-
+  console.log("tiles", tiles);
   return (
     <div>
       {tiles.map((tile: any, i: number) => {
