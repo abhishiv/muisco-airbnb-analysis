@@ -153,6 +153,9 @@ export default function Tiles({
           const is_water_line = (d: any) =>
             ["canal", "drain", "river", "stream"].indexOf(d.properties.kind) >
             -1;
+          const isHighway = (d: any) => {
+            return d.properties.type === "primary";
+          };
           return (
             <g key={i}>
               <path
@@ -161,7 +164,7 @@ export default function Tiles({
                 stroke="orange"
                 d={path(geojson(d, d.layers.admin))}
               ></path>
-              {true && (
+              {false && (
                 <path
                   fill="darkseagreen"
                   key="landuse"
@@ -172,7 +175,7 @@ export default function Tiles({
               )}
               <path
                 key="road"
-                d={path(geojson(d, d.layers.road))}
+                d={path(filter(geojson(d, d.layers.road), d => isHighway(d)))}
                 stroke="brown"
               ></path>
               <path
