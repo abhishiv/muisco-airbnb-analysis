@@ -160,19 +160,27 @@ export default function Tiles({
             <g key={i}>
               <path
                 key="earth"
-                fill="transparent"
-                stroke="orange"
-                d={path(geojson(d, d.layers.admin))}
+                className={styles.adminPath}
+                d={path(
+                  filter(geojson(d, d.layers.admin), d => {
+                    if (dashboard.atlas.entityPath.length < 2) {
+                      return d.properties.admin_level < 2;
+                    } else {
+                      return d.properties.admin_level < 5;
+                    }
+                  })
+                )}
               ></path>
-
-              <path
-                key="road"
-                d={path(filter(geojson(d, d.layers.road), d => isHighway(d)))}
-                stroke="brown"
-              ></path>
+              {false && (
+                <path
+                  key="road"
+                  d={path(filter(geojson(d, d.layers.road), d => isHighway(d)))}
+                  stroke="brown"
+                ></path>
+              )}{" "}
               <path
                 key="water"
-                fill="aliceblue"
+                fill="skyblue"
                 d={path(
                   filter(geojson(d, d.layers.water), d => !is_water_line(d))
                 )}
@@ -184,7 +192,6 @@ export default function Tiles({
                 strokeWidth={2}
                 d={path(filter(geojson(d, d.layers.water), is_water_line))}
               ></path>
-
               {d.layers.place_label &&
                 (() => {
                   const [x, y, z] = d;
