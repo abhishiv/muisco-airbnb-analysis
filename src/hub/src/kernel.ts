@@ -23,10 +23,14 @@ export function parseCSV(text: string) {
 }
 
 export default async function boot() {
+  console.time("donwload_csv");
   const url =
     "/_data/airbnb/italy/lombardy/milan/2019-07-12/visualisations/reviews.csv";
-  const fileReq = await fetch("https://api.allorigins.win/get?url=" + url);
+  const fileReq = await fetch(url);
   const text = await fileReq.text();
+  console.timeEnd("donwload_csv");
+  console.time("parse_csv");
   const parsed = await parseCSV(text);
+  console.timeEnd("parse_csv");
   console.log("json.", parsed);
 }
