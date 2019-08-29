@@ -36,9 +36,9 @@ export async function getNextEntity(
       topojsonIdProp: ["properties", "Alpha-2"],
       features: feature(topojsonData, topojsonData.objects["countries1"])
     };
-  } else if (path.join("/") === "" && id === "IT") {
+  } else if (path.join("/") === "world" && id === "IT") {
     const topojsonURL =
-      "https://cdn.jsdelivr.net/gh/deldersveld/topojson@master/countries/italy/italy-regions.json";
+      "http://cdn.jsdelivr.net/gh/deldersveld/topojson@master/countries/italy/italy-regions.json";
     const topojsonData = await fetchTopoJSON(topojsonURL);
     return {
       topojsonURL,
@@ -47,9 +47,9 @@ export async function getNextEntity(
       topojsonIdProp: ["properties", "NAME_1"],
       features: feature(topojsonData, topojsonData.objects["ITA_adm1"])
     };
-  } else if (path.join("/") === "IT" && id) {
+  } else if (path.join("/") === "world/IT" && id) {
     const topojsonURL =
-      "https://cdn.jsdelivr.net/gh/deldersveld/topojson@master/countries/italy/italy-provinces.json";
+      "http://cdn.jsdelivr.net/gh/deldersveld/topojson@master/countries/italy/italy-provinces.json";
     const topojsonData = await fetchTopoJSON(topojsonURL);
     return {
       topojsonURL,
@@ -63,9 +63,9 @@ export async function getNextEntity(
         )
       })
     };
-  } else if (path.join("/") === "" && id === "IN") {
+  } else if (path.join("/") === "world" && id === "IN") {
     const topojsonURL =
-      "https://cdn.jsdelivr.net/gh/deldersveld/topojson@master/countries/india/india-states.json";
+      "http://cdn.jsdelivr.net/gh/deldersveld/topojson@master/countries/india/india-states.json";
     const topojsonData = await fetchTopoJSON(topojsonURL);
     return {
       topojsonURL,
@@ -74,9 +74,9 @@ export async function getNextEntity(
       topojsonIdProp: ["properties", "NAME_1"],
       features: feature(topojsonData, topojsonData.objects["IND_adm1"])
     };
-  } else if (path.join("/") === "IN" && id) {
+  } else if (path.join("/") === "world/IN" && id) {
     const topojsonURL =
-      "https://cdn.jsdelivr.net/gh/deldersveld/topojson@master/countries/india/india-districts.json";
+      "http://cdn.jsdelivr.net/gh/deldersveld/topojson@master/countries/india/india-districts.json";
     const topojsonData = await fetchTopoJSON(topojsonURL);
     return {
       topojsonURL,
@@ -100,6 +100,7 @@ class WorldMap extends React.Component<any, WorldMapState> {
     this.state = { dashboard };
   }
   updateMap = (map: AtlasMap, id?: string) => {
+    console.log("update", map, id);
     this.setState({
       dashboard: {
         ...this.state.dashboard,
@@ -109,19 +110,21 @@ class WorldMap extends React.Component<any, WorldMapState> {
             ...this.state.dashboard.atlas.entityPath,
             ...(id ? [id] : [])
           ],
-          map
+          entities: [...this.state.dashboard.atlas.entities, map]
         }
       }
     });
   };
   componentDidMount = async () => {
     const map = await getNextEntity(this.state.dashboard.atlas.entityPath);
+    console.log("map", map);
     if (map) {
-      this.updateMap(map);
+      this.updateMap(map, "world");
     }
   };
   render() {
-    if (!this.state.dashboard.atlas.map) {
+    console.log(this.state.dashboard);
+    if (this.state.dashboard.atlas.entityPath.length === 0) {
       return null;
     }
     return (
@@ -132,6 +135,7 @@ class WorldMap extends React.Component<any, WorldMapState> {
             this.state.dashboard.atlas.entityPath,
             id
           );
+          console.log("map", map, id);
           if (map) {
             this.updateMap(map, id);
           }

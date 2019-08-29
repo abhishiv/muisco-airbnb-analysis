@@ -2,7 +2,7 @@ import { Dashboard } from "../specs/index";
 const dashboard: Dashboard = {
   dataSources: [],
   atlas: {
-    map: null,
+    entities: [],
     entityPath: []
   }
 };

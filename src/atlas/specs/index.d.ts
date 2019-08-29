@@ -10,7 +10,7 @@ export interface AtlasMap {
   //  topojsonIdProp: ["properties", "Alpha-2"];
 }
 export interface Atlas {
-  map: AtlasMap | null;
+  entities: AtlasMap[];
   entityPath: string[];
 }
 export interface Dashboard {

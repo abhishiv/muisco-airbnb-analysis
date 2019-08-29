@@ -8,3 +8,12 @@
     fill: rgba(0, 0, 0, 0.1);
   }
 }
+
+.svgMap {
+  > g > .politicalPath {
+    stroke: transparent;
+  }
+  > g:last-child > .politicalPath {
+    stroke: black;
+  }
+}
