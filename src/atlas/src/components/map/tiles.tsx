@@ -139,7 +139,6 @@ export default function Tiles({
   useEffect(() => {
     worker();
   }, [k, tx, ty]);
-
   return (
     <React.Fragment>
       {vectorTiles &&
@@ -157,17 +156,19 @@ export default function Tiles({
                 stroke="brown"
                 d={path(geojson(d, d.layers.earth))}
               ></path>
-              <path
-                fill="green"
-                key="landuse"
-                stroke="green"
-                strokeWidth="2"
-                d={path(geojson(d, d.layers.landuse))}
-              ></path>
+              {false && (
+                <path
+                  fill="green"
+                  key="landuse"
+                  stroke="green"
+                  strokeWidth="2"
+                  d={path(geojson(d, d.layers.landuse))}
+                ></path>
+              )}
               <path
                 key="wat"
                 key="water"
-                fill="blue"
+                fill="aliceblue"
                 d={path(
                   filter(geojson(d, d.layers.water), d => !is_water_line(d))
                 )}
