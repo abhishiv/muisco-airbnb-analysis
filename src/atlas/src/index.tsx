@@ -38,7 +38,7 @@ export async function getNextEntity(
     };
   } else if (path.join("/") === "world" && id === "IT") {
     const topojsonURL =
-      "http://cdn.jsdelivr.net/gh/deldersveld/topojson@master/countries/italy/italy-regions.json";
+      "https://cdn.jsdelivr.net/gh/deldersveld/topojson@master/countries/italy/italy-regions.json";
     const topojsonData = await fetchTopoJSON(topojsonURL);
     return {
       topojsonURL,
@@ -49,7 +49,7 @@ export async function getNextEntity(
     };
   } else if (path.join("/") === "world/IT" && id) {
     const topojsonURL =
-      "http://cdn.jsdelivr.net/gh/deldersveld/topojson@master/countries/italy/italy-provinces.json";
+      "https://cdn.jsdelivr.net/gh/deldersveld/topojson@master/countries/italy/italy-provinces.json";
     const topojsonData = await fetchTopoJSON(topojsonURL);
     return {
       topojsonURL,
@@ -65,7 +65,7 @@ export async function getNextEntity(
     };
   } else if (path.join("/") === "world" && id === "IN") {
     const topojsonURL =
-      "http://cdn.jsdelivr.net/gh/deldersveld/topojson@master/countries/india/india-states.json";
+      "https://cdn.jsdelivr.net/gh/deldersveld/topojson@master/countries/india/india-states.json";
     const topojsonData = await fetchTopoJSON(topojsonURL);
     return {
       topojsonURL,
@@ -76,7 +76,7 @@ export async function getNextEntity(
     };
   } else if (path.join("/") === "world/IN" && id) {
     const topojsonURL =
-      "http://cdn.jsdelivr.net/gh/deldersveld/topojson@master/countries/india/india-districts.json";
+      "https://cdn.jsdelivr.net/gh/deldersveld/topojson@master/countries/india/india-districts.json";
     const topojsonData = await fetchTopoJSON(topojsonURL);
     return {
       topojsonURL,
