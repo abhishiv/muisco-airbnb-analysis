@@ -165,7 +165,7 @@ export default function Tiles(props: TilesProps) {
                     rank &&
                       fontSize > 5 &&
                       dom.push(
-                        <g>
+                        <g key={i}>
                           <text
                             className={styles.label}
                             textRendering="geometricPrecision"
