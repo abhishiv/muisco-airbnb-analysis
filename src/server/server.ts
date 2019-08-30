@@ -1,10 +1,19 @@
 import proxy from "http-proxy-middleware";
-
+import Knex from "knex";
 import express from "express";
 import compression from "compression";
 import siteRouter from "../hub/src/entrypoints/server";
+import apiRouter from "./api";
 const port = process.env.PORT || 5000;
 const server = express();
+
+var pg = Knex({
+  client: "pg",
+  pool: { min: 0, max: 7 },
+  //connection: "postgres://localhost:5432/data"
+  connection: process.env.DATABASE_URL || "postgres://localhost:5432/data"
+});
+server.set("knex", pg);
 server.use(compression());
 import path from "path";
 
@@ -82,6 +91,7 @@ server.use(
     }
   })
 );
+server.use("/_api", apiRouter);
 
 server.use("/", siteRouter);
 
