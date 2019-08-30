@@ -5,9 +5,6 @@ import Protobuf from "pbf";
 import { Dashboard, DashboardProjectionParams } from "../../../specs/index";
 
 export interface TilesProps {
-  k: number;
-  tx: number;
-  ty: number;
   width: number;
   height: number;
   tileSize: number;
