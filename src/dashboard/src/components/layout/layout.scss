@@ -1,0 +1,7 @@
+body > div:first-child {
+  min-height: 100vh;
+  position: relative;
+  > div:first-child {
+    min-height: 100vh;
+  }
+}

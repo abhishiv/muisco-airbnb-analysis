@@ -1,7 +1,10 @@
 export interface DashboardQuery {
   cities: string[];
+  cityName: string;
   roomTypes: string[];
   date: [string, string];
+  center: [number, number];
+  zoom: number;
 }
 
 export interface DashboardQuerySetter {

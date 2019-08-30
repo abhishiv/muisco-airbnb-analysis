@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 export interface DashboardViewProps {}
-import Timeline from "./components/timeline/index";
 
 import { Dashboard, DashboardQuery } from "../specs/index";
+import Layout from "./components/layout/index";
 
 export async function fetchDashboard(): Promise<Dashboard> {
   const req = await fetch("/_api/airbnb");
@@ -24,14 +24,16 @@ export default function DashboardView(props: DashboardViewProps) {
     doAsyncAction();
   }, []);
   return (
-    <div>
+    <React.Fragment>
       {dashboardQuery && dashboard && (
-        <Timeline
-          dashboardQuerySetter={setDashboardQuery}
-          dashboard={dashboard}
-          dashboardQuery={dashboardQuery}
+        <Layout
+          {...({
+            dashboard,
+            dashboardQuery,
+            dashboardQuerySetter: setDashboardQuery
+          } as any)}
         />
       )}
-    </div>
+    </React.Fragment>
   );
 }

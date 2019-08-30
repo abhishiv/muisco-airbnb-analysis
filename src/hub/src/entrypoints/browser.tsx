@@ -1,5 +1,5 @@
 import "babel-polyfill";
-import * as React from "react";
+import React from "react";
 import { render } from "react-dom";
 
 //import WorldMap from "../../../atlas/src/index";
@@ -7,9 +7,9 @@ import Dashboard from "../../../dashboard/src/index";
 
 function App() {
   return (
-    <div>
+    <React.Fragment>
       <Dashboard />
-    </div>
+    </React.Fragment>
   );
 }
 

@@ -4,7 +4,11 @@ export default {
   defaultQuery: {
     cities: ["milano"],
     roomTypes: ["Shared room", "Entire home/apt"],
-    date: ["2014-02-01", "2018-02-01"]
+    cityName: "milano",
+    date: ["2017-08-01", "2018-01-30"],
+
+    center: [45.4642, 9.19],
+    zoom: 4
   },
   cities: [
     {
