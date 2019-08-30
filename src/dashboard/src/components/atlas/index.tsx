@@ -144,7 +144,7 @@ export default function Atlas(props: AtlasProps) {
         overflow: "hidden"
       }}
     >
-      {true && dashboardProjectionParams.scale && (
+      {false && dashboardProjectionParams.scale && (
         <RasterTilesComponent
           {...props}
           tileSize={256}
@@ -162,7 +162,7 @@ export default function Atlas(props: AtlasProps) {
         height={height}
         viewBox={`0 0 ${width} ${height}`}
       >
-        {Number.isFinite(width) && false && (
+        {Number.isFinite(width) && true && (
           <TilesComponent
             {...props}
             tileSize={256}
