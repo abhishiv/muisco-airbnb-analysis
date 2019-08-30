@@ -131,22 +131,27 @@ export default function Atlas(props: AtlasProps) {
     //      });
     //    }
   }, []);
-
+  let timer: any;
   const bind = useDrag(({ down, xy, delta, last }) => {
-    const { tx, ty } = tilesParams;
-    if (last) {
-      setParams({
-        ...tilesParams,
-        delta: [0, 0],
-        tx: tx + delta[0],
-        ty: ty + delta[1]
-      });
-    } else {
-      setParams({
-        ...tilesParams,
-        delta: delta
-      });
+    if (timer) {
+      cancelAnimationFrame(timer);
     }
+    timer = requestAnimationFrame(() => {
+      const { tx, ty } = tilesParams;
+      if (last) {
+        setParams({
+          ...tilesParams,
+          delta: [0, 0],
+          tx: tx + delta[0],
+          ty: ty + delta[1]
+        });
+      } else {
+        setParams({
+          ...tilesParams,
+          delta: delta
+        });
+      }
+    });
   });
 
   return (
