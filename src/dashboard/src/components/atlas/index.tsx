@@ -170,7 +170,7 @@ export default function Atlas(props: AtlasProps) {
             {...props}
             tileSize={256}
             {...tilesParams}
-            {...{ width, height }}
+            {...{ width, height, tx: tx + delta[0], ty: ty + delta[1] }}
           />
         )}
       </svg>

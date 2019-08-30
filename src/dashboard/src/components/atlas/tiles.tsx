@@ -128,8 +128,14 @@ export default function Tiles(props: TilesProps) {
 
     setVectorTiles(vtiles);
   };
+  let timer: any;
   useEffect(() => {
-    worker();
+    if (timer) {
+      cancelAnimationFrame(timer);
+    }
+    timer = requestAnimationFrame(() => {
+      worker();
+    });
   }, []);
   useEffect(() => {
     worker();
