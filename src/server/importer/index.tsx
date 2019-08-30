@@ -10,7 +10,7 @@ export function parseCSV(text: string) {
       skip_empty_lines: true
     })
       // Use the readable stream api
-      .on("readable", function() {
+      .on("readable", function(this: any) {
         let record;
         while ((record = this.read())) {
           output.push(record);
@@ -31,7 +31,7 @@ export async function parseURLAsCSV(
   const text = await fileReq.text();
   console.timeEnd("donwload_csv_" + url);
   console.time("parse_csv_" + url);
-  const parsed: any[] = await parseCSV(text);
+  const parsed: any = await parseCSV(text);
   console.timeEnd("parse_csv_" + url);
   console.time("insert_csv_" + url);
   const header = parsed.slice(0, 1)[0];
@@ -81,7 +81,7 @@ export async function doTransformWork(
       .createHash("md5")
       .update(JSON.stringify(obj))
       .digest("hex");
-    obj.checksum = hash;
+    (obj as any).checksum = hash;
     return obj;
   });
   console.log("liist", list.length);
@@ -128,7 +128,7 @@ export async function doLoadWork(urls: string[]) {
   console.log(reviewsData.list.length, listingsData.list.length);
   return [reviewsData, listingsData];
 }
-export function chunk(arr, len) {
+export function chunk(arr: any[], len: any) {
   var chunks = [],
     i = 0,
     n = arr.length;
@@ -155,7 +155,7 @@ export async function doSingleCityWork(
   console.timeEnd("donwload_csvs");
   console.log(reviewsData.list.length, listingsData.list.length);
   //updateDB(list, header);
-  const smallWorker = async chunk => {
+  const smallWorker = async (chunk: any) => {
     console.time("transform");
     const transformed = await doTransformWork(chunk, listingsData.list, name);
     console.timeEnd("transform");

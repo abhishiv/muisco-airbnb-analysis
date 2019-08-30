@@ -66,7 +66,7 @@ export async function doPublishWork(
   console.log("updateResults");
 }
 export async function createIndex(client: Knex) {
-  await client.schema.createTable("users", function(table) {
+  await client.schema.createTable("users", function(table: any) {
     table.string("id").primary();
     table.string("listing_id");
     table.string("checksum");
