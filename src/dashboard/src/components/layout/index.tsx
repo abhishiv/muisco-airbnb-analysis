@@ -7,7 +7,8 @@ import {
   DashboardQuery,
   DashboardQuerySetter,
   DashboardMap,
-  DashboardProjectionParams
+  DashboardProjectionParams,
+  DashboardProjectionParamsSetter
 } from "../../../specs/index";
 import Atlas from "../../components/atlas/index";
 import styles from "./layout.scss";
@@ -21,6 +22,7 @@ export interface LayoutProps {
   width: number;
   height: number;
   dashboardProjectionParams: DashboardProjectionParams;
+  dashboardProjectionParamsSetter: DashboardProjectionParamsSetter;
 }
 
 function Layout(props: LayoutProps) {

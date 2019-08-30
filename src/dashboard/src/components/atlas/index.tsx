@@ -1,12 +1,13 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
   DashboardQuery,
   Dashboard,
   DashboardQuerySetter,
-  DashboardProjectionParams
+  DashboardProjectionParams,
+  DashboardProjectionParamsSetter
 } from "../../../specs/index";
 
-//import { useDrag } from "react-use-gesture";
+import { useDrag } from "react-use-gesture";
 
 import { geoMercator } from "d3-geo";
 
@@ -80,7 +81,7 @@ export interface ProjectionParams {
   k: number;
 }
 
-export interface TilesParams extends ProjectionParams {
+export interface TilesParams {
   delta: [number, number];
 }
 export interface AtlasProps {
@@ -90,78 +91,48 @@ export interface AtlasProps {
   dashboard: Dashboard;
   dashboardQuerySetter: DashboardQuerySetter;
   dashboardProjectionParams: DashboardProjectionParams;
+  dashboardProjectionParamsSetter: DashboardProjectionParamsSetter;
 }
 
 export default function Atlas(props: AtlasProps) {
   const {
     width: width,
     height: height,
-    dashboard,
-    dashboardQuery,
-    dashboardProjectionParams
+
+    dashboardProjectionParams,
+    dashboardProjectionParamsSetter
   } = props;
 
   const [tilesParams, setParams] = useState({
-    delta: [0, 0],
-    k: 1,
-    tx: 0.5,
-    ty: 0.5
+    delta: [0, 0]
   } as TilesParams);
-  const { tx, ty, delta } = tilesParams;
+  const { delta } = tilesParams;
 
-  useEffect(() => {
-    // const tau = Math.PI * 2;
-
-    const city = dashboard.cities.find(
-      el => el.name === dashboardQuery.cityName
-    );
-
-    if (city) {
-      //const [tx0, ty0] = projection.translate();
-      setParams({
-        ...tilesParams
-        //        tx: tx0,
-        //        ty: ty0,
-        //        k: projection.scale()
-      });
-    }
-    //    const { entities }: { entities: any[] } = dashboard.atlas;
-    //    if (entities.length > 0) {
-    //      var { k, tx, ty } = compute(width, height, [110, 35], 35, [0, 0]);
-    //      setParams({
-    //        k: k,
-    //        tx,
-    //        ty,
-    //        delta: [0, 0]
-    //      });
-    //    }
-  }, []);
   let timer: any;
-  //  const bind = useDrag(({ down, xy, delta, last }) => {
-  //    if (timer) {
-  //      cancelAnimationFrame(timer);
-  //    }
-  //    timer = requestAnimationFrame(() => {
-  //      const { tx, ty } = tilesParams;
-  //      if (last) {
-  //        setParams({
-  //          ...tilesParams,
-  //          delta: [0, 0],
-  //          tx: tx + delta[0],
-  //          ty: ty + delta[1]
-  //        });
-  //      } else {
-  //        setParams({
-  //          ...tilesParams,
-  //          delta: delta
-  //        });
-  //      }
-  //    });
-  //  });
+  const [tx, ty] = dashboardProjectionParams.translate;
+  const bind = useDrag(({ down, xy, delta, last }) => {
+    if (timer) {
+      cancelAnimationFrame(timer);
+    }
+    timer = requestAnimationFrame(() => {
+      if (last) {
+        setParams({ delta: [0, 0] });
+        dashboardProjectionParamsSetter({
+          ...dashboardProjectionParams,
+          translate: [tx + delta[0], ty + delta[1]]
+        });
+      } else {
+        setParams({ delta });
+        dashboardProjectionParamsSetter({
+          ...dashboardProjectionParams
+        });
+      }
+    });
+  });
 
   return (
     <div
-      //      {...bind()}
+      {...bind()}
       style={{
         position: "absolute",
         width: width,

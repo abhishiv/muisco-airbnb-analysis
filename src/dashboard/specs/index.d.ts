@@ -37,3 +37,7 @@ export interface DashboardProjectionParams {
   scale: number;
   translate: [number, number];
 }
+
+export interface DashboardProjectionParamsSetter {
+  (parmas: DashboardProjectionParams): void;
+} 

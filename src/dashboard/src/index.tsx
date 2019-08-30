@@ -93,6 +93,7 @@ export function DashboardView(props: DashboardViewProps) {
               dashboard,
               dashboardQuery,
               dashboardQuerySetter: setDashboardQuery,
+              dashboardProjectionParamsSetter: setDashboardProjectionParams,
               dashboardMap,
               dashboardProjectionParams,
               width,
