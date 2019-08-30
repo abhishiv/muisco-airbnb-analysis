@@ -14,6 +14,7 @@ import styles from "./atlas.scss";
 function floor(k: number) {
   return Math.pow(2, Math.floor(Math.log(k) / Math.LN2));
 }
+import TilesComponent from "./tiles";
 
 export function getProjectionParams(
   width: number,
@@ -82,22 +83,43 @@ export interface TilesParams extends ProjectionParams {
   delta: [number, number];
 }
 export interface AtlasProps {
-  containerWidth: number;
-  containerHeight: number;
+  width: number;
+  height: number;
   dashboardQuery: DashboardQuery;
   dashboard: Dashboard;
   dashboardQuerySetter: DashboardQuerySetter;
 }
 
 export default function Atlas(props: AtlasProps) {
-  const { containerWidth: width, containerHeight: height, dashboard } = props;
+  const { width: width, height: height, dashboard, dashboardQuery } = props;
   console.log("dashbard", dashboard);
   const [tilesParams, setParams] = useState({
-    delta: [0, 0]
+    delta: [0, 0],
+    k: 1,
+    tx: 0,
+    ty: 0
   } as TilesParams);
   const { k, tx, ty, delta } = tilesParams;
 
   useEffect(() => {
+    const tau = Math.PI * 2;
+    const projection = geoMercator()
+      .scale(k / tau)
+      .translate([tx, ty]);
+    const city = dashboard.cities.find(
+      el => el.name === dashboardQuery.cityName
+    );
+    console.log(city, dashboardQuery, dashboard);
+    if (city) {
+      const [tx0, ty0] = projection.invert(city.location);
+      console.log("t", tx0, ty0);
+      setParams({
+        ...tilesParams,
+        tx: tx0,
+        ty: ty0,
+        k: 1024 * 18
+      });
+    }
     //    const { entities }: { entities: any[] } = dashboard.atlas;
     //    if (entities.length > 0) {
     //      var { k, tx, ty } = compute(width, height, [110, 35], 35, [0, 0]);
@@ -142,7 +164,16 @@ export default function Atlas(props: AtlasProps) {
         width={width}
         height={height}
         viewBox={`0 0 ${width} ${height}`}
-      ></svg>
+      >
+        {Number.isFinite(width) && (
+          <TilesComponent
+            {...props}
+            tileSize={256}
+            {...tilesParams}
+            {...{ width, height }}
+          />
+        )}
+      </svg>
     </div>
   );
 }

@@ -12,8 +12,8 @@ export interface TimelineProps {
   dashboardQuery: DashboardQuery;
   dashboard: Dashboard;
   dashboardQuerySetter: DashboardQuerySetter;
-  containerWidth: number;
-  containerHeight: number;
+  width: number;
+  height: number;
 }
 
 export enum TimelineDisplayMode {
@@ -48,7 +48,7 @@ export function Timeline(props: TimelineProps) {
   const numberDays = to.diff(from, "day");
   //const mode = getTimelineDisplayMode(numberDays);
   const WIDTH = 5;
-  const columnSize = Math.floor(props.containerWidth / (WIDTH * 2));
+  const columnSize = Math.floor(props.width / (WIDTH * 2));
   //const rowSize = Math.ceil(numberDays / columnSize);
   const [springs] = useSprings(numberDays, i => {
     const row = Math.floor(i / columnSize) + 1;

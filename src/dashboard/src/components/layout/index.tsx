@@ -15,8 +15,8 @@ export interface LayoutProps {
   dashboardQuery: DashboardQuery;
   dashboard: Dashboard;
   dashboardQuerySetter: DashboardQuerySetter;
-  containerWidth: number;
-  containerHeight: number;
+  width: number;
+  height: number;
 }
 
 function Layout(props: LayoutProps) {
@@ -33,14 +33,14 @@ function Layout(props: LayoutProps) {
           <React.Fragment>
             <Atlas
               {...props}
-              containerHeight={dimensions && dimensions.height}
-              containerWidth={dimensions && dimensions.width}
+              height={dimensions && dimensions.height}
+              width={dimensions && dimensions.width}
             />
             {dimensions && (
               <Timeline
                 {...props}
-                containerHeight={dimensions && dimensions.height}
-                containerWidth={dimensions && dimensions.width}
+                height={dimensions && dimensions.height}
+                width={dimensions && dimensions.width}
               />
             )}
           </React.Fragment>
