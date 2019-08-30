@@ -14,6 +14,7 @@ import { geoMercator } from "d3-geo";
 
 import styles from "./atlas.scss";
 import TilesComponent from "./tiles";
+import RasterTilesComponent from "./raster_tiles";
 import PoliticalComponent from "./political";
 
 function floor(k: number) {
@@ -143,13 +144,25 @@ export default function Atlas(props: AtlasProps) {
         overflow: "hidden"
       }}
     >
+      {true && dashboardProjectionParams.scale && (
+        <RasterTilesComponent
+          {...props}
+          tileSize={256}
+          {...tilesParams}
+          dashboardProjectionParams={{
+            ...dashboardProjectionParams,
+            translate: [tx + delta[0], ty + delta[1]]
+          }}
+          {...{ width, height }}
+        />
+      )}
       <svg
         className={styles.svgMap}
         width={width}
         height={height}
         viewBox={`0 0 ${width} ${height}`}
       >
-        {Number.isFinite(width) && (
+        {Number.isFinite(width) && false && (
           <TilesComponent
             {...props}
             tileSize={256}
