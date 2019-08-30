@@ -75,7 +75,12 @@ export default function Tiles(props: TilesProps) {
     });
   }, []);
   useEffect(() => {
-    worker();
+    if (timer) {
+      cancelAnimationFrame(timer);
+    }
+    timer = requestAnimationFrame(() => {
+      worker();
+    });
   }, [scale, ...translate]);
 
   const projection = geoMercator()
