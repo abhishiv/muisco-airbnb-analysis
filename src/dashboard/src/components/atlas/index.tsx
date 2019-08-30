@@ -156,13 +156,13 @@ export default function Atlas(props: AtlasProps) {
           {...{ width, height }}
         />
       )}
-      <svg
-        className={styles.svgMap}
-        width={width}
-        height={height}
-        viewBox={`0 0 ${width} ${height}`}
-      >
-        {Number.isFinite(width) && true && (
+      {Number.isFinite(width) && true && (
+        <svg
+          className={styles.svgMap}
+          width={width}
+          height={height}
+          viewBox={`0 0 ${width} ${height}`}
+        >
           <TilesComponent
             {...props}
             tileSize={256}
@@ -173,7 +173,14 @@ export default function Atlas(props: AtlasProps) {
             }}
             {...{ width, height }}
           />
-        )}
+        </svg>
+      )}
+      <svg
+        className={styles.svgMap}
+        width={width}
+        height={height}
+        viewBox={`0 0 ${width} ${height}`}
+      >
         {Number.isFinite(width) && (
           <PoliticalComponent
             {...props}
