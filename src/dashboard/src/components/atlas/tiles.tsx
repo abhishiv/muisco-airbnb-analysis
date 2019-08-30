@@ -43,61 +43,6 @@ export async function getVectorTiles(tiles: any[]) {
   );
 }
 
-export function resamplecoordinates(coordinates: any[]) {
-  var i = 0,
-    j = -1,
-    n = coordinates.length,
-    source = coordinates.slice(),
-    p0,
-    x0,
-    y0,
-    p1 = coordinates[0],
-    x1 = p1[0],
-    y1 = p1[1],
-    dx,
-    dy,
-    d2,
-    m2 = 10; // squared minimum angular distance
-  while (++i < n) {
-    (p0 = p1), (x0 = x1), (y0 = y1);
-    (p1 = source[i]), (x1 = p1[0]), (y1 = p1[1]);
-    (dx = x1 - x0), (dy = y1 - y0), (d2 = dx * dx + dy * dy);
-    coordinates[++j] = p0;
-    if (d2 > m2)
-      for (var k = 1, m = Math.ceil(Math.sqrt(d2 / m2)); k < m; ++k) {
-        coordinates[++j] = [x0 + (dx * k) / m, y0 + (dy * k) / m];
-      }
-  }
-  coordinates[++j] = p1;
-  coordinates.length = j + 1;
-  return coordinates;
-}
-export function resample(obj: any) {
-  obj = JSON.parse(JSON.stringify(obj)); // deep clone urk
-  switch (obj.type) {
-    case "FeatureCollection":
-      obj.features = obj.features.map(resample);
-      break;
-    case "Feature":
-      obj.geometry = resample(obj.geometry);
-      break;
-    case "MultiPolygon":
-      obj.coordinates = obj.coordinates.map((d: any[]) =>
-        d.map(resamplecoordinates)
-      );
-      break;
-    case "Polygon":
-      obj.coordinates = obj.coordinates.map(resamplecoordinates);
-      break;
-    case "MultiLineString":
-      obj.coordinates = obj.coordinates.map(resamplecoordinates);
-      break;
-    case "LineString":
-      obj.coordinates = resamplecoordinates(obj.coordinates);
-      break;
-  }
-  return obj;
-}
 function geojson([x, y, z]: any, layer: any) {
   if (!layer) return;
   const features = new Array(layer.length);

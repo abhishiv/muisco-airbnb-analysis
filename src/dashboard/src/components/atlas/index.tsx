@@ -151,7 +151,11 @@ export default function Atlas(props: AtlasProps) {
             {...props}
             tileSize={256}
             {...tilesParams}
-            {...{ width, height, tx: tx + delta[0], ty: ty + delta[1] }}
+            dashboardProjectionParams={{
+              ...dashboardProjectionParams,
+              translate: [tx + delta[0], ty + delta[1]]
+            }}
+            {...{ width, height }}
           />
         )}
       </svg>
