@@ -108,18 +108,16 @@ export default function Tiles(props: TilesProps) {
                 <path
                   fill="green"
                   key="landuse"
-                  stroke="green"
+                  stroke="darkseagreen"
                   strokeWidth="2"
-                  d={path(geojson(d, d.layers.landuse) as any) || ""}
+                  d={
+                    path(filter(
+                      geojson(d, d.layers.landuse),
+                      (d: any) => d.properties.type === "park"
+                    ) as any) || ""
+                  }
                 ></path>
               )}
-              <path
-                fill="none"
-                key="buildings"
-                stroke="#000"
-                strokeWidth="1"
-                d={path(geojson(d, d.layers.buildings) as any) || ""}
-              ></path>
               {roadJSON && (
                 <path
                   key="road"
