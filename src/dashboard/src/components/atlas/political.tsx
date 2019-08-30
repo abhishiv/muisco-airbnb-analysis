@@ -23,7 +23,6 @@ export default function Political(props: PoliticalProps) {
     .scale(scale / (Math.PI * 2))
     .translate(translate);
   const p = geoPath(projection);
-  console.log(dashboardMap);
   return (
     <g className="counties">
       {dashboardMap.geojson.features.map((d: any, i: number) => {
