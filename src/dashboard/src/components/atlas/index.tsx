@@ -92,7 +92,7 @@ export interface AtlasProps {
 
 export default function Atlas(props: AtlasProps) {
   const { width: width, height: height, dashboard, dashboardQuery } = props;
-  console.log("dashbard", dashboard);
+
   const [tilesParams, setParams] = useState({
     delta: [0, 0],
     k: 1,
