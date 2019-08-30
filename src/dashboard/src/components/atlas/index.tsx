@@ -95,7 +95,7 @@ export default function Atlas(props: AtlasProps) {
 
   const [tilesParams, setParams] = useState({
     delta: [0, 0],
-    k: 1,
+    k: 4096,
     tx: 0,
     ty: 0
   } as TilesParams);
@@ -117,7 +117,7 @@ export default function Atlas(props: AtlasProps) {
         ...tilesParams,
         tx: tx0,
         ty: ty0,
-        k: 1024 * 12
+        k: k
       });
     }
     //    const { entities }: { entities: any[] } = dashboard.atlas;
