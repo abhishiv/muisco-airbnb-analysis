@@ -62,26 +62,19 @@ export default function Tiles(props: TilesProps) {
       .translate(translate);
     const tiles = tiler();
     const vtiles = await getVectorTiles(tiles);
-    console.log("v", vtiles, tiles);
     setVectorTiles(vtiles);
   };
   let timer: any;
-  useEffect(() => {
+  const watcher = () => {
     if (timer) {
       cancelAnimationFrame(timer);
     }
     timer = requestAnimationFrame(() => {
       worker();
     });
-  }, []);
-  useEffect(() => {
-    if (timer) {
-      cancelAnimationFrame(timer);
-    }
-    timer = requestAnimationFrame(() => {
-      worker();
-    });
-  }, [scale, ...translate]);
+  };
+  useEffect(watcher, []);
+  useEffect(watcher, [scale, ...translate]);
 
   const projection = geoMercator()
     .scale(scale / (Math.PI * 2))
