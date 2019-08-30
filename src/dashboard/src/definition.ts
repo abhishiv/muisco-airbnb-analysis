@@ -1,6 +1,11 @@
 const toSQLList = (list: any[]) => list.map(el => `'${el}'`).join(", ");
 export default {
   id: "airbnb",
+  defaultQuery: {
+    cities: ["milano"],
+    roomTypes: ["Shared room", "Entire home/apt"],
+    date: ["2014-02-01", "2018-02-01"]
+  },
   cities: [
     {
       name: "milano",
