@@ -31,7 +31,7 @@ function Layout(props: LayoutProps) {
       {props.dashboardProjectionParams && (
         <Atlas {...props} height={props.height} width={props.width} />
       )}
-      {false && props.dashboardProjectionParams && (
+      {props.dashboardProjectionParams && (
         <Timeline {...props} height={props.height} width={props.width} />
       )}
     </React.Fragment>

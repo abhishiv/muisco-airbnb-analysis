@@ -10,7 +10,7 @@ import {
 } from "../specs/index";
 import Layout from "./components/layout/index";
 //import { GeoProjection } from "d3-geo";
-import { geoMercator, geoPath, geoBounds } from "d3-geo";
+import { geoMercator, geoPath } from "d3-geo";
 
 export async function fetchDashboard(): Promise<Dashboard> {
   const req = await fetch("/_api/airbnb");
@@ -72,8 +72,6 @@ export function DashboardView(props: DashboardViewProps) {
           .translate(translate)
           .fitSize([width - 200, height], geojson);
 
-        console.log(scale);
-        console.log(translate);
         setDashboardProjectionParams({
           scale: p.scale() * (Math.PI * 2),
           translate: p.translate()
