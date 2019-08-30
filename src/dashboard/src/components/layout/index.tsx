@@ -1,11 +1,13 @@
-import React, { useState } from "react";
+import React from "react";
 export interface LayoutProps {}
-import Measure from "react-measure";
+
 import Timeline from "../../components/timeline/index";
 import {
   Dashboard,
   DashboardQuery,
-  DashboardQuerySetter
+  DashboardQuerySetter,
+  DashboardMap,
+  DashboardProjectionParams
 } from "../../../specs/index";
 import Atlas from "../../components/atlas/index";
 import styles from "./layout.scss";
@@ -15,38 +17,22 @@ export interface LayoutProps {
   dashboardQuery: DashboardQuery;
   dashboard: Dashboard;
   dashboardQuerySetter: DashboardQuerySetter;
+  dashboardMap: DashboardMap;
   width: number;
   height: number;
+  dashboardProjectionParams: DashboardProjectionParams;
 }
 
 function Layout(props: LayoutProps) {
-  const [dimensions, setDimensions] = useState();
   return (
-    <Measure
-      bounds
-      onResize={(contentRect: any) => {
-        setDimensions(contentRect.bounds);
-      }}
-    >
-      {({ measureRef }: { measureRef: any }) => (
-        <div ref={measureRef}>
-          <React.Fragment>
-            <Atlas
-              {...props}
-              height={dimensions && dimensions.height}
-              width={dimensions && dimensions.width}
-            />
-            {dimensions && (
-              <Timeline
-                {...props}
-                height={dimensions && dimensions.height}
-                width={dimensions && dimensions.width}
-              />
-            )}
-          </React.Fragment>
-        </div>
+    <React.Fragment>
+      {props.dashboardProjectionParams && (
+        <Atlas {...props} height={props.height} width={props.width} />
       )}
-    </Measure>
+      {false && props.dashboardProjectionParams && (
+        <Timeline {...props} height={props.height} width={props.width} />
+      )}
+    </React.Fragment>
   );
 }
 export default Layout;

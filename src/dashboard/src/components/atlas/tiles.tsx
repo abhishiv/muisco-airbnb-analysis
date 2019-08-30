@@ -2,8 +2,7 @@ import React, { useEffect, useState } from "react";
 import { tile } from "d3-tile";
 import { geoPath, geoMercator } from "d3-geo";
 import Protobuf from "pbf";
-import { Dashboard } from "../../../specs/index";
-import styles from "./atlas.scss";
+import { Dashboard, DashboardProjectionParams } from "../../../specs/index";
 
 export interface TilesProps {
   k: number;
@@ -13,6 +12,7 @@ export interface TilesProps {
   height: number;
   tileSize: number;
   dashboard: Dashboard;
+  dashboardProjectionParams: DashboardProjectionParams;
 }
 const mapbox_access_token =
   "pk.eyJ1IjoiYWJvdXRhYXJvbiIsImEiOiJsRTRpMGJnIn0.aprlJ6wE1JQqBx4EH1lkMQ";
@@ -20,14 +20,14 @@ import vt from "@mapbox/vector-tile";
 
 function filter(param: any, test: Function) {
   if (param) {
-    const { features } = param;
+    const { features }: { features: any } = param;
     return {
       type: "FeatureCollection",
       features: features ? features.filter(test) : []
     };
   }
 }
-export async function getVectorTiles(tiles: any) {
+export async function getVectorTiles(tiles: any[]) {
   return await Promise.all(
     tiles.map(async t => {
       const req = await fetch(
@@ -98,34 +98,29 @@ export function resample(obj: any) {
   }
   return obj;
 }
-function geojson([x, y, z], layer) {
+function geojson([x, y, z]: any, layer: any) {
   if (!layer) return;
   const features = new Array(layer.length);
   for (let i = 0; i < layer.length; ++i)
-    features[i] = layer.feature(i).toGeoJSON(x, y, z);
+    features[i] = (layer as any).feature(i).toGeoJSON(x, y, z);
   var t = { type: "FeatureCollection", features };
   //t = resample(t);
 
   return t;
 }
 export default function Tiles(props: TilesProps) {
-  const { k, tx, ty, width, height, tileSize, dashboard } = props;
-
+  const { width, height, tileSize, dashboardProjectionParams } = props;
+  const { scale, translate } = dashboardProjectionParams;
   const [vectorTiles, setVectorTiles] = useState();
-  const tau = 2 * Math.PI; //
-  const projection = geoMercator()
-    .scale(k / tau)
-    .translate([tx, ty]);
-  const path = geoPath(projection);
   const worker = async () => {
     const tiler = tile()
       .size([width, height])
       .tileSize(tileSize)
-      .scale(k)
-      .translate([tx, ty]);
+      .scale(scale)
+      .translate(translate);
     const tiles = tiler();
     const vtiles = await getVectorTiles(tiles);
-
+    console.log("v", vtiles, tiles);
     setVectorTiles(vtiles);
   };
   let timer: any;
@@ -139,7 +134,13 @@ export default function Tiles(props: TilesProps) {
   }, []);
   useEffect(() => {
     worker();
-  }, [k, tx, ty]);
+  }, [scale, ...translate]);
+
+  const projection = geoMercator()
+    .scale(scale / (Math.PI * 2))
+    .translate(translate);
+  const path = geoPath(projection);
+
   return (
     <React.Fragment>
       {vectorTiles &&
@@ -150,28 +151,38 @@ export default function Tiles(props: TilesProps) {
           const isHighway = (d: any) => {
             return d.properties.type === "primary";
           };
+          const roadJSON = geojson(d, d.layers.road);
+          const waterJSON = geojson(d, d.layers.water);
           return (
             <g key={i}>
-              {false && (
+              {roadJSON && (
                 <path
                   key="road"
-                  d={path(filter(geojson(d, d.layers.road), d => isHighway(d)))}
+                  d={
+                    path(filter(roadJSON, (d: any) => isHighway(d)) as any) ||
+                    ""
+                  }
                   stroke="brown"
                 ></path>
               )}{" "}
-              <path
-                key="water"
-                fill="skyblue"
-                d={path(
-                  filter(geojson(d, d.layers.water), d => !is_water_line(d))
-                )}
-                stroke="aliceblue"
-              ></path>
+              {waterJSON && (
+                <path
+                  key="water"
+                  fill="skyblue"
+                  d={
+                    path(filter(
+                      waterJSON,
+                      (d: any) => !is_water_line(d)
+                    ) as any) || ""
+                  }
+                  stroke="aliceblue"
+                ></path>
+              )}
               <path
                 key="waterline"
                 stroke="orange"
                 strokeWidth={2}
-                d={path(filter(geojson(d, d.layers.water), is_water_line))}
+                d={path(filter(waterJSON, is_water_line) as any) || ""}
               ></path>
             </g>
           );

@@ -1,4 +1,4 @@
-declare module "@mapbox/vector-tiles" {
+declare module "@mapbox/vector-tile" {
   let content: any;
   export default content;
 }

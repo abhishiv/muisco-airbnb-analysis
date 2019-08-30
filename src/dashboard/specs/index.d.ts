@@ -7,6 +7,11 @@ export interface DashboardQuery {
   zoom: number;
 }
 
+export interface DashboardMap {
+  city: string;
+  geojson: any;
+}
+
 export interface DashboardQuerySetter {
   (query: DashboardQuery): void;
 }
@@ -26,4 +31,9 @@ export interface Dashboard {
   defaultQuery: DashboardQuery;
   cities: City[];
   queries: Query[];
+}
+
+export interface DashboardProjectionParams {
+  scale: number;
+  translate: [number, number];
 }

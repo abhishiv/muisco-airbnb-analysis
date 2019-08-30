@@ -2,10 +2,11 @@ import React, { useState, useEffect } from "react";
 import {
   DashboardQuery,
   Dashboard,
-  DashboardQuerySetter
+  DashboardQuerySetter,
+  DashboardProjectionParams
 } from "../../../specs/index";
 
-import { useDrag } from "react-use-gesture";
+//import { useDrag } from "react-use-gesture";
 
 import { geoMercator } from "d3-geo";
 
@@ -88,36 +89,40 @@ export interface AtlasProps {
   dashboardQuery: DashboardQuery;
   dashboard: Dashboard;
   dashboardQuerySetter: DashboardQuerySetter;
+  dashboardProjectionParams: DashboardProjectionParams;
 }
 
 export default function Atlas(props: AtlasProps) {
-  const { width: width, height: height, dashboard, dashboardQuery } = props;
+  const {
+    width: width,
+    height: height,
+    dashboard,
+    dashboardQuery,
+    dashboardProjectionParams
+  } = props;
 
   const [tilesParams, setParams] = useState({
     delta: [0, 0],
-    k: 4096,
-    tx: 0,
-    ty: 0
+    k: 1,
+    tx: 0.5,
+    ty: 0.5
   } as TilesParams);
-  const { k, tx, ty, delta } = tilesParams;
+  const { tx, ty, delta } = tilesParams;
 
   useEffect(() => {
-    const tau = Math.PI * 2;
-    const projection = geoMercator()
-      .scale(k / tau)
-      .translate([tx, ty]);
+    // const tau = Math.PI * 2;
+
     const city = dashboard.cities.find(
       el => el.name === dashboardQuery.cityName
     );
-    console.log(city, dashboardQuery, dashboard);
+
     if (city) {
-      const [tx0, ty0] = projection(city.location);
-      console.log("t", city.location, tx0, ty0);
+      //const [tx0, ty0] = projection.translate();
       setParams({
-        ...tilesParams,
-        tx: tx0,
-        ty: ty0,
-        k: k
+        ...tilesParams
+        //        tx: tx0,
+        //        ty: ty0,
+        //        k: projection.scale()
       });
     }
     //    const { entities }: { entities: any[] } = dashboard.atlas;
@@ -132,31 +137,31 @@ export default function Atlas(props: AtlasProps) {
     //    }
   }, []);
   let timer: any;
-  const bind = useDrag(({ down, xy, delta, last }) => {
-    if (timer) {
-      cancelAnimationFrame(timer);
-    }
-    timer = requestAnimationFrame(() => {
-      const { tx, ty } = tilesParams;
-      if (last) {
-        setParams({
-          ...tilesParams,
-          delta: [0, 0],
-          tx: tx + delta[0],
-          ty: ty + delta[1]
-        });
-      } else {
-        setParams({
-          ...tilesParams,
-          delta: delta
-        });
-      }
-    });
-  });
+  //  const bind = useDrag(({ down, xy, delta, last }) => {
+  //    if (timer) {
+  //      cancelAnimationFrame(timer);
+  //    }
+  //    timer = requestAnimationFrame(() => {
+  //      const { tx, ty } = tilesParams;
+  //      if (last) {
+  //        setParams({
+  //          ...tilesParams,
+  //          delta: [0, 0],
+  //          tx: tx + delta[0],
+  //          ty: ty + delta[1]
+  //        });
+  //      } else {
+  //        setParams({
+  //          ...tilesParams,
+  //          delta: delta
+  //        });
+  //      }
+  //    });
+  //  });
 
   return (
     <div
-      {...bind()}
+      //      {...bind()}
       style={{
         position: "absolute",
         width: width,

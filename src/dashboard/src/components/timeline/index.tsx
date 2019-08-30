@@ -106,6 +106,7 @@ function TimelineManager(props: TimelineProps) {
       });
     }
   };
+  const T = Timeline as any;
   return (
     <div className={styles.container}>
       <div className={styles.controlsBar} style={{ display: "inline-block" }}>
@@ -116,7 +117,7 @@ function TimelineManager(props: TimelineProps) {
         <button onClick={() => updateRange([null, 1])}>+</button>
       </div>
       <div className={styles.timelineContainer}>
-        <Timeline {...props} />
+        <T {...props} />
       </div>
     </div>
   );
