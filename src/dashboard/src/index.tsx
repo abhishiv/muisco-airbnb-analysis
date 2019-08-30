@@ -50,14 +50,13 @@ export function DashboardView(props: DashboardViewProps) {
           geojson,
           city: city.name
         });
-        console.log(geojson);
-        console.log(width, height);
+
         const projection = geoMercator()
           .scale(dashboardProjectionParams.scale / (Math.PI * 2))
           .translate(dashboardProjectionParams.translate);
         const path = geoPath(projection);
         let bounds = path.bounds(geojson);
-        let bounds2 = geoBounds(geojson);
+
         const dx = bounds[1][0] - bounds[0][0],
           dy = bounds[1][1] - bounds[0][1],
           x = (bounds[0][0] + bounds[1][0]) / 2,
@@ -68,12 +67,16 @@ export function DashboardView(props: DashboardViewProps) {
             height / 2 - scale * y
           ];
 
-        console.log(bounds, bounds2);
+        const p = geoMercator()
+          .scale(scale / (Math.PI * 2))
+          .translate(translate)
+          .fitSize([width - 200, height], geojson);
+
         console.log(scale);
         console.log(translate);
         setDashboardProjectionParams({
-          scale,
-          translate
+          scale: p.scale() * (Math.PI * 2),
+          translate: p.translate()
         });
       }
     }
