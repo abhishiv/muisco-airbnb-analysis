@@ -3,7 +3,7 @@ import { tile } from "d3-tile";
 import { geoPath, geoMercator } from "d3-geo";
 import Protobuf from "pbf";
 import { Dashboard, DashboardProjectionParams } from "../../../specs/index";
-
+import styles from "./atlas.scss";
 export interface TilesProps {
   width: number;
   height: number;
@@ -95,6 +95,15 @@ export default function Tiles(props: TilesProps) {
           const waterJSON = geojson(d, d.layers.water);
           return (
             <g key={i}>
+              <path
+                key="earth"
+                className={styles.adminPath}
+                d={
+                  path(filter(geojson(d, d.layers.admin), (d: any) => {
+                    return false;
+                  }) as any) || ""
+                }
+              ></path>
               {roadJSON && (
                 <path
                   key="road"
@@ -124,6 +133,42 @@ export default function Tiles(props: TilesProps) {
                 strokeWidth={2}
                 d={path(filter(waterJSON, is_water_line) as any) || ""}
               ></path>
+              {d.layers.place_label &&
+                (() => {
+                  const [x, y, z] = d;
+                  const layer = d.layers.place_label;
+                  const features = [];
+                  const dom = [];
+                  for (let i = 0; i < layer.length; ++i) {
+                    const f = layer.feature(i).toGeoJSON(x, y, z);
+                    const c = path.centroid(f.geometry);
+                    const fontSize = 18 - f.properties.symbolrank - 3;
+
+                    const ranked = () => {
+                      return true;
+                    };
+                    const rank = ranked();
+                    rank &&
+                      fontSize > 5 &&
+                      dom.push(
+                        <g>
+                          <text
+                            className={styles.label}
+                            textRendering="geometricPrecision"
+                            textAnchor={f.properties.text_anchor}
+                            fontSize={fontSize}
+                            x={c[0]}
+                            y={c[1]}
+                          >
+                            {f.properties.name_en}
+                          </text>
+                        </g>
+                      );
+                    rank && features.push(f);
+                  }
+                  //console.log("k", k / tau);
+                  return dom;
+                })()}
             </g>
           );
         })}
