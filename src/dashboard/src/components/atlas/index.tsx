@@ -4,7 +4,8 @@ import {
   Dashboard,
   DashboardQuerySetter,
   DashboardProjectionParams,
-  DashboardProjectionParamsSetter
+  DashboardProjectionParamsSetter,
+  DashboardMap
 } from "../../../specs/index";
 
 import { useDrag } from "react-use-gesture";
@@ -12,11 +13,12 @@ import { useDrag } from "react-use-gesture";
 import { geoMercator } from "d3-geo";
 
 import styles from "./atlas.scss";
+import TilesComponent from "./tiles";
+import PoliticalComponent from "./political";
 
 function floor(k: number) {
   return Math.pow(2, Math.floor(Math.log(k) / Math.LN2));
 }
-import TilesComponent from "./tiles";
 
 export function getProjectionParams(
   width: number,
@@ -88,6 +90,7 @@ export interface AtlasProps {
   width: number;
   height: number;
   dashboardQuery: DashboardQuery;
+  dashboardMap: DashboardMap;
   dashboard: Dashboard;
   dashboardQuerySetter: DashboardQuerySetter;
   dashboardProjectionParams: DashboardProjectionParams;
@@ -148,6 +151,18 @@ export default function Atlas(props: AtlasProps) {
       >
         {Number.isFinite(width) && (
           <TilesComponent
+            {...props}
+            tileSize={256}
+            {...tilesParams}
+            dashboardProjectionParams={{
+              ...dashboardProjectionParams,
+              translate: [tx + delta[0], ty + delta[1]]
+            }}
+            {...{ width, height }}
+          />
+        )}
+        {Number.isFinite(width) && (
+          <PoliticalComponent
             {...props}
             tileSize={256}
             {...tilesParams}
