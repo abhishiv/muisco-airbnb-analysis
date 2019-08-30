@@ -12,6 +12,12 @@ export default {
   queries: [
     {
       name: "by_date",
+      returnType: {
+        properties: {
+          count: { type: "number" },
+          date: { type: "string" }
+        }
+      },
       computer: (variables: any) => {
         return `select count(*), date from users where room_type in (${toSQLList(
           variables.roomTypes
@@ -25,6 +31,13 @@ export default {
 
     {
       name: "diced",
+      returnType: {
+        properties: {
+          count: { type: "number" },
+          room_type: { type: "string" },
+          neighbourhood: { type: "string" }
+        }
+      },
       computer: (variables: any) => {
         return `select count(neighbourhood), room_type, neighbourhood from users where room_type in (${toSQLList(
           variables.roomTypes
