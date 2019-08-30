@@ -111,13 +111,13 @@ export default function Atlas(props: AtlasProps) {
     );
     console.log(city, dashboardQuery, dashboard);
     if (city) {
-      const [tx0, ty0] = projection.invert(city.location);
-      console.log("t", tx0, ty0);
+      const [tx0, ty0] = projection(city.location);
+      console.log("t", city.location, tx0, ty0);
       setParams({
         ...tilesParams,
         tx: tx0,
         ty: ty0,
-        k: 1024 * 18
+        k: 1024 * 12
       });
     }
     //    const { entities }: { entities: any[] } = dashboard.atlas;

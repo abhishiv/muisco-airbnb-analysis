@@ -110,7 +110,7 @@ function geojson([x, y, z], layer) {
 }
 export default function Tiles(props: TilesProps) {
   const { k, tx, ty, width, height, tileSize, dashboard } = props;
-  console.log(props);
+
   const [vectorTiles, setVectorTiles] = useState();
   const tau = 2 * Math.PI; //
   const projection = geoMercator()
@@ -125,7 +125,7 @@ export default function Tiles(props: TilesProps) {
       .translate([tx, ty]);
     const tiles = tiler();
     const vtiles = await getVectorTiles(tiles);
-    console.log("v", tiles, width, height, tileSize, vtiles);
+
     setVectorTiles(vtiles);
   };
   useEffect(() => {
