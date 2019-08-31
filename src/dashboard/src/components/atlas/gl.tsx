@@ -1,15 +1,17 @@
 import React, { useState, useEffect, useRef } from "react";
 // ES6
-import MapboxGL, { Map } from "mapbox-gl";
+import MapboxGL from "mapbox-gl";
 import { mapbox_access_token } from "./tiles";
 
 MapboxGL.accessToken = mapbox_access_token;
+import { DashboardData } from "../../../specs/index";
 // in render()
 export interface GLProps {
   width: number;
   height: number;
   center: [number, number];
   zoom?: number;
+  dashboardData: DashboardData;
 }
 export default function GL(props: GLProps) {
   const { width, height } = props;

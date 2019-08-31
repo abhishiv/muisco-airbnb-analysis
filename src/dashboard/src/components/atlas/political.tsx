@@ -1,11 +1,12 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { geoPath, geoMercator } from "d3-geo";
 
 import {
   Dashboard,
   DashboardProjectionParams,
   DashboardMap,
-  DashboardQuery
+  DashboardQueryVariables,
+  DashboardData
 } from "../../../specs/index";
 export interface PoliticalProps {
   width: number;
@@ -14,18 +15,19 @@ export interface PoliticalProps {
   dashboard: Dashboard;
   dashboardProjectionParams: DashboardProjectionParams;
   dashboardMap: DashboardMap;
-  dashboardQuery: DashboardQuery;
+  dashboardQueryVariables: DashboardQueryVariables;
+  dashboardData: DashboardData;
 }
 import styles from "./atlas.scss";
 
 import { scaleLinear } from "d3-scale";
 
-export async function getRealData(map: DashboardMap) {
-  const req = await fetch("_api/airbnb/diced");
-  const json = await req.json();
-
+export function getRealData(
+  map: DashboardMap,
+  data: DashboardData
+): Array<Datum> {
   return map.geojson.features.map((geo: any) => {
-    const row = json.rows.find(
+    const row = (data.payload as Array<any>).find(
       (r: any) => r.neighbourhood === geo.properties.neighbourhood
     );
 
@@ -41,28 +43,14 @@ export interface Datum {
   id: string;
 }
 
-export function getDummyData(map: DashboardMap) {
-  return map.geojson.features.map((el: any) => {
-    return { value: Math.random() * 10000 };
-  });
-}
-
 export default function Political(props: PoliticalProps) {
-  const { dashboardMap, dashboardProjectionParams, dashboardQuery } = props;
-
-  const [data, setDataset] = useState<Array<Datum>>();
-  const doAsyncAction = async () => {
-    const data = await getRealData(dashboardMap);
-    setDataset(data);
-  };
-
-  useEffect(() => {
-    doAsyncAction();
-  }, [dashboardQuery.cityName]);
-
-  if (!data) {
-    return null;
-  }
+  const {
+    dashboardMap,
+    dashboardProjectionParams,
+    //dashboardQueryVariables,
+    dashboardData
+  } = props;
+  const data = getRealData(dashboardMap, dashboardData);
 
   const domain = [
     Math.min.apply(null, data.map((el: any) => el.value)),

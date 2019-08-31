@@ -4,9 +4,10 @@ import { withSize } from "react-sizeme";
 
 import {
   Dashboard,
-  DashboardQuery,
+  DashboardQueryVariables,
   DashboardMap,
-  DashboardProjectionParams
+  DashboardProjectionParams,
+  DashboardData
 } from "../specs/index";
 import Layout from "./components/layout/index";
 //import { GeoProjection } from "d3-geo";
@@ -24,24 +25,15 @@ export interface DashboardViewProps {
 export async function getRealData(map: DashboardMap) {
   const req = await fetch("_api/airbnb/diced");
   const json = await req.json();
-
-  return map.geojson.features.map((geo: any) => {
-    const row = json.rows.find(
-      (r: any) => r.neighbourhood === geo.properties.neighbourhood
-    );
-
-    return {
-      value: row ? row.avg_price : null,
-      id: geo.properties.neighbourhood
-    };
-  });
+  return json.rows;
 }
 
 export function DashboardView(props: DashboardViewProps) {
   const [dashboard, setDashboard] = useState<Dashboard | null>(null);
-  const [dashboardQuery, setDashboardQuery] = useState<DashboardQuery | null>(
-    null
-  );
+  const [
+    dashboardQueryVariables,
+    setDashboardQueryVariables
+  ] = useState<DashboardQueryVariables | null>(null);
   const { width, height } = props.size || {};
   const [dashboardProjectionParams, setDashboardProjectionParams] = useState<
     DashboardProjectionParams
@@ -50,22 +42,26 @@ export function DashboardView(props: DashboardViewProps) {
     translate: [0, 0]
   });
   const [dashboardMap, setDashboardMap] = useState<DashboardMap | null>(null);
+  const [dashboardData, setDashbordData] = useState<DashboardData | null>(null);
   const doAsyncAction = async () => {
     const dashboard = await fetchDashboard();
-    if (dashboard.defaultQuery) {
-      const dashboardQuery = dashboard.defaultQuery;
+    if (dashboard.defaultQueryVariables) {
+      const dashboardQueryVariables = dashboard.defaultQueryVariables;
       setDashboard(dashboard);
-      setDashboardQuery(dashboardQuery);
+      setDashboardQueryVariables(dashboardQueryVariables);
       const city = dashboard.cities.find(
-        el => el.name === dashboardQuery.cityName
+        el => el.name === dashboardQueryVariables.cityName
       );
       if (city) {
         const geoReq = await fetch(city.geojson);
         const geojson = await geoReq.json();
-        setDashboardMap({
+        const dashboardMap = {
           geojson,
           city: city.name
-        });
+        };
+        setDashboardMap(dashboardMap);
+        const dashboardData = await getRealData(dashboardMap);
+        setDashbordData({ payload: dashboardData });
 
         const projection = geoMercator()
           .scale(dashboardProjectionParams.scale / (Math.PI * 2))
@@ -100,21 +96,23 @@ export function DashboardView(props: DashboardViewProps) {
   }, []);
   return (
     dashboard &&
-    dashboardQuery &&
+    dashboardQueryVariables &&
     dashboardProjectionParams &&
-    dashboardMap && (
+    dashboardMap &&
+    dashboardData && (
       <React.Fragment>
         {
           <Layout
             {...({
               dashboard,
-              dashboardQuery,
-              dashboardQuerySetter: setDashboardQuery,
+              dashboardQueryVariables,
+              dashboardQueryVariablesSetter: setDashboardQueryVariables,
               dashboardProjectionParamsSetter: setDashboardProjectionParams,
               dashboardMap,
               dashboardProjectionParams,
               width,
-              height
+              height,
+              dashboardData
             } as any)}
           />
         }

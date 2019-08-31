@@ -1,19 +1,38 @@
 import React from "react";
 import {
-  DashboardQuery,
+  DashboardQueryVariables,
   Dashboard,
-  DashboardQuerySetter
+  DashboardQueryVariablesSetter,
+  DashboardData
 } from "../../../specs/index";
 import moment from "moment";
 import { animated, useSprings } from "react-spring";
 import styles from "./timeline.scss";
+import { scaleLinear } from "d3-scale";
+
+export function getRealData(
+  map: DashboardMap,
+  data: DashboardData
+): Array<Datum> {
+  return map.geojson.features.map((geo: any) => {
+    const row = (data.payload as Array<any>).find(
+      (r: any) => r.neighbourhood === geo.properties.neighbourhood
+    );
+
+    return {
+      value: row ? row.avg_price : null,
+      id: geo.properties.neighbourhood
+    };
+  });
+}
 
 export interface TimelineProps {
-  dashboardQuery: DashboardQuery;
+  dashboardQueryVariables: DashboardQueryVariables;
   dashboard: Dashboard;
-  dashboardQuerySetter: DashboardQuerySetter;
+  dashboardQueryVariablesSetter: DashboardQueryVariablesSetter;
   width: number;
   height: number;
+  dashboardData: DashboardData;
 }
 
 export enum TimelineDisplayMode {
@@ -43,8 +62,8 @@ export function getTimelineDisplayMode(
 
 export function Timeline(props: TimelineProps) {
   const format = "YYYY-MM-DD";
-  const from = moment(props.dashboardQuery.date[0]);
-  const to = moment(props.dashboardQuery.date[1]);
+  const from = moment(props.dashboardQueryVariables.date[0]);
+  const to = moment(props.dashboardQueryVariables.date[1]);
   const numberDays = to.diff(from, "day");
   //const mode = getTimelineDisplayMode(numberDays);
   const WIDTH = 5;
@@ -75,16 +94,35 @@ export function Timeline(props: TimelineProps) {
   });
 }
 function TimelineManager(props: TimelineProps) {
-  const from = moment(props.dashboardQuery.date[0]);
-  const to = moment(props.dashboardQuery.date[1]);
+  const {
+    dashboardMap,
+    dashboardProjectionParams,
+    //dashboardQueryVariables,
+    dashboardData
+  } = props;
+
+  const data = getRealData(dashboardMap, dashboardData);
+
+  const domain = [
+    Math.min.apply(null, data.map((el: any) => el.value)),
+    Math.max.apply(null, data.map((el: any) => el.value))
+  ];
+  let range = ["rgba(135,206,235,1)", "rgba(205,92,92,1)"] as any;
+  var colorScale = scaleLinear()
+    .range(range)
+    .domain(domain);
+
+  colorScale;
+  const from = moment(props.dashboardQueryVariables.date[0]);
+  const to = moment(props.dashboardQueryVariables.date[1]);
   const numberDays = to.diff(from, "day");
   const format = "YYYY-MM-DD";
   const updateRange = ([fromDelta, toDelta]:
     | [number, null]
     | [null, number]) => {
     if (fromDelta && Number.isFinite(fromDelta)) {
-      props.dashboardQuerySetter({
-        ...props.dashboardQuery,
+      props.dashboardQueryVariablesSetter({
+        ...props.dashboardQueryVariables,
         date: [
           from
             .clone()
@@ -94,8 +132,8 @@ function TimelineManager(props: TimelineProps) {
         ]
       });
     } else if (toDelta && Number.isFinite(toDelta)) {
-      props.dashboardQuerySetter({
-        ...props.dashboardQuery,
+      props.dashboardQueryVariablesSetter({
+        ...props.dashboardQueryVariables,
         date: [
           from.format(format),
           to

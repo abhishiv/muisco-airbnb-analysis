@@ -4,11 +4,12 @@ export interface LayoutProps {}
 import Timeline from "../../components/timeline/index";
 import {
   Dashboard,
-  DashboardQuery,
-  DashboardQuerySetter,
+  DashboardQueryVariables,
+  DashboardQueryVariablesSetter,
   DashboardMap,
   DashboardProjectionParams,
-  DashboardProjectionParamsSetter
+  DashboardProjectionParamsSetter,
+  DashboardData
 } from "../../../specs/index";
 import Atlas from "../atlas/index";
 import styles from "./layout.scss";
@@ -16,14 +17,15 @@ import Knobs from "../knobs/index";
 styles;
 
 export interface LayoutProps {
-  dashboardQuery: DashboardQuery;
+  dashboardQueryVariables: DashboardQueryVariables;
   dashboard: Dashboard;
-  dashboardQuerySetter: DashboardQuerySetter;
+  dashboardQueryVariablesSetter: DashboardQueryVariablesSetter;
   dashboardMap: DashboardMap;
   width: number;
   height: number;
   dashboardProjectionParams: DashboardProjectionParams;
   dashboardProjectionParamsSetter: DashboardProjectionParamsSetter;
+  dashboardData: DashboardData;
 }
 
 function Layout(props: LayoutProps) {

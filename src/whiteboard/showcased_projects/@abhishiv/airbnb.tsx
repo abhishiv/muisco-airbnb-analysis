@@ -22,7 +22,7 @@ export interface Project {
   env: EnvironmentVariables;
   databases: Array<Database>;
   queries: Array<Query>;
-  defaultQueryVariables: QueryVariables;
+  defaultQueryVariablesVariables: QueryVariables;
 }
 const project: Project = {
   env: {},
@@ -61,7 +61,7 @@ select count(neighbourhood), room_type, neighbourhood from users where room_type
       meta: {}
     }
   ],
-  defaultQueryVariables: { cityName: "milan" }
+  defaultQueryVariablesVariables: { cityName: "milan" }
 };
 
 export default project;

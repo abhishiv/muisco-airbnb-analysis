@@ -1,16 +1,17 @@
 import React, { useState } from "react";
 import {
-  DashboardQuery,
+  DashboardQueryVariables,
   Dashboard,
-  DashboardQuerySetter,
+  DashboardQueryVariablesSetter,
   DashboardProjectionParams,
   DashboardProjectionParamsSetter,
-  DashboardMap
+  DashboardMap,
+  DashboardData
 } from "../../../specs/index";
 
 import { useDrag } from "react-use-gesture";
 
-import { geoMercator } from "d3-geo";
+import { geoMercator, GeoProjection } from "d3-geo";
 
 import styles from "./atlas.scss";
 import TilesComponent from "./tiles";
@@ -91,12 +92,13 @@ export interface TilesParams {
 export interface AtlasProps {
   width: number;
   height: number;
-  dashboardQuery: DashboardQuery;
+  dashboardQueryVariables: DashboardQueryVariables;
   dashboardMap: DashboardMap;
   dashboard: Dashboard;
-  dashboardQuerySetter: DashboardQuerySetter;
+  dashboardQueryVariablesSetter: DashboardQueryVariablesSetter;
   dashboardProjectionParams: DashboardProjectionParams;
   dashboardProjectionParamsSetter: DashboardProjectionParamsSetter;
+  dashboardData: DashboardData;
 }
 
 export default function Atlas(props: AtlasProps) {
@@ -137,8 +139,9 @@ export default function Atlas(props: AtlasProps) {
   bind;
   const projection = geoMercator()
     .scale(dashboardProjectionParams.scale / (Math.PI * 2))
-    .translate(dashboardProjectionParams.translate);
-  const center = projection.invert([width / 2, height / 2]) as any;
+    .translate(dashboardProjectionParams.translate) as GeoProjection;
+  // node idea why `projection as GeoProjection` doesn't work
+  const center = (projection as any).invert([width / 2, height / 2]) as any;
   console.log(center);
   return (
     <div

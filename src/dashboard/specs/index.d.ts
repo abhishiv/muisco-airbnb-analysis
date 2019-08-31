@@ -1,4 +1,4 @@
-export interface DashboardQuery {
+export interface DashboardQueryVariables {
   cities: string[];
   cityName: string;
   roomTypes: string[];
@@ -7,13 +7,17 @@ export interface DashboardQuery {
   zoom: number;
 }
 
+export interface DashboardData {
+  payload: any;
+}
+
 export interface DashboardMap {
   city: string;
   geojson: any;
 }
 
-export interface DashboardQuerySetter {
-  (query: DashboardQuery): void;
+export interface DashboardQueryVariablesSetter {
+  (query: DashboardQueryVariables): void;
 }
 
 export interface City {
@@ -26,9 +30,16 @@ export interface Query {
   name: string;
   returnType: any;
 }
+
+export interface DashboardResult {
+  data: DashboardData;
+  map: DashboardMap;
+  variables: DashboardQueryVariables;
+}
+
 export interface Dashboard {
   id: string;
-  defaultQuery: DashboardQuery;
+  defaultQueryVariables: DashboardQueryVariables;
   cities: City[];
   queries: Query[];
 }
@@ -40,4 +51,4 @@ export interface DashboardProjectionParams {
 
 export interface DashboardProjectionParamsSetter {
   (parmas: DashboardProjectionParams): void;
-} 
+}
