@@ -93,7 +93,6 @@ export default function Tiles(props: TilesProps) {
           };
           const roadJSON = geojson(d, d.layers.road);
           const waterJSON = geojson(d, d.layers.water);
-          console.log(d);
           return (
             <g key={i}>
               <path
