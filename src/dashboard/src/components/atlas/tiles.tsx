@@ -93,6 +93,7 @@ export default function Tiles(props: TilesProps) {
           };
           const roadJSON = geojson(d, d.layers.road);
           const waterJSON = geojson(d, d.layers.water);
+          console.log(d);
           return (
             <g key={i}>
               <path
@@ -104,7 +105,7 @@ export default function Tiles(props: TilesProps) {
                   }) as any) || ""
                 }
               ></path>
-              {true && (
+              {false && (
                 <path
                   fill="green"
                   key="landuse"
@@ -112,8 +113,8 @@ export default function Tiles(props: TilesProps) {
                   strokeWidth="2"
                   d={
                     path(filter(
-                      geojson(d, d.layers.landuse),
-                      (d: any) => d.properties.class === "wood"
+                      geojson(d, d.layers.building),
+                      (d: any) => d.properties.type === "building"
                     ) as any) || ""
                   }
                 ></path>
