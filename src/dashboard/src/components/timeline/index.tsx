@@ -80,16 +80,16 @@ export function Timeline(props: TimelineProps) {
   const [springs] = useSprings(numberDays, i => {
     const row = Math.floor(i / columnSize) + 1;
     const column = Math.ceil(i % columnSize);
+    const timestamp =
+      from
+        .clone()
+        .add(i, "day")
+        .utc()
+        .format("YYYY-MM-DDTHH:mm:ss") + ".000Z";
     const datum: Datum | undefined = data.find(
-      (el: any) =>
-        el.date ===
-        from
-          .clone()
-          .add(i, "day")
-          .utc()
-          .format("YYYY-MM-DDTHH:mm:ss") +
-          ".000Z"
+      (el: any) => el.date === timestamp
     );
+    console.log("datum", datum, timestamp);
     return {
       opacity: 1,
       left: WIDTH * column + 10 + "px",
