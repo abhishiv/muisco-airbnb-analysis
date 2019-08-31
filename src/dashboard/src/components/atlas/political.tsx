@@ -27,7 +27,7 @@ export function getRealData(
   data: DashboardData
 ): Array<Datum> {
   return map.geojson.features.map((geo: any) => {
-    const row = (data.payload as Array<any>).find(
+    const row = (data.payload.grouped.rows as Array<any>).find(
       (r: any) => r.neighbourhood === geo.properties.neighbourhood
     );
 

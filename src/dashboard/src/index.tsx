@@ -23,9 +23,11 @@ export interface DashboardViewProps {
 }
 
 export async function getRealData(map: DashboardMap) {
-  const req = await fetch("_api/airbnb/diced");
-  const json = await req.json();
-  return json.rows;
+  const groupedData = await (await fetch("/_api/airbnb/diced")).json();
+
+  const byDateData = await (await fetch("/_api/airbnb/by_date")).json();
+
+  return { grouped: groupedData, byDate: byDateData };
 }
 
 export function DashboardView(props: DashboardViewProps) {

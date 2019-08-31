@@ -3,27 +3,20 @@ import {
   DashboardQueryVariables,
   Dashboard,
   DashboardQueryVariablesSetter,
-  DashboardData
+  DashboardData,
+  DashboardMap
 } from "../../../specs/index";
 import moment from "moment";
 import { animated, useSprings } from "react-spring";
 import styles from "./timeline.scss";
 import { scaleLinear } from "d3-scale";
 
-export function getRealData(
-  map: DashboardMap,
-  data: DashboardData
-): Array<Datum> {
-  return map.geojson.features.map((geo: any) => {
-    const row = (data.payload as Array<any>).find(
-      (r: any) => r.neighbourhood === geo.properties.neighbourhood
-    );
-
-    return {
-      value: row ? row.avg_price : null,
-      id: geo.properties.neighbourhood
-    };
-  });
+export interface Datum {
+  count: number;
+  date: string;
+}
+export function getRealData(data: DashboardData): Array<Datum> {
+  return data.payload.byDate.rows;
 }
 
 export interface TimelineProps {
@@ -33,6 +26,7 @@ export interface TimelineProps {
   width: number;
   height: number;
   dashboardData: DashboardData;
+  dashboardMap: DashboardMap;
 }
 
 export enum TimelineDisplayMode {
@@ -61,21 +55,46 @@ export function getTimelineDisplayMode(
 }
 
 export function Timeline(props: TimelineProps) {
+  const { dashboardData } = props;
+
+  const data = getRealData(dashboardData);
+
+  const domain = [
+    Math.min.apply(null, data.map((el: any) => el.count)),
+    Math.max.apply(null, data.map((el: any) => el.count))
+  ];
+  let range = ["rgba(135,206,235,1)", "rgba(205,92,92,1)"] as any;
+  var colorScale = scaleLinear()
+    .range(range)
+    .domain(domain);
+
+  colorScale;
   const format = "YYYY-MM-DD";
   const from = moment(props.dashboardQueryVariables.date[0]);
   const to = moment(props.dashboardQueryVariables.date[1]);
   const numberDays = to.diff(from, "day");
   //const mode = getTimelineDisplayMode(numberDays);
-  const WIDTH = 5;
-  const columnSize = Math.floor(props.width / (WIDTH * 2));
+  const WIDTH = 20;
+  const columnSize = Math.floor(props.width / WIDTH);
   //const rowSize = Math.ceil(numberDays / columnSize);
   const [springs] = useSprings(numberDays, i => {
     const row = Math.floor(i / columnSize) + 1;
     const column = Math.ceil(i % columnSize);
+    const datum: Datum | undefined = data.find(
+      (el: any) =>
+        el.date ===
+        from
+          .clone()
+          .add(i, "day")
+          .utc()
+          .format("YYYY-MM-DDTHH:mm:ss") +
+          ".000Z"
+    );
     return {
       opacity: 1,
-      left: WIDTH * 2 * column + "px",
-      top: WIDTH * 2 * row + "px"
+      left: WIDTH * column + 10 + "px",
+      top: WIDTH * 1 * row + 10 + "px",
+      backgroundColor: datum ? colorScale(datum.count) : "transparent"
     };
   });
 
@@ -88,31 +107,16 @@ export function Timeline(props: TimelineProps) {
       <animated.div
         className={styles.day}
         key={item.format(format)}
-        style={props}
+        style={
+          {
+            ...props
+          } as any
+        }
       ></animated.div>
     );
   });
 }
 function TimelineManager(props: TimelineProps) {
-  const {
-    dashboardMap,
-    dashboardProjectionParams,
-    //dashboardQueryVariables,
-    dashboardData
-  } = props;
-
-  const data = getRealData(dashboardMap, dashboardData);
-
-  const domain = [
-    Math.min.apply(null, data.map((el: any) => el.value)),
-    Math.max.apply(null, data.map((el: any) => el.value))
-  ];
-  let range = ["rgba(135,206,235,1)", "rgba(205,92,92,1)"] as any;
-  var colorScale = scaleLinear()
-    .range(range)
-    .domain(domain);
-
-  colorScale;
   const from = moment(props.dashboardQueryVariables.date[0]);
   const to = moment(props.dashboardQueryVariables.date[1]);
   const numberDays = to.diff(from, "day");
@@ -147,10 +151,10 @@ function TimelineManager(props: TimelineProps) {
   const T = Timeline as any;
   return (
     <div className={styles.container}>
-      <div className={styles.controlsBar} style={{ display: "inline-block" }}>
+      <div className={styles.controlsBar}>
         <button onClick={() => updateRange([-1, null])}>+</button>
         <button onClick={() => updateRange([1, null])}>-</button>
-        {numberDays}
+        {numberDays} days from {from.format(format)} to {to.format(format)}
         <button onClick={() => updateRange([null, -1])}>-</button>
         <button onClick={() => updateRange([null, 1])}>+</button>
       </div>
