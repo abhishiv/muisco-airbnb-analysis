@@ -137,6 +137,7 @@ export default function Atlas(props: AtlasProps) {
   return (
     <div
       {...bind()}
+      draggable={false}
       style={{
         position: "absolute",
         width: width,
