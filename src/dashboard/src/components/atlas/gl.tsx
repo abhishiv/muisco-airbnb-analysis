@@ -23,13 +23,10 @@ export default function GL(props: GLProps) {
       zoom: 10
     });
     setMapbox(m);
-    m.on("styledata", function() {
-      m.removeLayer("place_label");
-    });
+    m.on("styledata", function() {});
   }, []);
   useEffect(() => {
     if (map) {
-      console.log("setting map");
       map.setCenter(props.center);
     }
   }, [...props.center, props.zoom]);
