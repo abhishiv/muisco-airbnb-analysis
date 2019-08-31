@@ -29,7 +29,10 @@ export async function getRealData(map: DashboardMap) {
       (r: any) => r.neighbourhood === geo.properties.neighbourhood
     );
 
-    return { value: row ? row.count : null, id: geo.properties.neighbourhood };
+    return {
+      value: row ? row.avg_price : null,
+      id: geo.properties.neighbourhood
+    };
   });
 }
 

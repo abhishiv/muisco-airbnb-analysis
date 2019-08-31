@@ -125,10 +125,10 @@ export default function Tiles(props: TilesProps) {
                     path(filter(roadJSON, (d: any) => isHighway(d)) as any) ||
                     ""
                   }
-                  stroke="black"
+                  stroke="brown"
                 ></path>
               )}{" "}
-              {waterJSON && true && (
+              {false && true && (
                 <path
                   key="water"
                   fill="skyblue"
@@ -141,7 +141,7 @@ export default function Tiles(props: TilesProps) {
                   stroke="aliceblue"
                 ></path>
               )}
-              {true && (
+              {false && (
                 <path
                   key="waterline"
                   stroke="orange"

@@ -48,7 +48,7 @@ export default {
         }
       },
       computer: (variables: any) => {
-        return `select count(neighbourhood), room_type, neighbourhood from users where room_type in (${toSQLList(
+        return `select          avg(price)::numeric           AS avg_price, count(neighbourhood), room_type, neighbourhood from users where room_type in (${toSQLList(
           variables.roomTypes
         )}) and  city in (${toSQLList(variables.cities)}) and date >= '${
           variables.date[0]

@@ -1,20 +1,15 @@
-html,
-body {
-  margin: 0;
-  padding: 0;
-  background: aliceblue;
-}
 .container {
   height: 150px;
-  /* max-width: 100vw; */
-  width: calc(100vw - 10px);
+  width: 100vw;
+  width: calc(100% - 10px);
   position: absolute;
   overflow: hidden;
   bottom: 0;
-  background: rgba(255, 255, 255, 0.7);
+  background: rgba(255, 255, 255, 0.4);
   margin: 5px;
-  border: 1px solid rgba(0, 0, 0, 0.4);
+  /* border: 1px solid rgba(0, 0, 0, 0.4); */
   border-radius: 5px;
+  box-sizing: border-box;
 }
 .timelineContainer {
   position: relative;
