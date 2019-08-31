@@ -104,7 +104,7 @@ export default function Tiles(props: TilesProps) {
                   }) as any) || ""
                 }
               ></path>
-              {true && (
+              {false && (
                 <path
                   fill="green"
                   key="landuse"
@@ -112,7 +112,7 @@ export default function Tiles(props: TilesProps) {
                   strokeWidth="2"
                   d={
                     path(filter(
-                      geojson(d, d.layers.building),
+                      geojson(d, d.layers.buildings),
                       (d: any) => true
                     ) as any) || ""
                   }
