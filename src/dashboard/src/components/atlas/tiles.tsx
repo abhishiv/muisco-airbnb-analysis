@@ -128,7 +128,7 @@ export default function Tiles(props: TilesProps) {
                   stroke="brown"
                 ></path>
               )}{" "}
-              {waterJSON && (
+              {waterJSON && false && (
                 <path
                   key="water"
                   fill="skyblue"
@@ -141,12 +141,14 @@ export default function Tiles(props: TilesProps) {
                   stroke="aliceblue"
                 ></path>
               )}
-              <path
-                key="waterline"
-                stroke="orange"
-                strokeWidth={2}
-                d={path(filter(waterJSON, is_water_line) as any) || ""}
-              ></path>
+              {false && (
+                <path
+                  key="waterline"
+                  stroke="orange"
+                  strokeWidth={2}
+                  d={path(filter(waterJSON, is_water_line) as any) || ""}
+                ></path>
+              )}
             </g>
           );
         })}
