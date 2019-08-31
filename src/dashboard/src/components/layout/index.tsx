@@ -10,8 +10,9 @@ import {
   DashboardProjectionParams,
   DashboardProjectionParamsSetter
 } from "../../../specs/index";
-import Atlas from "../../components/atlas/index";
+import Atlas from "../atlas/index";
 import styles from "./layout.scss";
+import Knobs from "../knobs/index";
 styles;
 
 export interface LayoutProps {
@@ -34,6 +35,7 @@ function Layout(props: LayoutProps) {
       {props.dashboardProjectionParams && (
         <Timeline {...props} height={props.height} width={props.width} />
       )}
+      <Knobs />
     </React.Fragment>
   );
 }

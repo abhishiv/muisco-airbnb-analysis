@@ -21,6 +21,22 @@ export interface DashboardViewProps {
   size: { width: number; height: number };
 }
 
+export async function getRealData(map: DashboardMap) {
+  const req = await fetch("_api/airbnb/diced");
+  const json = await req.json();
+
+  return map.geojson.features.map((geo: any) => {
+    const row = json.rows.find(
+      (r: any) => r.neighbourhood === geo.properties.neighbourhood
+    );
+
+    return {
+      value: row ? row.avg_price : null,
+      id: geo.properties.neighbourhood
+    };
+  });
+}
+
 export function DashboardView(props: DashboardViewProps) {
   const [dashboard, setDashboard] = useState<Dashboard | null>(null);
   const [dashboardQuery, setDashboardQuery] = useState<DashboardQuery | null>(
