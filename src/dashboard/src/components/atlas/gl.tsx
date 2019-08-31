@@ -10,12 +10,14 @@ const Map = ReactMapboxGl({
 export interface GLProps {
   width: number;
   height: number;
+  center: [number, number];
 }
 export default function GL(props: GLProps) {
   const { width, height } = props;
   return (
     <Map
       style="mapbox://styles/mapbox/streets-v9"
+      center={props.center}
       containerStyle={{
         height: height,
         width: width

@@ -135,9 +135,14 @@ export default function Atlas(props: AtlasProps) {
     });
   });
   bind;
+  const projection = geoMercator()
+    .scale(dashboardProjectionParams.scale / (Math.PI * 2))
+    .translate(dashboardProjectionParams.translate);
+  const center = projection.invert([width / 2, height / 2]);
+  console.log(center);
   return (
     <div
-      //{...bind()}
+      {...bind()}
       draggable={false}
       style={{
         position: "absolute",
@@ -146,7 +151,7 @@ export default function Atlas(props: AtlasProps) {
         overflow: "hidden"
       }}
     >
-      <GLMap {...props} />
+      {center && <GLMap {...props} center={center} />}
       <svg
         className={styles.svgMap}
         width={width}

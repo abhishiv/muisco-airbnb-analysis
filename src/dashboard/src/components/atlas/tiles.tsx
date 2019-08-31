@@ -151,44 +151,7 @@ export default function Tiles(props: TilesProps) {
                 ></path>
               )}
               {props.children}
-              <g key="asd">
-                {d.layers.place_label &&
-                  (() => {
-                    const [x, y, z] = d;
-                    const layer = d.layers.place_label;
-                    const features = [];
-                    const dom = [];
-                    for (let i = 0; i < layer.length; ++i) {
-                      const f = layer.feature(i).toGeoJSON(x, y, z);
-                      const c = path.centroid(f.geometry);
-                      const fontSize = 25 - f.properties.symbolrank;
-
-                      const ranked = () => {
-                        return true;
-                      };
-                      const rank = ranked();
-                      rank &&
-                        fontSize > 5 &&
-                        dom.push(
-                          <g key={i}>
-                            <text
-                              className={styles.label}
-                              textRendering="geometricPrecision"
-                              textAnchor={f.properties.text_anchor}
-                              fontSize={fontSize}
-                              x={c[0]}
-                              y={c[1]}
-                            >
-                              {f.properties.name_en}
-                            </text>
-                          </g>
-                        );
-                      rank && features.push(f);
-                    }
-                    //console.log("k", k / tau);
-                    return dom;
-                  })()}
-              </g>
+              <g key="asd"></g>
             </g>
           );
         })}
