@@ -14,7 +14,7 @@ import { geoMercator } from "d3-geo";
 
 import styles from "./atlas.scss";
 import TilesComponent from "./tiles";
-import RasterTilesComponent from "./raster_tiles";
+//import RasterTilesComponent from "./raster_tiles";
 import PoliticalComponent from "./political";
 
 function floor(k: number) {
@@ -133,10 +133,10 @@ export default function Atlas(props: AtlasProps) {
       }
     });
   });
-
+  bind;
   return (
     <div
-      {...bind()}
+      //{...bind()}
       draggable={false}
       style={{
         position: "absolute",
@@ -145,25 +145,13 @@ export default function Atlas(props: AtlasProps) {
         overflow: "hidden"
       }}
     >
-      {false && dashboardProjectionParams.scale && (
-        <RasterTilesComponent
-          {...props}
-          tileSize={256}
-          {...tilesParams}
-          dashboardProjectionParams={{
-            ...dashboardProjectionParams,
-            translate: [tx + delta[0], ty + delta[1]]
-          }}
-          {...{ width, height }}
-        />
-      )}
-      {Number.isFinite(width) && true && (
-        <svg
-          className={styles.svgMap}
-          width={width}
-          height={height}
-          viewBox={`0 0 ${width} ${height}`}
-        >
+      <svg
+        className={styles.svgMap}
+        width={width}
+        height={height}
+        viewBox={`0 0 ${width} ${height}`}
+      >
+        {Number.isFinite(width) && (
           <TilesComponent
             {...props}
             tileSize={2048}
@@ -173,26 +161,18 @@ export default function Atlas(props: AtlasProps) {
               translate: [tx + delta[0], ty + delta[1]]
             }}
             {...{ width, height }}
-          />
-        </svg>
-      )}
-      <svg
-        className={styles.svgMap}
-        width={width}
-        height={height}
-        viewBox={`0 0 ${width} ${height}`}
-      >
-        {Number.isFinite(width) && (
-          <PoliticalComponent
-            {...props}
-            tileSize={256}
-            {...tilesParams}
-            dashboardProjectionParams={{
-              ...dashboardProjectionParams,
-              translate: [tx + delta[0], ty + delta[1]]
-            }}
-            {...{ width, height }}
-          />
+          >
+            <PoliticalComponent
+              {...props}
+              tileSize={256}
+              {...tilesParams}
+              dashboardProjectionParams={{
+                ...dashboardProjectionParams,
+                translate: [tx + delta[0], ty + delta[1]]
+              }}
+              {...{ width, height }}
+            />
+          </TilesComponent>
         )}
       </svg>
     </div>

@@ -10,6 +10,7 @@ export interface TilesProps {
   tileSize: number;
   dashboard: Dashboard;
   dashboardProjectionParams: DashboardProjectionParams;
+  children: React.ReactNode;
 }
 const mapbox_access_token =
   "pk.eyJ1IjoiYWJvdXRhYXJvbiIsImEiOiJsRTRpMGJnIn0.aprlJ6wE1JQqBx4EH1lkMQ";
@@ -149,6 +150,7 @@ export default function Tiles(props: TilesProps) {
                   d={path(filter(waterJSON, is_water_line) as any) || ""}
                 ></path>
               )}
+              {props.children}
               <g>
                 {d.layers.place_label &&
                   (() => {

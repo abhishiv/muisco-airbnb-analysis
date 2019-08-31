@@ -71,11 +71,11 @@ export default function Political(props: PoliticalProps) {
     Math.max.apply(null, data.map((el: any) => el.value))
   ];
   const range = [
-    "rgb(237, 248, 233)",
-    "rgb(186, 228, 179)",
-    "rgb(116,196,118)",
-    "rgb(49,163,84)",
-    "rgb(0,109,44)"
+    "rgba(237, 248, 233,0.5)",
+    "rgba(186, 228, 179,0.5)",
+    "rgba(116,196,118,0.5)",
+    "rgba(49,163,84,0.5)",
+    "rgba(0,109,44,0.5)"
   ] as any;
   var colorScale = scaleLinear()
     .range(range)
