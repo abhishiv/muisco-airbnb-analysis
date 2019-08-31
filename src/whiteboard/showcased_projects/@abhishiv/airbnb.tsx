@@ -67,10 +67,10 @@ select count(neighbourhood), room_type, neighbourhood from users where room_type
 export default project;
 
 export const code = `
-CREATE FUNCTION aggregatelistings(roomtypevalue text, 
-fromdatevalue date, 
-todatevalue   date, 
-citynamevalue text) 
+CREATE FUNCTION aggregate_listings(room_type_value text, 
+from_date_value date, 
+to_date_value   date, 
+city_name_value text) 
 returns TABLE (listings_count bigint, avg_price numeric, neighbourhood text, room_type text) AS $$ 
 SELECT   count(neighbourhood) AS listings_count, 
          avg(price)::numeric           AS avg_price, 
