@@ -6,6 +6,7 @@ import siteRouter from "../hub/src/entrypoints/server";
 import apiRouter from "./api";
 const port = process.env.PORT || 5000;
 const server = express();
+const { postgraphile } = require("postgraphile");
 
 var pg = Knex({
   client: "pg",
@@ -16,6 +17,18 @@ var pg = Knex({
 server.set("knex", pg);
 server.use(compression());
 import path from "path";
+server.use(
+  postgraphile(
+    process.env.DATABASE_URL || "postgres://localhost:5432/data",
+    "public",
+    {
+      //watchPg: true,
+      graphiql: true,
+      enhanceGraphiql: true,
+      graphiqlRoute: "/_graphiql"
+    }
+  )
+);
 
 const assetsDir = process.env.NODE_ENV === "production" ? "build" : "src";
 server.use(
