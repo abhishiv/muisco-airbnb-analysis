@@ -16,6 +16,7 @@ import styles from "./atlas.scss";
 import TilesComponent from "./tiles";
 //import RasterTilesComponent from "./raster_tiles";
 import PoliticalComponent from "./political";
+import GLMap from "./gl";
 
 function floor(k: number) {
   return Math.pow(2, Math.floor(Math.log(k) / Math.LN2));
@@ -145,6 +146,7 @@ export default function Atlas(props: AtlasProps) {
         overflow: "hidden"
       }}
     >
+      <GLMap {...props} />
       <svg
         className={styles.svgMap}
         width={width}

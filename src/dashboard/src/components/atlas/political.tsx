@@ -40,7 +40,6 @@ export interface Datum {
 
 export function getDummyData(map: DashboardMap) {
   return map.geojson.features.map((el: any) => {
-    console.log("el", el);
     return { value: Math.random() * 10000 };
   });
 }
@@ -53,9 +52,6 @@ export default function Political(props: PoliticalProps) {
     const data = await getRealData(dashboardMap);
     setDataset(data);
   };
-  useEffect(() => {
-    doAsyncAction();
-  }, []);
 
   useEffect(() => {
     doAsyncAction();
@@ -64,23 +60,24 @@ export default function Political(props: PoliticalProps) {
   if (!data) {
     return null;
   }
-  console.log(data);
 
   const domain = [
     Math.min.apply(null, data.map((el: any) => el.value)),
     Math.max.apply(null, data.map((el: any) => el.value))
   ];
-  const range = [
-    "rgba(237, 248, 233,0.5)",
-    "rgba(186, 228, 179,0.5)",
-    "rgba(116,196,118,0.5)",
-    "rgba(49,163,84,0.5)",
-    "rgba(0,109,44,0.5)"
+  let range = [
+    "rgba(237, 248, 233,1)",
+    "rgba(186, 228, 179,1)",
+    "rgba(116,196,118,1)",
+    "rgba(49,163,84,1)",
+    "rgba(0,109,44,1)"
   ] as any;
   var colorScale = scaleLinear()
     .range(range)
     .domain(domain);
+
   const { scale, translate } = dashboardProjectionParams;
+
   const projection = geoMercator()
     .scale(scale / (Math.PI * 2))
     .translate(translate);

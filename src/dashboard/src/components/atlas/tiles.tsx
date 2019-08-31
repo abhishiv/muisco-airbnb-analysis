@@ -12,7 +12,7 @@ export interface TilesProps {
   dashboardProjectionParams: DashboardProjectionParams;
   children: React.ReactNode;
 }
-const mapbox_access_token =
+export const mapbox_access_token =
   "pk.eyJ1IjoiYWJvdXRhYXJvbiIsImEiOiJsRTRpMGJnIn0.aprlJ6wE1JQqBx4EH1lkMQ";
 import vt from "@mapbox/vector-tile";
 
@@ -151,7 +151,7 @@ export default function Tiles(props: TilesProps) {
                 ></path>
               )}
               {props.children}
-              <g>
+              <g key="asd">
                 {d.layers.place_label &&
                   (() => {
                     const [x, y, z] = d;
@@ -170,7 +170,7 @@ export default function Tiles(props: TilesProps) {
                       rank &&
                         fontSize > 5 &&
                         dom.push(
-                          <g>
+                          <g key={i}>
                             <text
                               className={styles.label}
                               textRendering="geometricPrecision"
