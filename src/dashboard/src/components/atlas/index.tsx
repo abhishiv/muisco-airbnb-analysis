@@ -165,7 +165,7 @@ export default function Atlas(props: AtlasProps) {
         >
           <TilesComponent
             {...props}
-            tileSize={256}
+            tileSize={2048}
             {...tilesParams}
             dashboardProjectionParams={{
               ...dashboardProjectionParams,
