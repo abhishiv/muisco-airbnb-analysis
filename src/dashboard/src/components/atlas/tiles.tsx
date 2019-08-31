@@ -100,11 +100,11 @@ export default function Tiles(props: TilesProps) {
                 className={styles.adminPath}
                 d={
                   path(filter(geojson(d, d.layers.admin), (d: any) => {
-                    return false;
+                    return true;
                   }) as any) || ""
                 }
               ></path>
-              {false && (
+              {true && (
                 <path
                   fill="green"
                   key="landuse"
@@ -113,7 +113,7 @@ export default function Tiles(props: TilesProps) {
                   d={
                     path(filter(
                       geojson(d, d.layers.building),
-                      (d: any) => d.properties.type === "building"
+                      (d: any) => true
                     ) as any) || ""
                   }
                 ></path>
@@ -128,7 +128,7 @@ export default function Tiles(props: TilesProps) {
                   stroke="brown"
                 ></path>
               )}{" "}
-              {waterJSON && false && (
+              {waterJSON && true && (
                 <path
                   key="water"
                   fill="skyblue"
@@ -141,7 +141,7 @@ export default function Tiles(props: TilesProps) {
                   stroke="aliceblue"
                 ></path>
               )}
-              {false && (
+              {true && (
                 <path
                   key="waterline"
                   stroke="orange"
