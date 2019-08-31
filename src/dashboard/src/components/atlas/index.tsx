@@ -138,11 +138,11 @@ export default function Atlas(props: AtlasProps) {
   const projection = geoMercator()
     .scale(dashboardProjectionParams.scale / (Math.PI * 2))
     .translate(dashboardProjectionParams.translate);
-  const center = projection.invert([width / 2, height / 2]);
+  const center = projection.invert([width / 2, height / 2]) as any;
   console.log(center);
   return (
     <div
-      {...bind()}
+      //{...bind()}
       draggable={false}
       style={{
         position: "absolute",

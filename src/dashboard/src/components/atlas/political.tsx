@@ -65,13 +65,7 @@ export default function Political(props: PoliticalProps) {
     Math.min.apply(null, data.map((el: any) => el.value)),
     Math.max.apply(null, data.map((el: any) => el.value))
   ];
-  let range = [
-    "rgba(237, 248, 233,0.4)",
-    "rgba(186, 228, 179,0.4)",
-    "rgba(116,196,118,0.4)",
-    "rgba(49,163,84,0.4)",
-    "rgba(0,109,44,0.4)"
-  ] as any;
+  let range = ["rgba(135,206,235,1)", "rgba(205,92,92,1)"] as any;
   var colorScale = scaleLinear()
     .range(range)
     .domain(domain);
@@ -92,9 +86,10 @@ export default function Political(props: PoliticalProps) {
             d={p(d) as any}
             className={styles.politicalPath}
             onClick={() => {}}
-            fill={colorScale(dataObject.value) as any}
-            stroke="#000"
-            strokeWidth={0.5}
+            //fill={colorScale(dataObject.value) as any}
+            fill="transparent"
+            stroke={colorScale(dataObject.value) as any}
+            strokeWidth={2}
           />
         );
       })}

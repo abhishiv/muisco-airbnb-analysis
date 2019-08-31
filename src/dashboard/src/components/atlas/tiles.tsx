@@ -81,7 +81,6 @@ export default function Tiles(props: TilesProps) {
     .scale(scale / (Math.PI * 2))
     .translate(translate);
   const path = geoPath(projection);
-
   return (
     <React.Fragment>
       {vectorTiles &&
@@ -126,7 +125,7 @@ export default function Tiles(props: TilesProps) {
                     path(filter(roadJSON, (d: any) => isHighway(d)) as any) ||
                     ""
                   }
-                  stroke="brown"
+                  stroke="black"
                 ></path>
               )}{" "}
               {waterJSON && true && (
