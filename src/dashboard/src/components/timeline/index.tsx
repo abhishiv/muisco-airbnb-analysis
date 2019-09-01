@@ -84,17 +84,28 @@ export function Timeline(props: TimelineProps) {
   const MARGIN = 5;
   const columnSize = Math.floor((props.width - 0) / (WIDTH + MARGIN * 2));
   //const rowSize = Math.ceil(numberDays / columnSize);
-  const timestamp =
-    from
-      .clone()
-      .add(i, "day")
-      .format("YYYY-MM-DDTHH:mm:ss") + ".000Z"; // DANGER api return UTC so for now is fine, but check moment formats to render 2018-01-31T00:00:00.000Z instead of 2018-01-22T00:00:00:00Z
-  const [springs] = useSprings(numberDays, i => {
-    const row = Math.floor(i / columnSize) + 1;
-    const column = Math.ceil(i % columnSize);
+  const days = new Array(numberDays).fill(true).map((el, i) => {
+    const timestamp =
+      from
+        .clone()
+        .add(i, "day")
+        .format("YYYY-MM-DDTHH:mm:ss") + ".000Z"; // DANGER api return UTC so for now is fine, but check moment formats to render 2018-01-31T00:00:00.000Z instead of 2018-01-22T00:00:00:00Z
     const datum: Datum | undefined = data.find(
       (el: any) => el.date === timestamp
     );
+    return {
+      date: from.clone().add(i, "day"),
+      count: datum ? datum.count : null,
+      datum,
+      i
+    };
+  });
+
+  const [springs] = useSprings(days.length, index => {
+    const item = days[index];
+    const { i, datum } = item;
+    const row = Math.floor(i / columnSize) + 1;
+    const column = Math.ceil(i % columnSize);
     //    console.log(
     //      "datum",
     //      datum,
@@ -107,16 +118,6 @@ export function Timeline(props: TimelineProps) {
       left: (MARGIN * 2 + WIDTH) * column + MARGIN + "px",
       top: (WIDTH + MARGIN * 2) * 1 * row + MARGIN + "px",
       backgroundColor: datum ? colorScale(datum.count) : "#444"
-    };
-  });
-
-  const days = new Array(numberDays).fill(true).map((el, i) => {
-    const datum: Datum | undefined = data.find(
-      (el: any) => el.date === timestamp
-    );
-    return {
-      date: from.clone().add(i, "day"),
-      count: datum ? datum.count : null
     };
   });
   return springs.map((props, i) => {
