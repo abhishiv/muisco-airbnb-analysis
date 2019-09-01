@@ -116,7 +116,10 @@ export default function Atlas(props: AtlasProps) {
 
   let timer: any;
   const [tx, ty] = dashboardProjectionParams.translate;
-  const bind = useDrag(({ down, xy, delta, last }) => {
+  const bind = useDrag(({ down, xy, delta, last, shiftKey }) => {
+    if (!shiftKey) {
+      return;
+    }
     if (timer) {
       cancelAnimationFrame(timer);
     }
@@ -151,11 +154,11 @@ export default function Atlas(props: AtlasProps) {
   //  const z = Math.log2(projection.scale() / 512);
   //  const z0 = Math.round(Math.max(z + 0, 0));
   //  zoom = Math.pow(2, z - z0) * 512;
-  console.log(center, zoom);
+  //console.log(center, zoom);
   //center = [45.4641, 9.1919].reverse();
   return (
     <div
-      //{...bind()}
+      {...bind()}
       draggable={false}
       style={{
         position: "absolute",

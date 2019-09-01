@@ -11,12 +11,22 @@ import { animated, useSprings } from "react-spring";
 import styles from "./timeline.scss";
 import { scaleLinear } from "d3-scale";
 
+import Heatmap from "./heatmap";
+Heatmap;
 export interface Datum {
   count: number;
   date: string;
 }
 export function getRealData(data: DashboardData): Array<Datum> {
   return data.payload.byDate.rows;
+}
+
+export enum TimelineDisplayMode {
+  DAY = 0,
+  WEEK = 1,
+  MONTH = 2,
+  QUARTER = 3,
+  YEAR = 4
 }
 
 export function getTimelineDisplayMode(
@@ -26,7 +36,7 @@ export function getTimelineDisplayMode(
   | TimelineDisplayMode.WEEK
   | TimelineDisplayMode.MONTH
   | TimelineDisplayMode.YEAR {
-  if (numberDays > 365 * 2) {
+  if (numberDays > 365) {
     return TimelineDisplayMode.YEAR;
   } else if (numberDays > 180) {
     return TimelineDisplayMode.MONTH;
@@ -45,13 +55,6 @@ export interface TimelineProps {
   height: number;
   dashboardData: DashboardData;
   dashboardMap: DashboardMap;
-}
-
-export enum TimelineDisplayMode {
-  DAY = 0,
-  WEEK = 1,
-  MONTH = 2,
-  YEAR = 3
 }
 
 export function Timeline(props: TimelineProps) {
