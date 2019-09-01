@@ -89,7 +89,6 @@ export function Timeline(props: TimelineProps) {
     const datum: Datum | undefined = data.find(
       (el: any) => el.date === timestamp
     );
-    console.log("datum", datum, timestamp);
     return {
       opacity: 1,
       left: WIDTH * column + 10 + "px",
