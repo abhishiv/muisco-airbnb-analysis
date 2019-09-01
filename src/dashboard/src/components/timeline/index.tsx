@@ -88,10 +88,11 @@ export function Timeline(props: TimelineProps) {
       from
         .clone()
         .add(i, "day")
-        .format("YYYY-MM-DDTHH:mm:ss:ms") + ".000Z"; // DANGER api return UTC so for now is fine, but check moment formats to render 2018-01-31T00:00:00.000Z instead of 2018-01-22T00:00:00:00Z
+        .format("YYYY-MM-DDTHH:mm:ss") + ".000Z"; // DANGER api return UTC so for now is fine, but check moment formats to render 2018-01-31T00:00:00.000Z instead of 2018-01-22T00:00:00:00Z
     const datum: Datum | undefined = data.find(
       (el: any) => el.date === timestamp
     );
+    //console.log("datum", datum, data[data.length - 1].date, timestamp);
     return {
       opacity: 1,
       left: WIDTH * column + 10 + "px",
