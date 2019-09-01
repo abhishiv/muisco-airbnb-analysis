@@ -14,10 +14,21 @@
   background-color: rgb(70, 79, 69);
   min-height: 70px;
   font-size: 16px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  color: white;
   font-size: 30px;
   font-family: "Open Sans";
   border-bottom: 1px solid rgba(0, 0, 0, 0.3);
+}
+
+.logo {
+  width: 40px;
+  margin: 0 10px 0 0;
+  background: darkkhaki;
+  padding: 10px;
+  border: 1px solid rgba(0, 0, 0, 0.7);
+  border-radius: 50%;
+  img {
+    width: 40px;
+    margin: 0 10px 0 0;
+  }
 }

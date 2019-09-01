@@ -185,17 +185,17 @@ export function TimelineSlider(props: TimelineProps) {
   fromDayCountFromBeginning;
   const singleDayWidth = props.width / totalNumberDays;
   const leftPx = singleDayWidth * fromDayCountFromBeginning;
-  //  console.log("singleDayWidth", {
-  //    totalNumberDays,
-  //    singleDayWidth,
-  //    fromDayCountFromBeginning,
-  //    form: from.format(),
-  //    to: to.format(),
-  //    beginingPeriod: beginingPeriod.format(),
-  //    endPeriod: endPeriod.format(),
-  //    numberDays,
-  //    beg: singleDayWidth * fromDayCountFromBeginning
-  //  });
+  console.log("singleDayWidth", {
+    totalNumberDays,
+    singleDayWidth,
+    fromDayCountFromBeginning,
+    form: from.format(),
+    to: to.format(),
+    beginingPeriod: beginingPeriod.format(),
+    endPeriod: endPeriod.format(),
+    numberDays,
+    beg: singleDayWidth * fromDayCountFromBeginning
+  });
   return (
     <div className={styles.timeLineSlider}>
       <div
