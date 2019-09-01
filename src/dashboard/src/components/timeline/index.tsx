@@ -19,23 +19,6 @@ export function getRealData(data: DashboardData): Array<Datum> {
   return data.payload.byDate.rows;
 }
 
-export interface TimelineProps {
-  dashboardQueryVariables: DashboardQueryVariables;
-  dashboard: Dashboard;
-  dashboardQueryVariablesSetter: DashboardQueryVariablesSetter;
-  width: number;
-  height: number;
-  dashboardData: DashboardData;
-  dashboardMap: DashboardMap;
-}
-
-export enum TimelineDisplayMode {
-  DAY = 0,
-  WEEK = 1,
-  MONTH = 2,
-  YEAR = 3
-}
-
 export function getTimelineDisplayMode(
   numberDays: number
 ):
@@ -52,6 +35,23 @@ export function getTimelineDisplayMode(
   } else {
     return TimelineDisplayMode.DAY;
   }
+}
+
+export interface TimelineProps {
+  dashboardQueryVariables: DashboardQueryVariables;
+  dashboard: Dashboard;
+  dashboardQueryVariablesSetter: DashboardQueryVariablesSetter;
+  width: number;
+  height: number;
+  dashboardData: DashboardData;
+  dashboardMap: DashboardMap;
+}
+
+export enum TimelineDisplayMode {
+  DAY = 0,
+  WEEK = 1,
+  MONTH = 2,
+  YEAR = 3
 }
 
 export function Timeline(props: TimelineProps) {
@@ -76,7 +76,7 @@ export function Timeline(props: TimelineProps) {
   const to = moment(props.dashboardQueryVariables.date[1])
     .utc()
     .startOf("day");
-  const numberDays = to.diff(from, "day");
+  const numberDays = to.clone().diff(from.clone(), "day");
   //const mode = getTimelineDisplayMode(numberDays);
   const WIDTH = 20;
   const columnSize = Math.floor(props.width / WIDTH);
@@ -119,10 +119,19 @@ export function Timeline(props: TimelineProps) {
     );
   });
 }
-function TimelineManager(props: TimelineProps) {
+
+export function TimelineSlider(props: TimelineProps) {
+  const beginingPeriod = moment("2014-01-01")
+    .utc()
+    .startOf("day");
+  const endPeriod = moment()
+    .utc()
+    .startOf("day");
+  const totalNumberDays = endPeriod.diff(beginingPeriod, "day");
   const from = moment(props.dashboardQueryVariables.date[0]);
   const to = moment(props.dashboardQueryVariables.date[1]);
-  const numberDays = to.diff(from, "day");
+  const numberDays = to.clone().diff(from, "day");
+
   const format = "YYYY-MM-DD";
   const updateRange = ([fromDelta, toDelta]:
     | [number, null]
@@ -151,16 +160,49 @@ function TimelineManager(props: TimelineProps) {
       });
     }
   };
+  totalNumberDays;
+  updateRange;
+  const fromDayCountFromBeginning = from.clone().diff(beginingPeriod, "day");
+  fromDayCountFromBeginning;
+  const singleDayWidth = props.width / totalNumberDays;
+  const leftPx = singleDayWidth * fromDayCountFromBeginning;
+  //  console.log("singleDayWidth", {
+  //    totalNumberDays,
+  //    singleDayWidth,
+  //    fromDayCountFromBeginning,
+  //    form: from.format(),
+  //    to: to.format(),
+  //    beginingPeriod: beginingPeriod.format(),
+  //    endPeriod: endPeriod.format(),
+  //    numberDays
+  //  });
+  return (
+    <div className={styles.timeLineSlider}>
+      <div
+        style={{
+          left: leftPx,
+          width: singleDayWidth * numberDays
+        }}
+        className={styles.timeLinePeriod}
+      ></div>
+    </div>
+  );
+  return (
+    <div className={styles.controlsBar}>
+      <button onClick={() => updateRange([-1, null])}>+</button>
+      <button onClick={() => updateRange([1, null])}>-</button>
+      {numberDays} days from {from.format(format)} to {to.format(format)}
+      <button onClick={() => updateRange([null, -1])}>-</button>
+      <button onClick={() => updateRange([null, 1])}>+</button>
+    </div>
+  );
+}
+
+function TimelineManager(props: TimelineProps) {
   const T = Timeline as any;
   return (
     <div className={styles.container}>
-      <div className={styles.controlsBar}>
-        <button onClick={() => updateRange([-1, null])}>+</button>
-        <button onClick={() => updateRange([1, null])}>-</button>
-        {numberDays} days from {from.format(format)} to {to.format(format)}
-        <button onClick={() => updateRange([null, -1])}>-</button>
-        <button onClick={() => updateRange([null, 1])}>+</button>
-      </div>
+      <TimelineSlider {...props} />
       <div className={styles.timelineContainer}>
         <T {...props} />
       </div>

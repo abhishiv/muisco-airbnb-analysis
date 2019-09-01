@@ -1,5 +1,5 @@
 .container {
-  height: 150px;
+  height: 180px;
   width: 100vw;
   width: calc(100% - 10px);
   position: absolute;
@@ -44,4 +44,23 @@
   justify-content: center;
   align-items: center;
   font-size: 16px;
+}
+
+.timeLineSlider {
+  height: 50px;
+  background: white;
+  height: 50px;
+  background: white;
+  position: relative;
+}
+
+.timeLinePeriod {
+  background: rgba(0, 0, 0, 0.3);
+  position: relative;
+  height: 100%;
+  transition: background 300ms ease-in-out;
+  cursor: pointer;
+  &:hover {
+    background: rgba(0, 0, 0, 0.3);
+  }
 }

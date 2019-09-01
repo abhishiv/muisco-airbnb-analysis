@@ -5,7 +5,7 @@ export default {
     cities: ["milano"],
     roomTypes: ["Shared room", "Entire home/apt"],
     cityName: "milano",
-    date: ["2017-08-01", "2018-01-30"],
+    date: ["2016-08-01", "2018-01-30"],
 
     center: [45.4642, 9.19],
     zoom: 4
