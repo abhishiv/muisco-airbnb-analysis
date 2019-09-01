@@ -58,6 +58,7 @@ export default function Political(props: PoliticalProps) {
   ];
   const [opacityRecordId, setOpacityRecordId] = useState<string | null>();
   let range = [`rgba(135, 206, 235,${1})`, `rgba(205,92,92,${1})`] as any;
+  range = ["#ed3a3c", "#fce14c", "#789b2a"] as any;
   var colorScale = scaleLinear()
     .range(range)
     .domain(domain);

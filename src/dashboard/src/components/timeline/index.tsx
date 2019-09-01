@@ -63,7 +63,8 @@ export function Timeline(props: TimelineProps) {
     Math.min.apply(null, data.map((el: any) => el.count)),
     Math.max.apply(null, data.map((el: any) => el.count))
   ];
-  let range = ["rgba(143, 188, 143,1)", "rgba(205,92,92,1)"] as any;
+  let range = ["#fce14c", "#ed3a3c"] as any;
+  range = ["#ed3a3c", "#fce14c", "#789b2a"] as any;
   var colorScale = scaleLinear()
     .range(range)
     .domain(domain);
