@@ -130,7 +130,7 @@ export default function Tiles(props: TilesProps) {
               {true && (
                 <path
                   fill="green"
-                  key="landuse"
+                  key="landusea"
                   stroke="darkseagreen"
                   strokeWidth="2"
                   d={

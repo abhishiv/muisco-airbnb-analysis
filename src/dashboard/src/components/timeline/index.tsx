@@ -95,12 +95,18 @@ export function Timeline(props: TimelineProps) {
     const datum: Datum | undefined = data.find(
       (el: any) => el.date === timestamp
     );
-    //console.log("datum", datum, data[data.length - 1].date, timestamp);
+    //    console.log(
+    //      "datum",
+    //      datum,
+    //      data[data.length - 1].date,
+    //      timestamp,
+    //      datum ? colorScale(datum.count) : "transparent"
+    //    );
     return {
       opacity: 1,
       left: (MARGIN * 2 + WIDTH) * column + MARGIN + "px",
       top: (WIDTH + MARGIN * 2) * 1 * row + MARGIN + "px",
-      backgroundColor: datum ? colorScale(datum.count) : "transparent"
+      backgroundColor: datum ? colorScale(datum.count) : "#444"
     };
   });
 
@@ -124,7 +130,7 @@ export function Timeline(props: TimelineProps) {
 }
 
 export function TimelineSlider(props: TimelineProps) {
-  const beginingPeriod = moment("2014-01-01")
+  const beginingPeriod = moment("2010-04-19")
     .utc()
     .startOf("day");
   const endPeriod = moment()
@@ -177,7 +183,8 @@ export function TimelineSlider(props: TimelineProps) {
   //    to: to.format(),
   //    beginingPeriod: beginingPeriod.format(),
   //    endPeriod: endPeriod.format(),
-  //    numberDays
+  //    numberDays,
+  //    beg: singleDayWidth * fromDayCountFromBeginning
   //  });
   return (
     <div className={styles.timeLineSlider}>
