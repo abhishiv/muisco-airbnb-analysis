@@ -91,8 +91,8 @@ export default function Political(props: PoliticalProps) {
             onClick={() => {}}
             fill={colorScale(dataObject.value) as any}
             //fill="transparent"
-            stroke={colorScale(dataObject.value) as any}
-            strokeWidth={2}
+            stroke={"black"}
+            strokeWidth={1}
           />
         );
       })}
