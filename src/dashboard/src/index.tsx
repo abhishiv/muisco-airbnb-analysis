@@ -70,12 +70,12 @@ export function DashboardView(props: DashboardViewProps) {
           .translate(dashboardProjectionParams.translate);
         const path = geoPath(projection);
         let bounds = path.bounds(geojson);
-
+        console.log(bounds);
         const dx = bounds[1][0] - bounds[0][0],
           dy = bounds[1][1] - bounds[0][1],
           x = (bounds[0][0] + bounds[1][0]) / 2,
           y = (bounds[0][1] + bounds[1][1]) / 2,
-          scale = 0.9 / Math.max(dx / width, dy / height),
+          scale = 1 / Math.max(dx / width, dy / height),
           translate: [number, number] = [
             width / 2 - scale * x,
             height / 2 - scale * y

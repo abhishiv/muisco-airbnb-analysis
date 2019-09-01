@@ -9,6 +9,7 @@
 .politicalPath {
   //fill: rgba(0, 0, 0, 0.03);
   cursor: pointer;
+  transition: opacity 300ms ease-in-out;
   &:hover {
     //fill: rgba(0, 0, 0, 0.06);
   }
@@ -30,5 +31,7 @@
   bottom: 0;
   text {
     user-select: none;
+    color: rgba(0, 0, 0, 0.8);
+    text-shadow: 2px 2px 3px rgba(255, 255, 255, 0.1);
   }
 }

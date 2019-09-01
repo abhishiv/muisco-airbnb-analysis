@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { geoPath, geoMercator } from "d3-geo";
 
 import {
@@ -56,7 +56,8 @@ export default function Political(props: PoliticalProps) {
     Math.min.apply(null, data.map((el: any) => el.value)),
     Math.max.apply(null, data.map((el: any) => el.value))
   ];
-  let range = ["rgba(135,206,235,1)", "rgba(205,92,92,1)"] as any;
+  const [opacityRecordId, setOpacityRecordId] = useState<string | null>();
+  let range = [`rgba(135,206,235,${1})`, `rgba(205,92,92,${1})`] as any;
   var colorScale = scaleLinear()
     .range(range)
     .domain(domain);
@@ -67,18 +68,29 @@ export default function Political(props: PoliticalProps) {
     .scale(scale / (Math.PI * 2))
     .translate(translate);
   const p = geoPath(projection);
+
   return (
     <g className="counties">
       {dashboardMap.geojson.features.map((d: any, i: number) => {
         const dataObject = data[i];
+
+        const st = {
+          opacity: opacityRecordId === d.properties.neighbourhood ? 1 : 0.5
+        };
         return (
           <path
             key={i}
             d={p(d) as any}
+            style={st}
             className={styles.politicalPath}
+            onMouseEnter={() => {
+              console.log(i, d, d.properties.neighbourhood);
+              setOpacityRecordId(d.properties.neighbourhood);
+            }}
+            onMouseLeave={() => setOpacityRecordId(null)}
             onClick={() => {}}
-            //fill={colorScale(dataObject.value) as any}
-            fill="transparent"
+            fill={colorScale(dataObject.value) as any}
+            //fill="transparent"
             stroke={colorScale(dataObject.value) as any}
             strokeWidth={2}
           />

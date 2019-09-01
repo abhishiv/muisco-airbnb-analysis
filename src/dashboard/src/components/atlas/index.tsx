@@ -140,15 +140,19 @@ export default function Atlas(props: AtlasProps) {
     .scale(dashboardProjectionParams.scale / (Math.PI * 2))
     .translate(dashboardProjectionParams.translate) as GeoProjection;
   // node idea why `projection as GeoProjection` doesn't work
-  const center = (projection as any).invert([width / 2, height / 2]) as any;
+  let center = (projection as any).invert([width / 2, height / 2]) as any;
   //        var scale = (512) * 0.5 / Math.PI * Math.pow(2, zoom);
   //a = Math.pow(b, c);
   //c = Math.log(a)/Math.log(b)
   // s = (512) * 0.5 / Math.PI * Math.pow(2, zoom)
   // ((((512) * 0.5) / s) / Math.PI) = Math.pow(2, zoom)
   // ((((512) * 0.5) / s) / Math.PI) = Math.pow(2, zoom)
-  const zoom =
-    Math.log((512 * 0.5) / projection.scale() / (Math.PI * 1)) / Math.log(2);
+  let zoom = Math.log(512 / projection.scale() / (Math.PI * 0.5)) / Math.log(2);
+  //  const z = Math.log2(projection.scale() / 512);
+  //  const z0 = Math.round(Math.max(z + 0, 0));
+  //  zoom = Math.pow(2, z - z0) * 512;
+  console.log(center, zoom);
+  //center = [45.4641, 9.1919].reverse();
   return (
     <div
       //{...bind()}
@@ -160,7 +164,7 @@ export default function Atlas(props: AtlasProps) {
         overflow: "hidden"
       }}
     >
-      {center && <GLMap {...props} center={center} zoom={zoom} />}
+      {center && false && <GLMap {...props} center={center} zoom={zoom} />}
       <svg
         className={styles.svgMap}
         width={width}

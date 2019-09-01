@@ -20,8 +20,8 @@ export default function GL(props: GLProps) {
   useEffect(() => {
     const m = new MapboxGL.Map({
       container: containerRef.current as any,
-      //style: "mapbox://styles/mapbox/streets-v9",
-      style: "mapbox://styles/mapbox/dark-v9",
+      style: "mapbox://styles/mapbox/streets-v9",
+      //style: "mapbox://styles/mapbox/dark-v9",
       center: props.center,
       zoom: props.zoom
     });

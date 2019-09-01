@@ -7,13 +7,13 @@ export default {
     cityName: "milano",
     date: ["2016-08-01", "2018-01-30"],
 
-    center: [45.4642, 9.19],
+    center: [45.4641, 9.1919],
     zoom: 4
   },
   cities: [
     {
       name: "milano",
-      location: [45.4642, 9.19],
+      center: [45.4641, 9.1919],
       geojson:
         "/_data/airbnb/italy/lombardy/milan/2019-07-12/visualisations/neighbourhoods.geojson"
     }
