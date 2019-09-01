@@ -21,6 +21,7 @@ server.use(
   postgraphile(
     process.env.DATABASE_URL || "postgres://localhost:5432/data",
     "public",
+
     {
       //watchPg: true,
       graphiql: true,
