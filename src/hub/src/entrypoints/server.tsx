@@ -1,22 +1,58 @@
+import React from "react";
+import { renderToString } from "react-dom/server";
+
+import { ApolloClient } from "apollo-client";
+import { createHttpLink } from "apollo-link-http";
+import express from "express";
+import { StaticRouter } from "react-router";
+import { InMemoryCache } from "apollo-cache-inmemory";
+import { getMarkupFromTree, ApolloProvider } from "react-apollo-hooks";
 import pify from "pify";
 import Mustache from "mustache";
-
+import fetch from "node-fetch";
 import fs from "fs";
 import path from "path";
 
-import { Router, Request, Response, NextFunction } from "express";
+import { Request } from "express";
 
-export const kernelRouter: Router = Router();
+import Router from "../routes/index";
 
-kernelRouter.use("/", async function(
-  req: Request,
-  res: Response,
-  next: NextFunction
-) {
-  const html = await Html(req, { content: "", state: {} });
+const router = express.Router();
+router.use("/", async (req, res) => {
+  const client = new ApolloClient({
+    ssrMode: true,
+    link: createHttpLink({
+      uri: process.env.PUBLIC_URL + "/graphql",
+      credentials: "same-origin",
+      fetch,
+      headers: {
+        cookie: req.header("Cookie")
+      }
+    }),
+    cache: new InMemoryCache()
+  });
+
+  const context = {};
+
+  const App = (
+    <ApolloProvider client={client}>
+      <StaticRouter location={req.url} context={context}>
+        <Router />
+      </StaticRouter>
+    </ApolloProvider>
+  );
+  const content = await getMarkupFromTree({
+    tree: App,
+    renderFunction: renderToString
+  });
+  const initialState = client.extract();
+
+  const html = await Html(req, {
+    content: content,
+    state: initialState
+  });
+
   res.status(200);
-  res.setHeader("Cache-Control", "no-cache");
-  res.setHeader("Access-Control-Allow-Origin", "*");
   res.send(html);
   res.end();
 });
@@ -56,4 +92,4 @@ async function Html(
   });
 }
 
-export default kernelRouter;
+export default router;
