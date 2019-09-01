@@ -63,7 +63,7 @@ export function Timeline(props: TimelineProps) {
     Math.min.apply(null, data.map((el: any) => el.count)),
     Math.max.apply(null, data.map((el: any) => el.count))
   ];
-  let range = ["rgba(135,206,235,1)", "rgba(205,92,92,1)"] as any;
+  let range = ["rgba(143, 188, 143,1)", "rgba(205,92,92,1)"] as any;
   var colorScale = scaleLinear()
     .range(range)
     .domain(domain);
@@ -78,8 +78,9 @@ export function Timeline(props: TimelineProps) {
     .startOf("day");
   const numberDays = to.clone().diff(from.clone(), "day");
   //const mode = getTimelineDisplayMode(numberDays);
-  const WIDTH = 20;
-  const columnSize = Math.floor(props.width / WIDTH);
+  const WIDTH = 10;
+  const MARGIN = 5;
+  const columnSize = Math.floor((props.width - 0) / (WIDTH + MARGIN * 2));
   //const rowSize = Math.ceil(numberDays / columnSize);
   const [springs] = useSprings(numberDays, i => {
     const row = Math.floor(i / columnSize) + 1;
@@ -95,8 +96,8 @@ export function Timeline(props: TimelineProps) {
     //console.log("datum", datum, data[data.length - 1].date, timestamp);
     return {
       opacity: 1,
-      left: WIDTH * column + 10 + "px",
-      top: WIDTH * 1 * row + 10 + "px",
+      left: (MARGIN * 2 + WIDTH) * column + MARGIN + "px",
+      top: (WIDTH + MARGIN * 2) * 1 * row + MARGIN + "px",
       backgroundColor: datum ? colorScale(datum.count) : "transparent"
     };
   });
