@@ -84,14 +84,14 @@ export function Timeline(props: TimelineProps) {
   const MARGIN = 5;
   const columnSize = Math.floor((props.width - 0) / (WIDTH + MARGIN * 2));
   //const rowSize = Math.ceil(numberDays / columnSize);
+  const timestamp =
+    from
+      .clone()
+      .add(i, "day")
+      .format("YYYY-MM-DDTHH:mm:ss") + ".000Z"; // DANGER api return UTC so for now is fine, but check moment formats to render 2018-01-31T00:00:00.000Z instead of 2018-01-22T00:00:00:00Z
   const [springs] = useSprings(numberDays, i => {
     const row = Math.floor(i / columnSize) + 1;
     const column = Math.ceil(i % columnSize);
-    const timestamp =
-      from
-        .clone()
-        .add(i, "day")
-        .format("YYYY-MM-DDTHH:mm:ss") + ".000Z"; // DANGER api return UTC so for now is fine, but check moment formats to render 2018-01-31T00:00:00.000Z instead of 2018-01-22T00:00:00:00Z
     const datum: Datum | undefined = data.find(
       (el: any) => el.date === timestamp
     );
@@ -110,15 +110,24 @@ export function Timeline(props: TimelineProps) {
     };
   });
 
-  const days = new Array(numberDays)
-    .fill(true)
-    .map((el, i) => from.clone().add(i, "day"));
+  const days = new Array(numberDays).fill(true).map((el, i) => {
+    const datum: Datum | undefined = data.find(
+      (el: any) => el.date === timestamp
+    );
+    return {
+      date: from.clone().add(i, "day"),
+      count: datum ? datum.count : null
+    };
+  });
   return springs.map((props, i) => {
     const item = days[i];
     return (
       <animated.div
         className={styles.day}
-        key={item.format(format)}
+        key={item.date.format(format)}
+        title={
+          item.date.format("YYYY-MM-DD") + " / " + (item ? item.count : "null")
+        }
         style={
           {
             ...props
