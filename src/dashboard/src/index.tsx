@@ -84,7 +84,7 @@ export function DashboardView(props: DashboardViewProps) {
         const p = geoMercator()
           .scale(scale / (Math.PI * 2))
           .translate(translate)
-          .fitSize([width - 200, height - 100], geojson);
+          .fitSize([width - 300, height - 200], geojson);
 
         setDashboardProjectionParams({
           scale: p.scale() * (Math.PI * 2),

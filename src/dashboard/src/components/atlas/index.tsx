@@ -35,7 +35,6 @@ export function getProjectionParams(
   const projection = geoMercator()
     .scale(1 / tau)
     .translate([0, 0]);
-
   const bounds = [
     [center[0] - angle, center[1] - angle],
     [center[0], center[1]]
@@ -142,7 +141,14 @@ export default function Atlas(props: AtlasProps) {
     .translate(dashboardProjectionParams.translate) as GeoProjection;
   // node idea why `projection as GeoProjection` doesn't work
   const center = (projection as any).invert([width / 2, height / 2]) as any;
-  console.log(center);
+  //        var scale = (512) * 0.5 / Math.PI * Math.pow(2, zoom);
+  //a = Math.pow(b, c);
+  //c = Math.log(a)/Math.log(b)
+  // s = (512) * 0.5 / Math.PI * Math.pow(2, zoom)
+  // ((((512) * 0.5) / s) / Math.PI) = Math.pow(2, zoom)
+  // ((((512) * 0.5) / s) / Math.PI) = Math.pow(2, zoom)
+  const zoom =
+    Math.log((512 * 0.5) / projection.scale() / (Math.PI * 1)) / Math.log(2);
   return (
     <div
       //{...bind()}
@@ -154,7 +160,7 @@ export default function Atlas(props: AtlasProps) {
         overflow: "hidden"
       }}
     >
-      {center && <GLMap {...props} center={center} />}
+      {center && <GLMap {...props} center={center} zoom={zoom} />}
       <svg
         className={styles.svgMap}
         width={width}
