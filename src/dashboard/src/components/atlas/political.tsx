@@ -57,7 +57,7 @@ export default function Political(props: PoliticalProps) {
     Math.max.apply(null, data.map((el: any) => el.value))
   ];
   const [opacityRecordId, setOpacityRecordId] = useState<string | null>();
-  let range = [`rgba(143, 188, 143,${1})`, `rgba(205,92,92,${1})`] as any;
+  let range = [`rgba(135, 206, 235,${1})`, `rgba(205,92,92,${1})`] as any;
   var colorScale = scaleLinear()
     .range(range)
     .domain(domain);

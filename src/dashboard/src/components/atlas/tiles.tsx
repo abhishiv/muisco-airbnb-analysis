@@ -95,6 +95,28 @@ export default function Tiles(props: TilesProps) {
           const waterJSON = geojson(d, d.layers.water);
           return (
             <g key={i}>
+              {true && (
+                <path
+                  fill="rgba(143, 188, 143, 0.2)"
+                  key="landuse"
+                  stroke="rgba(143, 188, 143, 0)"
+                  strokeWidth="2"
+                  d={path(geojson(d, d.layers.landuse) as any) || ""}
+                ></path>
+              )}
+              {true && true && (
+                <path
+                  key="water"
+                  fill="rgba(135, 206, 235,0.3)"
+                  d={
+                    path(filter(
+                      waterJSON,
+                      (d: any) => !is_water_line(d)
+                    ) as any) || ""
+                  }
+                  stroke="aliceblue"
+                ></path>
+              )}
               {props.children}
               <path
                 key="earth"
@@ -129,19 +151,6 @@ export default function Tiles(props: TilesProps) {
                   stroke="brown"
                 ></path>
               )}{" "}
-              {true && true && (
-                <path
-                  key="water"
-                  fill="skyblue"
-                  d={
-                    path(filter(
-                      waterJSON,
-                      (d: any) => !is_water_line(d)
-                    ) as any) || ""
-                  }
-                  stroke="aliceblue"
-                ></path>
-              )}
               {true && (
                 <path
                   key="waterline"
