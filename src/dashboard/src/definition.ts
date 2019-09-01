@@ -28,7 +28,7 @@ export default {
         }
       },
       computer: (variables: any) => {
-        return `select count(*), date from users where room_type in (${toSQLList(
+        return `select count(*), date::timestamp AT TIME ZONE 'UTC' AS date from users where room_type in (${toSQLList(
           variables.roomTypes
         )}) and  city in (${toSQLList(variables.cities)}) and date >= '${
           variables.date[0]
