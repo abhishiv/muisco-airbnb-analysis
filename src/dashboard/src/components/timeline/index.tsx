@@ -78,6 +78,7 @@ export function Timeline(props: TimelineProps) {
     .utc()
     .startOf("day");
   const numberDays = to.clone().diff(from.clone(), "day");
+  console.log(numberDays);
   //const mode = getTimelineDisplayMode(numberDays);
   const WIDTH = 10;
   const MARGIN = 5;
