@@ -43,6 +43,7 @@ server.use(
 server.use(
   "/_static/:version/",
   express.static(path.join(__dirname, "..", "..", assetsDir), {
+    ...{ maxAge: "30d" },
     setHeaders: function(header) {
       header.setHeader("Service-Worker-Allowed", "/");
     }

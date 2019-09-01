@@ -6,9 +6,6 @@ import path from "path";
 
 import { Router, Request, Response, NextFunction } from "express";
 
-const IS_PROD = process.env.NODE_ENV === "production";
-const DEPLOYMENT_VERSION = process.env.GIT_SHA;
-
 export const kernelRouter: Router = Router();
 
 kernelRouter.use("/", async function(
@@ -32,6 +29,8 @@ async function Html(
     path.join(__dirname, "server.html"),
     "utf8"
   );
+  const IS_PROD = process.env.NODE_ENV === "production";
+  const DEPLOYMENT_VERSION = process.env.HEROKU_RELEASE_VERSION;
   const domain = `${IS_PROD ? "https" : "http"}://${req.get("host")}`;
   const DOMAIN = domain;
   const APPLICATION_HOST = IS_PROD
