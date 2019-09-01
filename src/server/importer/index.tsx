@@ -54,9 +54,17 @@ export async function doTransformWork(
     return d.getTime() > t.getTime();
   };
   const filtered = reviewsList.filter(f);
-  console.log("filtered", filtered.length);
+  console.log("filtered", filtered.length, filtered[0]);
   const list = filtered.map(review => {
     const listing = listingsList.find(listing => listing[0] === review[0]);
+    if (!listing) {
+      console.log(
+        "no lsitngs for",
+        review,
+        listingsList.length,
+        listingsList[0]
+      );
+    }
     const obj = {
       id: review[0] + "/" + review[1],
       date: new Date(review[1]),
@@ -119,6 +127,13 @@ export function getCites() {
         "http://localhost:5000/_data/airbnb/italy/lombardy/milan/2019-07-12/visualisations/listings.csv"
       ]
     }
+    //    {
+    //      name: "berlin",
+    //      urls: [
+    //        "http://localhost:5000/_data/airbnb/germany/be/berlin/2019-07-11/visualisations/reviews.csv",
+    //        "http://localhost:5000/_data/airbnb/germany/be/berlin/2019-07-11/visualisations/listings.csv"
+    //      ]
+    //    }
   ];
 }
 export async function doLoadWork(urls: string[]) {

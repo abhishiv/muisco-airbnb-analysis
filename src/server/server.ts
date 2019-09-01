@@ -12,14 +12,14 @@ var pg = Knex({
   client: "pg",
   pool: { min: 0, max: 7 },
   //connection: "postgres://localhost:5432/data"
-  connection: process.env.DATABASE_URL || "postgres://localhost:5432/data"
+  connection: process.env.DATABASE_URL || "postgres://localhost:5432/airbnb"
 });
 server.set("knex", pg);
 server.use(compression());
 import path from "path";
 server.use(
   postgraphile(
-    process.env.DATABASE_URL || "postgres://localhost:5432/data",
+    process.env.DATABASE_URL || "postgres://localhost:5432/airbnb",
     "public",
 
     {

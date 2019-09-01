@@ -28,7 +28,7 @@ apiRouter.get("/:dashboard/:queryName", async function(
   const knex = req.app.get("knex");
   console.log(req.query.variables);
   const variables = req.query.variables || {
-    cities: ["milano"],
+    cities: ["berlin"],
     roomTypes: ["Shared room", "Entire home/apt"],
     date: ["2014-02-01", "2018-02-01"]
   };

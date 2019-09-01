@@ -118,6 +118,14 @@ export default function Tiles(props: TilesProps) {
                 ></path>
               )}
               {props.children}
+              {false && (
+                <path
+                  fill="tan"
+                  key="landuse2"
+                  strokeWidth="0"
+                  d={path(geojson(d, d.layers.building) as any) || ""}
+                ></path>
+              )}
               <path
                 key="earth"
                 className={styles.adminPath}

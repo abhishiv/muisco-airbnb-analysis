@@ -6,7 +6,7 @@ export async function getDB(): Promise<Knex> {
   var pg = knex({
     client: "pg",
     pool: { min: 0, max: 7 },
-    connection: process.env.DATABASE_URL || "postgres://localhost:5432/data"
+    connection: process.env.DATABASE_URL || "postgres://localhost:5432/airbnb"
   });
   return pg as Knex;
 }
@@ -19,7 +19,7 @@ export async function doPublishWork(
   console.log("computed dataset", dataset.length);
   const existingRecords = await client
     .select("id", "checksum")
-    .from("users")
+    .from("reviews")
     .where(client.raw("id = ANY(?)", [dataset.map(el => el.id)]));
   const existingIds = existingRecords.map((el: any) => el.id);
   console.log("existingIds", existingIds.length);
@@ -34,12 +34,18 @@ export async function doPublishWork(
       const data = dataset.find(el => el.id === id);
       return existingIds.indexOf(id) > -1 && record.checksum !== data.checksum;
     });
+  console.log(
+    "work to do inserts = ",
+    inserts.length,
+    "updates = ",
+    updates.length
+  );
 
   const insertTasks = inserts.map((id: any) => {
     return async function(callback: Function) {
       const data = dataset.find(el => el.id === id);
-      console.log("doing", id);
-      client("users")
+      console.log("doing", id, data);
+      client("reviews")
         .insert(data)
         .then(function(resp: any) {
           callback(null, resp);
@@ -53,7 +59,7 @@ export async function doPublishWork(
   const updateTasks = updates.map((id: any) => {
     return async function(callback: Function) {
       const data = dataset.find(el => el.id === id);
-      client("users")
+      client("reviews")
         .insert(data)
         .then(function(resp: any) {
           callback(null, resp);
@@ -66,7 +72,7 @@ export async function doPublishWork(
   console.log("updateResults");
 }
 export async function createIndex(client: Knex) {
-  await client.schema.createTable("users", function(table: any) {
+  await client.schema.createTable("reviews", function(table: any) {
     table.string("id").primary();
     table.string("listing_id");
     table.string("checksum");
@@ -86,7 +92,7 @@ export async function createIndex(client: Knex) {
 
 (async () => {
   const client = await getDB();
-  await createIndex(client);
+  //await createIndex(client);
   await boot(client, doPublishWork);
 })();
 
@@ -100,7 +106,7 @@ SELECT   count(neighbourhood) AS listings_count,
          avg(price)::numeric           AS avg_price, 
          room_type, 
          neighbourhood 
-FROM     users 
+FROM     reviews 
 WHERE    room_type=$1 
 AND      date >= $2 
 AND      date < $3 
@@ -122,4 +128,3 @@ query MyQuery {
 }
 
 `;
-

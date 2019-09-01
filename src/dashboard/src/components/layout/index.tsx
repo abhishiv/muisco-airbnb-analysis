@@ -34,7 +34,7 @@ function Layout(props: LayoutProps) {
       {props.dashboardProjectionParams && (
         <Atlas {...props} height={props.height} width={props.width} />
       )}
-      {props.dashboardProjectionParams && (
+      {props.dashboardProjectionParams && false && (
         <Timeline {...props} height={props.height} width={props.width} />
       )}
       <Knobs />
