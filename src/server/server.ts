@@ -112,10 +112,10 @@ server.use("/", siteRouter);
 
 if (process.env.NODE_ENV === "production") {
   server.listen(port, function() {
-    console.debug("server listening on", port);
+    console.debug("server listening ", port);
   });
 } else {
   server.listen(port, function() {
-    console.debug("server listening on", port);
+    console.debug("server listening ", port);
   });
 }
