@@ -19,6 +19,7 @@ import Router from "../routes/index";
 
 const router = express.Router();
 router.use("/", async (req, res) => {
+  console.log(process.env.PUBLIC_URL + "/graphql");
   const client = new ApolloClient({
     ssrMode: true,
     link: createHttpLink({
@@ -41,20 +42,32 @@ router.use("/", async (req, res) => {
       </StaticRouter>
     </ApolloProvider>
   );
-  const content = await getMarkupFromTree({
-    tree: App,
-    renderFunction: renderToString
-  });
-  const initialState = client.extract();
 
-  const html = await Html(req, {
-    content: content,
-    state: initialState
-  });
+  try {
+    const content = await getMarkupFromTree({
+      tree: App,
+      renderFunction: renderToString
+    });
+    const initialState = client.extract();
 
-  res.status(200);
-  res.send(html);
-  res.end();
+    const html = await Html(req, {
+      content: content,
+      state: initialState
+    });
+
+    res.status(200);
+    res.send(html);
+    res.end();
+  } catch (e) {
+    const html = await Html(req, {
+      content: "",
+      state: {}
+    });
+
+    res.status(200);
+    res.send(html);
+    res.end();
+  }
 });
 
 async function Html(
