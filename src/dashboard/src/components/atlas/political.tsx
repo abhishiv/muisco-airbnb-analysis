@@ -187,7 +187,7 @@ export function Political(props: PoliticalProps) {
     return (
       <g className="counties">
         {dashboardMap.features.map((d: any, i: number) => {
-          const st = {};
+          const st = { transition: "none" };
           return (
             <path
               key={i}
