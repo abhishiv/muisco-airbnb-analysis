@@ -15,7 +15,6 @@ import styles from "./atlas.scss";
 import { scaleLinear } from "d3-scale";
 import { withRouter } from "react-router";
 import { RouteComponentProps } from "react-router";
-// Type whatever you expect in 'this.props.match.params.*'
 
 export function getRealData(
   map: DashboardMap,
