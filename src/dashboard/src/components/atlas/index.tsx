@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import {
   DashboardQueryVariables,
   Dashboard,
@@ -7,7 +7,6 @@ import {
   DashboardMap
 } from "../../../specs/index";
 import { RouteComponentProps } from "react-router-dom";
-import { useTransition, animated } from "react-spring";
 
 import { useDrag } from "react-use-gesture";
 
@@ -18,6 +17,13 @@ import TilesComponent from "./tiles";
 //import RasterTilesComponent from "./raster_tiles";
 import PoliticalComponent from "./political";
 import { withRouter } from "react-router-dom";
+import {
+  animated,
+  useSpring,
+  config,
+  useTransition,
+  useChain
+} from "react-spring";
 
 function floor(k: number) {
   return Math.pow(2, Math.floor(Math.log(k) / Math.LN2));
@@ -155,6 +161,22 @@ export function Atlas(props: AtlasProps) {
   //  zoom = Math.pow(2, z - z0) * 512;
   //console.log(center, zoom);
   //center = [45.4641, 9.1919].reverse();
+  const springRef = useRef();
+  const { size, opacity, ...rest } = useSpring({
+    ref: springRef,
+    config: config.stiff,
+    from: { size: "20%", background: "hotpink" },
+    to: { size: open ? "100%" : "20%", background: open ? "white" : "hotpink" }
+  });
+  const springRef2 = useRef();
+  const { size: size2, opacity: opacity2, ...rest2 } = useSpring({
+    ref: springRef2,
+    config: config.stiff,
+    from: { size: "20%", background: "hotpink" },
+    to: { size: open ? "100%" : "20%", background: open ? "white" : "hotpink" }
+  });
+  useChain(open ? [springRef, springRef2] : [springRef2, springRef]);
+
   return (
     <div
       {...bind()}

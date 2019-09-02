@@ -84,27 +84,14 @@ export default function Tiles(props: TilesProps) {
   const lowerLayers =
     vectorTiles &&
     vectorTiles.reduce((state: any, d: any, i: number) => {
-      const waterJSON = geojson(d, d.layers.water);
-      const is_water_line = (d: any) =>
-        ["canal", "drain", "river", "stream"].indexOf(d.properties.kind) > -1;
-      return [
-        ...state,
-        true && true && (
-          <path
-            key={"water" + i}
-            fill="rgba(135, 206, 235,0.3)"
-            d={
-              path(filter(waterJSON, (d: any) => !is_water_line(d)) as any) ||
-              ""
-            }
-            stroke="aliceblue"
-          ></path>
-        )
-      ];
+      return [...state];
     }, []);
   const upperLayers =
     vectorTiles &&
     vectorTiles.reduce((state: any, d: any, i: number) => {
+      const waterJSON = geojson(d, d.layers.water);
+      const is_water_line = (d: any) =>
+        ["canal", "drain", "river", "stream"].indexOf(d.properties.kind) > -1;
       const isHighway = (d: any) => {
         return d.properties.type === "primary";
       };
@@ -125,7 +112,7 @@ export default function Tiles(props: TilesProps) {
             key={"landuse" + i}
             className={styles.parkPath}
             stroke="rgba(0,0,0,0.4)"
-            strokeWidth="1"
+            strokeWidth="0"
             d={
               path(filter(
                 geojson(d, d.layers.landuse) as any,
@@ -135,6 +122,18 @@ export default function Tiles(props: TilesProps) {
                   ) > -1
               ) as any) || ""
             }
+          ></path>
+        ),
+        true && true && (
+          <path
+            key={"water" + i}
+            fill="rgba(135, 206, 235,0.3)"
+            strokeWidth={0}
+            d={
+              path(filter(waterJSON, (d: any) => !is_water_line(d)) as any) ||
+              ""
+            }
+            stroke="aliceblue"
           ></path>
         )
       ];
