@@ -8,16 +8,6 @@ import {
   DashboardQueryVariables,
   DashboardData
 } from "../../../specs/index";
-export interface PoliticalProps {
-  width: number;
-  height: number;
-  tileSize: number;
-  dashboard: Dashboard;
-  dashboardProjectionParams: DashboardProjectionParams;
-  dashboardMap: DashboardMap;
-  dashboardQueryVariables: DashboardQueryVariables;
-  dashboardData: DashboardData;
-}
 import styles from "./atlas.scss";
 
 import { scaleLinear } from "d3-scale";
@@ -26,13 +16,15 @@ export function getRealData(
   map: DashboardMap,
   data: DashboardData
 ): Array<Datum> {
-  return map.geojson.features.map((geo: any) => {
-    const row = (data.payload.grouped.rows as Array<any>).find(
+  return map.features.map((geo: any) => {
+    const row = (data as Array<any>).find(
       (r: any) => r.neighbourhood === geo.properties.neighbourhood
     );
 
     return {
-      value: row ? row.avg_price * row.count : null,
+      value: row
+        ? parseFloat(row.avgPrice) * parseFloat(row.listingsCount)
+        : null,
       id: geo.properties.neighbourhood
     };
   });
@@ -42,60 +34,135 @@ export interface Datum {
   value: any;
   id: string;
 }
+export interface PoliticalProps {
+  width: number;
+  height: number;
+  tileSize: number;
+  dashboard: Dashboard;
+  dashboardProjectionParams: DashboardProjectionParams;
+  dashboardMap: DashboardMap;
+  dashboardQueryVariables: DashboardQueryVariables;
+  dashboardData: DashboardData;
+  loading: boolean;
+}
 
-export default function Political(props: PoliticalProps) {
+export function Political(props: PoliticalProps) {
   const {
     dashboardMap,
     dashboardProjectionParams,
     //dashboardQueryVariables,
-    dashboardData
+    dashboardData,
+    loading
   } = props;
-  const data = getRealData(dashboardMap, dashboardData);
+  if (!loading) {
+    const data = getRealData(dashboardMap, dashboardData);
+    const domain = [
+      Math.min.apply(null, data.map((el: any) => el.value)),
+      Math.max.apply(null, data.map((el: any) => el.value))
+    ];
+    const [opacityRecordId, setOpacityRecordId] = useState<string | null>();
+    let range = [`rgba(135, 206, 235,${1})`, `rgba(205,92,92,${1})`] as any;
+    range = ["#ed3a3c", "#fce14c"].reverse() as any;
+    var colorScale = scaleLinear()
+      .range(range)
+      .domain(domain);
 
-  const domain = [
-    Math.min.apply(null, data.map((el: any) => el.value)),
-    Math.max.apply(null, data.map((el: any) => el.value))
-  ];
-  const [opacityRecordId, setOpacityRecordId] = useState<string | null>();
-  let range = [`rgba(135, 206, 235,${1})`, `rgba(205,92,92,${1})`] as any;
-  range = ["#ed3a3c", "#fce14c"].reverse() as any;
-  var colorScale = scaleLinear()
-    .range(range)
-    .domain(domain);
+    const { scale, translate } = dashboardProjectionParams;
 
-  const { scale, translate } = dashboardProjectionParams;
+    const projection = geoMercator()
+      .scale(scale / (Math.PI * 2))
+      .translate(translate);
+    const p = geoPath(projection);
 
-  const projection = geoMercator()
-    .scale(scale / (Math.PI * 2))
-    .translate(translate);
-  const p = geoPath(projection);
+    return (
+      <g className="counties">
+        {dashboardMap.features.map((d: any, i: number) => {
+          const dataObject = data[i];
 
-  return (
-    <g className="counties">
-      {dashboardMap.geojson.features.map((d: any, i: number) => {
-        const dataObject = data[i];
+          const st = {
+            opacity: opacityRecordId === d.properties.neighbourhood ? 1 : 0.5
+          };
+          return (
+            <path
+              key={i}
+              d={p(d) as any}
+              style={st}
+              className={styles.politicalPath}
+              onMouseEnter={() => {
+                setOpacityRecordId(d.properties.neighbourhood);
+              }}
+              onMouseLeave={() => setOpacityRecordId(null)}
+              onClick={() => {}}
+              fill={colorScale(dataObject.value) as any}
+              //fill="transparent"
+              stroke={"black"}
+              strokeWidth={1}
+            />
+          );
+        })}
+      </g>
+    );
+  } else {
+    const { scale, translate } = dashboardProjectionParams;
 
-        const st = {
-          opacity: opacityRecordId === d.properties.neighbourhood ? 1 : 0.5
-        };
-        return (
-          <path
-            key={i}
-            d={p(d) as any}
-            style={st}
-            className={styles.politicalPath}
-            onMouseEnter={() => {
-              setOpacityRecordId(d.properties.neighbourhood);
-            }}
-            onMouseLeave={() => setOpacityRecordId(null)}
-            onClick={() => {}}
-            fill={colorScale(dataObject.value) as any}
-            //fill="transparent"
-            stroke={"black"}
-            strokeWidth={1}
-          />
-        );
-      })}
-    </g>
-  );
+    const projection = geoMercator()
+      .scale(scale / (Math.PI * 2))
+      .translate(translate);
+    const p = geoPath(projection);
+
+    return (
+      <g className="counties">
+        {dashboardMap.features.map((d: any, i: number) => {
+          const st = {};
+          return (
+            <path
+              key={i}
+              d={p(d) as any}
+              style={st}
+              className={styles.politicalPath}
+              onClick={() => {}}
+              fill={`rgba(0,0,0,0.05)`}
+              stroke={"black"}
+              strokeWidth={1}
+            />
+          );
+        })}
+      </g>
+    );
+  }
+}
+
+import gql from "graphql-tag";
+import { useQuery } from "react-apollo-hooks";
+const GET_AGGREGATIONS = gql`
+  query AggregationsQuery($cityName: String!) {
+    aggregateListings(
+      cityNameValue: $cityName
+      fromDateValue: "2014-01-01"
+      toDateValue: "2018-12-30"
+      roomTypeValue: "Entire home/apt"
+    ) {
+      nodes {
+        avgPrice
+        listingsCount
+        neighbourhood
+        roomType
+      }
+    }
+  }
+`;
+export interface PoliticalApolloProps extends PoliticalProps {}
+export default function PoliticalApollo(props: PoliticalApolloProps) {
+  const { data, error, loading } = useQuery(GET_AGGREGATIONS, {
+    fetchPolicy: "cache-first",
+    variables: { cityName: "milan" }
+  });
+  const p = {
+    ...props,
+    loading,
+    dashboardData:
+      data && data.aggregateListings ? data.aggregateListings.nodes : null
+  };
+
+  return <Political {...p} />;
 }

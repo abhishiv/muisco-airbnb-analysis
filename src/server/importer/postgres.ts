@@ -118,7 +118,7 @@ export async function createIndex(client: Knex) {
   try {
     await createIndex(client);
   } catch (e) {
-    console.log("index already exists, skipping");
+    console.log("index already exists, skipping", e);
   }
 
   await boot(client, doPublishWork);
@@ -129,7 +129,7 @@ CREATE FUNCTION aggregate_listings(room_type_value text,
 from_date_value date, 
 to_date_value   date, 
 city_name_value text) 
-returns TABLE (listings_count bigint, avg_price numeric, neighbourhood text, room_type text) AS $$ 
+returns TABLE (listings_count bigint, avg_price numeric, room_type text, neighbourhood text) AS $$ 
 SELECT   count(neighbourhood) AS listings_count, 
          avg(price)::numeric           AS avg_price, 
          room_type, 

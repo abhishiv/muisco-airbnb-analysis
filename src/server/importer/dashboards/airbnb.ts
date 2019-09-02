@@ -10,8 +10,8 @@ export default {
     roomType: ["Entire home/apt", "Shared room", "Private room"],
     cities: [
       {
-        id: "milano",
-        name: "milano",
+        id: "milan",
+        name: "milan",
         topography:
           "http://data.insideairbnb.com/italy/lombardy/milan/2019-07-12/visualisations/neighbourhoods.geojson",
         dataset: [

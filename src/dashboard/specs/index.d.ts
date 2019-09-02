@@ -22,3 +22,5 @@ export interface DashboardProjectionParams {
 export interface DashboardProjectionParamsSetter {
   (parmas: DashboardProjectionParams): void;
 }
+
+export interface DashboardData {}
