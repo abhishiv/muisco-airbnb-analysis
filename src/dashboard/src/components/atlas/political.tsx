@@ -202,12 +202,27 @@ const GET_AGGREGATIONS = gql`
     }
   }
 `;
-export interface PoliticalApolloProps extends PoliticalProps {}
-export default function PoliticalApollo(props: PoliticalApolloProps) {
-  const { data, error, loading } = useQuery(GET_AGGREGATIONS, {
+import { withRouter } from "react-router";
+import { RouteComponentProps } from "react-router";
+// Type whatever you expect in 'this.props.match.params.*'
+type PathParamsType = {
+  cityName: string;
+};
+
+// Your component own properties
+type PoliticalApolloProps = RouteComponentProps<PathParamsType> &
+  PoliticalProps & {};
+
+function PoliticalApollo(props: PoliticalApolloProps) {
+  const { cityName } = props.match.params;
+  const { data, error, loading, refetch } = useQuery(GET_AGGREGATIONS, {
     fetchPolicy: "cache-first",
-    variables: { cityName: "milan" }
+    variables: { cityName: cityName }
   });
+  error;
+  React.useEffect(() => {
+    refetch();
+  }, [cityName]);
   const p = {
     ...props,
     loading,
@@ -217,3 +232,5 @@ export default function PoliticalApollo(props: PoliticalApolloProps) {
 
   return <Political {...p} />;
 }
+
+export default withRouter(PoliticalApollo);
