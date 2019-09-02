@@ -54,23 +54,24 @@ export function DashboardView(props: DashboardViewProps) {
   useEffect(() => {
     doAsyncAction();
   }, [dashboardMap, width, height]);
+  React.useEffect(() => {
+    console.log("Dashboard/Index");
+  }, []);
   return (
-    dashboardMap && (
-      <React.Fragment>
-        {
-          <Layout
-            {...({
-              dashboard,
-              dashboardProjectionParamsSetter: setDashboardProjectionParams,
-              dashboardMap,
-              dashboardProjectionParams,
-              width,
-              height
-            } as any)}
-          />
-        }
-      </React.Fragment>
-    )
+    <React.Fragment>
+      {
+        <Layout
+          {...({
+            dashboard,
+            dashboardProjectionParamsSetter: setDashboardProjectionParams,
+            dashboardMap,
+            dashboardProjectionParams,
+            width,
+            height
+          } as any)}
+        />
+      }
+    </React.Fragment>
   );
 }
 

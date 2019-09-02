@@ -109,7 +109,7 @@ export function Atlas(props: AtlasProps) {
   const {
     width: width,
     height: height,
-
+    dashboardMap,
     dashboardProjectionParams,
     dashboardProjectionParamsSetter
   } = props;
@@ -175,7 +175,13 @@ export function Atlas(props: AtlasProps) {
     from: { size: "20%", background: "hotpink" },
     to: { size: open ? "100%" : "20%", background: open ? "white" : "hotpink" }
   });
-  useChain(open ? [springRef, springRef2] : [springRef2, springRef]);
+  useChain([springRef, springRef2]);
+  const location = props.location;
+  const transitions = useTransition(location, location => location.pathname, {
+    from: { opacity: 0 },
+    enter: { opacity: 1 },
+    leave: { opacity: 0 }
+  });
 
   return (
     <div
@@ -194,33 +200,48 @@ export function Atlas(props: AtlasProps) {
         height={height}
         viewBox={`0 0 ${width} ${height}`}
       >
-        {
-          <TilesComponent
-            {...props}
-            key="1"
-            tileSize={2048}
-            {...tilesParams}
-            dashboardProjectionParams={{
-              ...dashboardProjectionParams,
-              translate: [tx + delta[0], ty + delta[1]]
-            }}
-            {...{ width, height }}
-          >
-            <PoliticalComponent
-              key="1"
-              {...props}
-              tileSize={256}
-              {...tilesParams}
-              dashboardProjectionParams={{
-                ...dashboardProjectionParams,
-                translate: [tx + delta[0], ty + delta[1]]
+        {(() => {
+          //return <Atlas {...props} />;
+          //return <Atlas {...props} />;
+          return transitions.map(({ item, props: p, key }) => (
+            <animated.g
+              style={{
+                ...p
               }}
-              dashboardData={null as any}
-              loading={false}
-              {...{ width, height }}
-            />
-          </TilesComponent>
-        }
+              key={key}
+            >
+              {true && (
+                <TilesComponent
+                  {...props}
+                  key="1"
+                  tileSize={2048}
+                  {...tilesParams}
+                  dashboardProjectionParams={{
+                    ...dashboardProjectionParams,
+                    translate: [tx + delta[0], ty + delta[1]]
+                  }}
+                  {...{ width, height }}
+                >
+                  <PoliticalComponent
+                    key="1"
+                    {...props}
+                    tileSize={256}
+                    {...tilesParams}
+                    dashboardProjectionParams={{
+                      ...dashboardProjectionParams,
+                      translate: [tx + delta[0], ty + delta[1]]
+                    }}
+                    dashboardData={null as any}
+                    loading={false}
+                    {...{ width, height }}
+                  />
+                </TilesComponent>
+              )}
+            </animated.g>
+          ));
+        })()}
+        {}
+        {null} }
       </svg>
     </div>
   );
@@ -230,21 +251,6 @@ interface AtlasContainerPropsParams {
 }
 export interface AtlasContainerProps extends AtlasProps {}
 export function AtlasContainer(props: AtlasContainerProps) {
-  const location = props.location;
-  const transitions = useTransition(location, location => location.pathname, {
-    from: { opacity: 0 },
-    enter: { opacity: 1 },
-    leave: { opacity: 0 }
-  });
-  //return <Atlas {...props} />;
-  //return <Atlas {...props} />;
-  return transitions.map(({ item, props: p, key }) => (
-    <animated.div
-      style={{ ...p, position: "absolute", height: "100%", width: "100%" }}
-      key={key}
-    >
-      {<Atlas {...props} />}
-    </animated.div>
-  ));
+  return <Atlas {...props} />;
 }
 export default withRouter(AtlasContainer as any);

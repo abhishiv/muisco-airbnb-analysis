@@ -65,5 +65,8 @@ export default function Dashboard(props: DashboardProps) {
       : JSON.parse(topographyData.topographyById.payload),
     variables
   };
+  React.useEffect(() => {
+    console.log("DashboardComponent");
+  }, []);
   return <DashboardComponent {...p} />;
 }

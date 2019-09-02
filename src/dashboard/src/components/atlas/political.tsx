@@ -18,10 +18,10 @@ import { RouteComponentProps } from "react-router";
 
 export function getRealData(
   map: DashboardMap,
-  data: DashboardData
+  data?: DashboardData
 ): Array<Datum> {
   return map.features.map((geo: any) => {
-    const row = (data as Array<any>).find(
+    const row = ((data || []) as Array<any>).find(
       (r: any) => r.id === geo.properties.neighbourhood
     );
 
@@ -52,15 +52,15 @@ export interface PoliticalProps {
 
 export interface PoliticalPathProps {
   d: any;
-  datum: Datum;
-  active: boolean;
+  index: any;
+  data: any;
   path: any;
   colorScale: any;
   dashboardData: DashboardData;
 }
 export function PoliticalPath(props: PoliticalPathProps) {
-  const { datum, d, path, colorScale, dashboardData } = props;
-  const dataObject = datum;
+  const { data, index, d, path, colorScale, dashboardData } = props;
+  const dataObject = data[index];
   const [opacityRecordId, setOpacityRecordId] = useState<string | null>();
 
   const [targetNode, setTargetNode] = useState(null);
@@ -76,10 +76,10 @@ export function PoliticalPath(props: PoliticalPathProps) {
   styles;
   placement;
   arrowStyles;
-  const dataItem = (dashboardData as Array<any>).find(
+  const dataItem = ((dashboardData || []) as Array<any>).find(
     el => el.id === d.properties.neighbourhood
   );
-  const st = { opacity: opacityRecordId ? 0.5 : 1 };
+  const st = { opacity: opacityRecordId ? 1 : 1 };
   return (
     <React.Fragment>
       <path
@@ -92,7 +92,11 @@ export function PoliticalPath(props: PoliticalPathProps) {
         }}
         onMouseLeave={() => setOpacityRecordId(null)}
         onClick={() => {}}
-        fill={colorScale(dataObject.value) as any}
+        fill={
+          dataObject
+            ? (colorScale(dataObject.value) as any)
+            : "rgba(255,255,255,1)"
+        }
         //fill="transparent"
         stroke={"black"}
         strokeWidth={1}
@@ -136,74 +140,47 @@ export function Political(props: PoliticalProps) {
     dashboardMap,
     dashboardProjectionParams,
     //dashboardQueryVariables,
-    dashboardData,
-    loading
+    dashboardData
   } = props;
-  if (!loading) {
-    const data = getRealData(dashboardMap, dashboardData);
-    const domain = [
-      Math.min.apply(null, data.map((el: any) => el.value)),
-      Math.max.apply(null, data.map((el: any) => el.value))
-    ];
-
-    let range = [`rgba(135, 206, 235,${1})`, `rgba(205,92,92,${1})`] as any;
-    range = ["#ed3a3c", "#fce14c"].reverse() as any;
-    var colorScale = scaleLinear()
-      .range(range)
-      .domain(domain);
-
-    const { scale, translate } = dashboardProjectionParams;
-
-    const projection = geoMercator()
-      .scale(scale / (Math.PI * 2))
-      .translate(translate);
-    const p = geoPath(projection);
-
-    return (
-      <g key="a" className="counties2">
-        {dashboardMap.features.map((d: any, i: number) => {
-          return (
-            <PoliticalPath
-              key={i}
-              path={p}
-              d={d}
-              dashboardData={dashboardData}
-              datum={data[i]}
-              colorScale={colorScale}
-              active={false}
-            />
-          );
-        })}
-      </g>
-    );
-  } else {
-    const { scale, translate } = dashboardProjectionParams;
-
-    const projection = geoMercator()
-      .scale(scale / (Math.PI * 2))
-      .translate(translate);
-    const p = geoPath(projection);
-
-    return (
-      <g key="b" className="counties">
-        {dashboardMap.features.map((d: any, i: number) => {
-          const st = { transition: "none" };
-          return (
-            <path
-              key={i}
-              d={p(d) as any}
-              style={st}
-              className={styles.politicalPath}
-              onClick={() => {}}
-              fill={`rgba(255,255,255, 0.2)`}
-              stroke={"black"}
-              strokeWidth={1}
-            />
-          );
-        })}
-      </g>
-    );
+  if (!dashboardData || !dashboardMap) {
+    return null;
   }
+  const data = getRealData(dashboardMap, dashboardData);
+  const domain = [
+    Math.min.apply(null, data.map((el: any) => el.value)),
+    Math.max.apply(null, data.map((el: any) => el.value))
+  ];
+
+  let range = [`rgba(135, 206, 235,${1})`, `rgba(205,92,92,${1})`] as any;
+  range = ["#ed3a3c", "#fce14c"].reverse() as any;
+  var colorScale = scaleLinear()
+    .range(range)
+    .domain(domain);
+
+  const { scale, translate } = dashboardProjectionParams;
+
+  const projection = geoMercator()
+    .scale(scale / (Math.PI * 2))
+    .translate(translate);
+  const p = geoPath(projection);
+
+  return (
+    <g key="a" className="counties2">
+      {dashboardMap.features.map((d: any, i: number) => {
+        return (
+          <PoliticalPath
+            key={i}
+            path={p}
+            d={d}
+            dashboardData={dashboardData}
+            index={i}
+            data={data}
+            colorScale={colorScale}
+          />
+        );
+      })}
+    </g>
+  );
 }
 
 import gql from "graphql-tag";
@@ -236,14 +213,11 @@ type PoliticalApolloProps = RouteComponentProps<PathParamsType> &
 
 function PoliticalApollo(props: PoliticalApolloProps) {
   const { cityName } = props.match.params;
-  const { data, error, loading, refetch } = useQuery(GET_AGGREGATIONS, {
+  const { data, error, loading } = useQuery(GET_AGGREGATIONS, {
     fetchPolicy: "cache-first",
     variables: { cityName: cityName }
   });
   error;
-  React.useEffect(() => {
-    refetch();
-  }, [cityName]);
   React.useEffect(() => {
     console.log("PoliticalApollo");
   }, []);

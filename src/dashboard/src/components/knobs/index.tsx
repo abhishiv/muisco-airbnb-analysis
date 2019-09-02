@@ -1,10 +1,9 @@
-import React from "react";
+import React, { useRef } from "react";
 
 import styles from "./knobs.scss";
 import { Dashboard } from "../../../specs/index";
-import { withRouter } from "react-router";
 import { RouteComponentProps } from "react-router";
-
+import { useSpring, useChain, animated, config } from "react-spring";
 interface HeaderProps {}
 
 export function Header(props: HeaderProps) {
@@ -28,9 +27,9 @@ type KnobsProps = RouteComponentProps<PathParamsType> & {
 };
 import { Link } from "react-router-dom";
 
-export default function Knobs(props: KnobsProps) {
+function Knobs(props: KnobsProps) {
   return (
-    <div className={styles.container}>
+    <React.Fragment>
       <Header />
       <div className={styles.body}>
         <div className={styles.listContainer}>
@@ -66,6 +65,22 @@ export default function Knobs(props: KnobsProps) {
           </div>
         </div>
       </div>
-    </div>
+    </React.Fragment>
+  );
+}
+
+export default function KnobsAnimated(props: KnobsProps) {
+  const springRef = useRef();
+  const { size, opacity, ...rest } = useSpring({
+    ref: springRef as any,
+    config: config.stiff,
+    from: { transform: "translateY(-100%)", opacity: 0 },
+    to: { transform: " translateY(0%)", opacity: 1 }
+  });
+  useChain([springRef]);
+  return (
+    <animated.div className={styles.container} style={{ ...rest }}>
+      <Knobs {...props} />
+    </animated.div>
   );
 }

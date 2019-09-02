@@ -3,6 +3,9 @@ import DashboardComponent from "../../../../dashboard/src/index";
 import { RouteComponentProps } from "react-router-dom";
 export interface DashboardProps extends RouteComponentProps {}
 export default function Dashboard(props: DashboardProps) {
+  React.useEffect(() => {
+    console.log("DashboardRoute");
+  }, []);
   return (
     <div
       style={{

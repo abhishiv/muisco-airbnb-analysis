@@ -26,6 +26,9 @@ export interface LayoutProps {
 }
 
 function Layout(props: LayoutProps) {
+  React.useEffect(() => {
+    console.log("layout");
+  }, []);
   return (
     <React.Fragment>
       {props.dashboardProjectionParams && (
