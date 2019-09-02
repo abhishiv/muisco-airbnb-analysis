@@ -33,7 +33,6 @@ export function DashboardView(props: DashboardViewProps) {
       .translate(dashboardProjectionParams.translate);
     const path = geoPath(projection);
     let bounds = path.bounds(dashboardMap);
-    console.log(dashboardMap);
     const dx = bounds[1][0] - bounds[0][0],
       dy = bounds[1][1] - bounds[0][1],
       x = (bounds[0][0] + bounds[1][0]) / 2,
@@ -43,15 +42,10 @@ export function DashboardView(props: DashboardViewProps) {
         width / 2 - scale * x,
         height / 2 - scale * y
       ];
-    console.log(props);
     const p = geoMercator()
       .scale(scale / (Math.PI * 2))
       .translate(translate)
       .fitSize([width - 300, height], dashboardMap);
-    console.log({
-      scale: p.scale() * (Math.PI * 2),
-      translate: p.translate()
-    });
     setDashboardProjectionParams({
       scale: p.scale() * (Math.PI * 2),
       translate: p.translate()
@@ -59,7 +53,7 @@ export function DashboardView(props: DashboardViewProps) {
   };
   useEffect(() => {
     doAsyncAction();
-  }, [!dashboardMap && loading, width, height]);
+  }, [loading, width, height]);
   return (
     dashboardMap && (
       <React.Fragment>

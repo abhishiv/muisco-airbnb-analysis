@@ -34,9 +34,10 @@ export default function Knobs(props: KnobsProps) {
       <Header />
       <div className={styles.body}>
         <div className={styles.list} key={"city"}>
-          {props.dashboard.meta.cities.map((city: any) => {
+          {props.dashboard.meta.cities.map((city: any, i) => {
             return (
               <Link
+                key={i}
                 to={"/works/airbnb-analysis/" + city.id}
                 className={styles.item}
               >

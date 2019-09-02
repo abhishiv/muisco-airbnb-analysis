@@ -207,7 +207,6 @@ interface AtlasContainerPropsParams {
 export interface AtlasContainerProps extends AtlasProps {}
 export function AtlasContainer(props: AtlasContainerProps) {
   const location = props.location;
-  console.log(location.pathname);
   const transitions = useTransition(location, location => location.pathname, {
     from: { opacity: 0 },
     enter: { opacity: 1 },
