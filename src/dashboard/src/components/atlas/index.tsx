@@ -6,6 +6,8 @@ import {
   DashboardProjectionParamsSetter,
   DashboardMap
 } from "../../../specs/index";
+import { RouteComponentProps } from "react-router-dom";
+import { useTransition, animated } from "react-spring";
 
 import { useDrag } from "react-use-gesture";
 
@@ -15,6 +17,7 @@ import styles from "./atlas.scss";
 import TilesComponent from "./tiles";
 //import RasterTilesComponent from "./raster_tiles";
 import PoliticalComponent from "./political";
+import { withRouter } from "react-router-dom";
 
 function floor(k: number) {
   return Math.pow(2, Math.floor(Math.log(k) / Math.LN2));
@@ -85,7 +88,8 @@ export interface ProjectionParams {
 export interface TilesParams {
   delta: [number, number];
 }
-export interface AtlasProps {
+export interface AtlasProps
+  extends RouteComponentProps<AtlasContainerPropsParams> {
   width: number;
   height: number;
   dashboardQueryVariables: DashboardQueryVariables;
@@ -95,7 +99,7 @@ export interface AtlasProps {
   dashboardProjectionParamsSetter: DashboardProjectionParamsSetter;
 }
 
-export default function Atlas(props: AtlasProps) {
+export function Atlas(props: AtlasProps) {
   const {
     width: width,
     height: height,
@@ -197,3 +201,25 @@ export default function Atlas(props: AtlasProps) {
     </div>
   );
 }
+interface AtlasContainerPropsParams {
+  cityName: string;
+}
+export interface AtlasContainerProps extends AtlasProps {}
+export function AtlasContainer(props: AtlasContainerProps) {
+  const location = props.location;
+  console.log(location.pathname);
+  const transitions = useTransition(location, location => location.pathname, {
+    from: { opacity: 0 },
+    enter: { opacity: 1 },
+    leave: { opacity: 0 }
+  });
+  return transitions.map(({ item, props: p, key }) => (
+    <animated.div
+      style={{ ...p, position: "absolute", height: "100%", width: "100%" }}
+      key={key}
+    >
+      <Atlas {...props} />
+    </animated.div>
+  ));
+}
+export default withRouter(AtlasContainer as any);
