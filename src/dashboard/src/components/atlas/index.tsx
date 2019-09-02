@@ -208,17 +208,19 @@ export interface AtlasContainerProps extends AtlasProps {}
 export function AtlasContainer(props: AtlasContainerProps) {
   const location = props.location;
   const transitions = useTransition(location, location => location.pathname, {
-    from: { transform: `translateX(${props.width * -1}px)` },
-    enter: { transform: "translateX(0)" },
-    leave: { transform: `translateX(${props.width * 1}px)` }
+    from: { opacity: 0 },
+    enter: { opacity: 1 },
+    leave: { opacity: 0 }
   });
-  return <Atlas {...props} />;
+  //return <Atlas {...props} />;
 
   return transitions.map(({ item, props: p, key }) => (
     <animated.div
       style={{ ...p, position: "absolute", height: "100%", width: "100%" }}
       key={key}
-    ></animated.div>
+    >
+      {<Atlas {...props} />}
+    </animated.div>
   ));
 }
 export default withRouter(AtlasContainer as any);
