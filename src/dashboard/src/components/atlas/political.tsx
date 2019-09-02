@@ -72,6 +72,7 @@ export function PoliticalPath(props: PoliticalPathProps) {
     popperNode: menuNode,
     arrowNode
   }) as any;
+  //console.log(popperStyles, arrowStyles, placement);
   setArrowNode;
   styles;
   placement;

@@ -11,8 +11,9 @@
   opacity: 1;
   cursor: pointer;
   //transition: opacity 300ms ease-in-out;
+  will-change: fill;
   &:hover {
-    //opacity: 0.5;
+    opacity: 0.8 !important;
     //fill: rgba(0, 0, 0, 0.06);
   }
 }
