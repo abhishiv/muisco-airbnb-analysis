@@ -79,7 +79,7 @@ export function PoliticalPath(props: PoliticalPathProps) {
   const dataItem = (dashboardData as Array<any>).find(
     el => el.id === d.properties.neighbourhood
   );
-  const st = {};
+  const st = { opacity: opacityRecordId ? 0.5 : 1 };
   return (
     <React.Fragment>
       <path
@@ -110,7 +110,7 @@ export function PoliticalPath(props: PoliticalPathProps) {
               {d.properties.neighbourhood}
             </div>
             <div className={styles.infoPanel}>
-              {!dataItem && <div styles={styles.empty}>N/A</div>}
+              {!dataItem && <div className={styles.empty}>N/A</div>}
               {dataItem && (
                 <div className={styles.popupStat}>
                   <div>${Math.round(dataItem.avgPrice)}</div>
