@@ -118,7 +118,7 @@ export function PoliticalPath(props: PoliticalPathProps) {
               )}
               {dataItem && (
                 <div className={styles.popupStat}>
-                  <div>${Math.round(dataItem.listingsCount)}</div>
+                  <div>{Math.round(dataItem.listingsCount)}</div>
                   <div>listings</div>
                 </div>
               )}
