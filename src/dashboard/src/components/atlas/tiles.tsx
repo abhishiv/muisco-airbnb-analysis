@@ -84,7 +84,6 @@ export default function Tiles(props: TilesProps) {
   const lowerLayers =
     vectorTiles &&
     vectorTiles.reduce((state: any, d: any, i: number) => {
-      console.log(d);
       const waterJSON = geojson(d, d.layers.water);
       const is_water_line = (d: any) =>
         ["canal", "drain", "river", "stream"].indexOf(d.properties.kind) > -1;
