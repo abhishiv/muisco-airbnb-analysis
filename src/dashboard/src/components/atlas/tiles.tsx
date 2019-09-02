@@ -81,133 +81,113 @@ export default function Tiles(props: TilesProps) {
     .scale(scale / (Math.PI * 2))
     .translate(translate);
   const path = geoPath(projection);
+  const lowerLayers =
+    vectorTiles &&
+    vectorTiles.reduce((state: any, d: any, i: number) => {
+      const waterJSON = geojson(d, d.layers.water);
+      const is_water_line = (d: any) =>
+        ["canal", "drain", "river", "stream"].indexOf(d.properties.kind) > -1;
+      return [
+        ...state,
+        true && (
+          <path
+            fill="rgba(143, 188, 143, 0.2)"
+            key={"landuse" + i}
+            stroke="rgba(143, 188, 143, 0)"
+            strokeWidth="2"
+            d={path(geojson(d, d.layers.landuse) as any) || ""}
+          ></path>
+        ),
+        true && true && (
+          <path
+            key={"water" + i}
+            fill="rgba(135, 206, 235,0.3)"
+            d={
+              path(filter(waterJSON, (d: any) => !is_water_line(d)) as any) ||
+              ""
+            }
+            stroke="aliceblue"
+          ></path>
+        )
+      ];
+    }, []);
+  const upperLayers =
+    vectorTiles &&
+    vectorTiles.reduce((state: any, d: any, i: number) => {
+      const isHighway = (d: any) => {
+        return d.properties.type === "primary";
+      };
+      const roadJSON = geojson(d, d.layers.road);
+      return [
+        ...state,
+        <path
+          key={"admin" + i}
+          className={styles.adminPath}
+          d={
+            path(filter(geojson(d, d.layers.admin), (d: any) => {
+              return true;
+            }) as any) || ""
+          }
+        ></path>,
+        roadJSON && (
+          <path
+            key={"road" + i}
+            d={path(filter(roadJSON, (d: any) => isHighway(d)) as any) || ""}
+            stroke="brown"
+          ></path>
+        )
+      ];
+    }, []);
+  const labels =
+    vectorTiles &&
+    vectorTiles.reduce((state: any, d: any, vi: number) => {
+      return [
+        ...state,
+        ...(d.layers.place_label
+          ? (() => {
+              const [x, y, z] = d;
+              const layer = d.layers.place_label;
+              const features = [];
+              const dom = [];
+              for (let i = 0; i < layer.length; ++i) {
+                const f = layer.feature(i).toGeoJSON(x, y, z);
+                const c = path.centroid(f.geometry);
+                const fontSize = 25 - f.properties.symbolrank;
+
+                const ranked = () => {
+                  return true;
+                };
+                const rank = ranked();
+                rank &&
+                  fontSize > 5 &&
+                  dom.push(
+                    <g key={i + " " + vi}>
+                      <text
+                        className={styles.label}
+                        textRendering="geometricPrecision"
+                        textAnchor={f.properties.text_anchor}
+                        fontSize={fontSize}
+                        x={c[0]}
+                        y={c[1]}
+                      >
+                        {f.properties.name_en}
+                      </text>
+                    </g>
+                  );
+                rank && features.push(f);
+              }
+              //console.log("k", k / tau);
+              return dom;
+            })()
+          : [])
+      ];
+    }, []);
   return (
     <React.Fragment>
-      {vectorTiles &&
-        vectorTiles.map((d: any, i: number) => {
-          const is_water_line = (d: any) =>
-            ["canal", "drain", "river", "stream"].indexOf(d.properties.kind) >
-            -1;
-          const isHighway = (d: any) => {
-            return d.properties.type === "primary";
-          };
-          const roadJSON = geojson(d, d.layers.road);
-          const waterJSON = geojson(d, d.layers.water);
-          return (
-            <g key={i}>
-              {true && (
-                <path
-                  fill="rgba(143, 188, 143, 0.2)"
-                  key="landuse"
-                  stroke="rgba(143, 188, 143, 0)"
-                  strokeWidth="2"
-                  d={path(geojson(d, d.layers.landuse) as any) || ""}
-                ></path>
-              )}
-              {true && true && (
-                <path
-                  key="water"
-                  fill="rgba(135, 206, 235,0.3)"
-                  d={
-                    path(filter(
-                      waterJSON,
-                      (d: any) => !is_water_line(d)
-                    ) as any) || ""
-                  }
-                  stroke="aliceblue"
-                ></path>
-              )}
-              {props.children}
-              {false && (
-                <path
-                  fill="tan"
-                  key="landuse2"
-                  strokeWidth="0"
-                  d={path(geojson(d, d.layers.building) as any) || ""}
-                ></path>
-              )}
-              <path
-                key="earth"
-                className={styles.adminPath}
-                d={
-                  path(filter(geojson(d, d.layers.admin), (d: any) => {
-                    return true;
-                  }) as any) || ""
-                }
-              ></path>
-              {true && (
-                <path
-                  fill="green"
-                  key="landusea"
-                  stroke="darkseagreen"
-                  strokeWidth="2"
-                  d={
-                    path(filter(
-                      geojson(d, d.layers.buildings),
-                      (d: any) => true
-                    ) as any) || ""
-                  }
-                ></path>
-              )}
-              {roadJSON && (
-                <path
-                  key="road"
-                  d={
-                    path(filter(roadJSON, (d: any) => isHighway(d)) as any) ||
-                    ""
-                  }
-                  stroke="brown"
-                ></path>
-              )}{" "}
-              {true && (
-                <path
-                  key="waterline"
-                  stroke="orange"
-                  strokeWidth={2}
-                  d={path(filter(waterJSON, is_water_line) as any) || ""}
-                ></path>
-              )}
-              <g key="sd">
-                {d.layers.place_label &&
-                  (() => {
-                    const [x, y, z] = d;
-                    const layer = d.layers.place_label;
-                    const features = [];
-                    const dom = [];
-                    for (let i = 0; i < layer.length; ++i) {
-                      const f = layer.feature(i).toGeoJSON(x, y, z);
-                      const c = path.centroid(f.geometry);
-                      const fontSize = 25 - f.properties.symbolrank;
-
-                      const ranked = () => {
-                        return true;
-                      };
-                      const rank = ranked();
-                      rank &&
-                        fontSize > 5 &&
-                        dom.push(
-                          <g key={i}>
-                            <text
-                              className={styles.label}
-                              textRendering="geometricPrecision"
-                              textAnchor={f.properties.text_anchor}
-                              fontSize={fontSize}
-                              x={c[0]}
-                              y={c[1]}
-                            >
-                              {f.properties.name_en}
-                            </text>
-                          </g>
-                        );
-                      rank && features.push(f);
-                    }
-                    //console.log("k", k / tau);
-                    return dom;
-                  })()}
-              </g>
-            </g>
-          );
-        })}
+      {vectorTiles && lowerLayers}
+      {props.children}
+      {vectorTiles && upperLayers}
+      {vectorTiles && labels}
     </React.Fragment>
   );
 }

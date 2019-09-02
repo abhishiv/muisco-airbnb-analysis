@@ -79,14 +79,13 @@ export function PoliticalPath(props: PoliticalPathProps) {
   const dataItem = (dashboardData as Array<any>).find(
     el => el.id === d.properties.neighbourhood
   );
-  const st = {};
+  const st = { opacity: opacityRecordId ? 0.5 : 1 };
   return (
     <React.Fragment>
       <path
         ref={setTargetNode as any}
         d={path(d) as any}
         style={st}
-        fillOpacity={opacityRecordId ? 0.5 : 1}
         className={styles.politicalPath}
         onMouseEnter={() => {
           setOpacityRecordId(d.properties.neighbourhood);
@@ -161,7 +160,7 @@ export function Political(props: PoliticalProps) {
     const p = geoPath(projection);
 
     return (
-      <g className="counties">
+      <g key="a" className="counties2">
         {dashboardMap.features.map((d: any, i: number) => {
           return (
             <PoliticalPath
@@ -186,7 +185,7 @@ export function Political(props: PoliticalProps) {
     const p = geoPath(projection);
 
     return (
-      <g className="counties">
+      <g key="b" className="counties">
         {dashboardMap.features.map((d: any, i: number) => {
           const st = { transition: "none" };
           return (

@@ -172,9 +172,10 @@ export function Atlas(props: AtlasProps) {
         height={height}
         viewBox={`0 0 ${width} ${height}`}
       >
-        {Number.isFinite(width) && (
+        {
           <TilesComponent
             {...props}
+            key="1"
             tileSize={2048}
             {...tilesParams}
             dashboardProjectionParams={{
@@ -184,6 +185,7 @@ export function Atlas(props: AtlasProps) {
             {...{ width, height }}
           >
             <PoliticalComponent
+              key="1"
               {...props}
               tileSize={256}
               {...tilesParams}
@@ -196,7 +198,7 @@ export function Atlas(props: AtlasProps) {
               {...{ width, height }}
             />
           </TilesComponent>
-        )}
+        }
       </svg>
     </div>
   );
@@ -213,7 +215,7 @@ export function AtlasContainer(props: AtlasContainerProps) {
     leave: { opacity: 0 }
   });
   //return <Atlas {...props} />;
-
+  //return <Atlas {...props} />;
   return transitions.map(({ item, props: p, key }) => (
     <animated.div
       style={{ ...p, position: "absolute", height: "100%", width: "100%" }}
