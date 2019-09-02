@@ -166,7 +166,7 @@ export function Atlas(props: AtlasProps) {
   const { opacity } = useSpring({
     ref: springRef,
     config: config.stiff,
-    from: { opacity: 0 },
+    from: { opacity: 1 },
     to: { opacity: 1 }
   });
   const location = props.location;
@@ -174,7 +174,8 @@ export function Atlas(props: AtlasProps) {
     ref: transitionRef,
     from: { opacity: 0 },
     enter: { opacity: 1 },
-    leave: { opacity: 0 }
+    leave: { opacity: 0 },
+    config: config.gentle
   });
   useChain([transitionRef, springRef]);
 
