@@ -110,6 +110,7 @@ export function PoliticalPath(props: PoliticalPathProps) {
               {d.properties.neighbourhood}
             </div>
             <div className={styles.infoPanel}>
+              {!dataItem && <div styles={styles.empty}>N/A</div>}
               {dataItem && (
                 <div className={styles.popupStat}>
                   <div>${Math.round(dataItem.avgPrice)}</div>

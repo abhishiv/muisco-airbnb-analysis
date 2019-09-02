@@ -73,7 +73,12 @@
     flex: 1;
   }
 }
-
+.empty {
+  padding: 10px;
+  font-size: 25px;
+  font-weight: bold;
+  text-align: center;
+}
 .popupStat {
   flex: 1;
   text-align: center;
