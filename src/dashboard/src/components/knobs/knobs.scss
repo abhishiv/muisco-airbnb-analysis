@@ -77,3 +77,14 @@
     color: white;
   }
 }
+
+.listContainer:last-child {
+  opacity: 0.5;
+  user-select: none;
+  user-select: none;
+  pointer-events: none;
+
+  .item {
+    background: lightcoral;
+  }
+}
