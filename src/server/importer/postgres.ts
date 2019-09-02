@@ -6,7 +6,9 @@ export async function getDB(): Promise<Knex> {
   var pg = knex({
     client: "pg",
     pool: { min: 0, max: 7 },
-    connection: process.env.DATABASE_URL || "postgres://localhost:5432/airbnb"
+    connection:
+      process.env.DATABASE_URL ||
+      "postgres://admin:BDUPRYOYYJPUXRZG@aws-us-east-1-portal.29.dblayer.com:34428/compose"
   });
   return pg as Knex;
 }
@@ -73,42 +75,14 @@ export async function doPublishWork(
 }
 export async function createIndex(client: Knex) {
   console.log("creating schema");
-  await client.schema.createTable("reviews", function(table: any) {
-    table.string("id").primary();
-    table.string("listing_id");
-    table.string("checksum");
-    table.date("date");
-    table.string("city");
-    table.string("neighbourhood");
-    table.string("room_type");
-    table.decimal("price"); //
 
-    table.index("checksum");
-    table.index("date");
-    table.index("neighbourhood");
-    table.index("room_type");
-    table.index("price");
-  });
-  await client.schema.createTable("topographies", function(table: any) {
-    table.string("id").primary();
-    table.jsonb("payload");
-  });
-  await client.schema.createTable("dashboards", function(table: any) {
-    table.string("id").primary();
-    table.jsonb("definition");
-  });
   const dashboard = await getDashboard();
 
   await client("dashboards").insert({
     id: dashboard.id,
     definition: dashboard
   });
-  const topographies = await getTopographies(dashboard);
-  await Promise.all(
-    topographies.map(async (t: any) => {
-      await client("topographies").insert(t);
-    })
-  );
+
   console.log("created schema");
   // TODO: add code, code2 queries from bottom of this file as well
 }

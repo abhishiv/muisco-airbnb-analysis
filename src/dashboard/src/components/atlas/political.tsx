@@ -121,7 +121,7 @@ export function Political(props: PoliticalProps) {
               style={st}
               className={styles.politicalPath}
               onClick={() => {}}
-              fill={`rgba(0,0,0,0.05)`}
+              fill={`rgba(255,255,255, 0.2)`}
               stroke={"black"}
               strokeWidth={1}
             />

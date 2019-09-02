@@ -8,6 +8,7 @@
 }
 .politicalPath {
   //fill: rgba(0, 0, 0, 0.03);
+  opacity: 0.5;
   cursor: pointer;
   transition: opacity 300ms ease-in-out;
   &:hover {
