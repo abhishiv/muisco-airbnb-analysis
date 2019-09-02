@@ -84,6 +84,7 @@ export default function Tiles(props: TilesProps) {
   const lowerLayers =
     vectorTiles &&
     vectorTiles.reduce((state: any, d: any, i: number) => {
+      console.log(d);
       const waterJSON = geojson(d, d.layers.water);
       const is_water_line = (d: any) =>
         ["canal", "drain", "river", "stream"].indexOf(d.properties.kind) > -1;
@@ -95,7 +96,15 @@ export default function Tiles(props: TilesProps) {
             key={"landuse" + i}
             stroke="rgba(143, 188, 143, 0)"
             strokeWidth="2"
-            d={path(geojson(d, d.layers.landuse) as any) || ""}
+            d={
+              path(filter(
+                geojson(d, d.layers.landuse) as any,
+                (dd: any) =>
+                  ["park", "grass", "agriculture"].indexOf(
+                    dd.properties.class
+                  ) > -1
+              ) as any) || ""
+            }
           ></path>
         ),
         true && true && (
