@@ -13,7 +13,7 @@ export interface TilesProps {
   children: React.ReactNode;
 }
 export const mapbox_access_token =
-  "pk.eyJ1IjoiYWJvdXRhYXJvbiIsImEiOiJsRTRpMGJnIn0.aprlJ6wE1JQqBx4EH1lkMQ";
+  "pk.eyJ1IjoiYWJoaXNoaXYiLCJhIjoiY2swMjQ3djlwMXZhbjNibzFnNXI4bzU0NCJ9.LDAmYQM6tdpdsBK30cnoqw";
 import vt from "@mapbox/vector-tile";
 
 function filter(param: any, test: Function) {

@@ -80,4 +80,4 @@ export default function Tiles(props: TilesProps) {
 export const tileURL = (x: number, y: number, z: number) =>
   `https://api.mapbox.com/styles/v1/mapbox/streets-v11/tiles/${z}/${x}/${y}${
     devicePixelRatio > 1 ? "@2x" : ""
-  }?access_token=pk.eyJ1IjoidG1jdyIsImEiOiJjamN0Z3ZiOXEwanZkMnh2dGFuemkzemE3In0.gibebYiJ5TEdXvwjpCY0jg`;
+  }?access_token=pk.eyJ1IjoiYWJoaXNoaXYiLCJhIjoiY2swMjQ3djlwMXZhbjNibzFnNXI4bzU0NCJ9.LDAmYQM6tdpdsBK30cnoqw`;
