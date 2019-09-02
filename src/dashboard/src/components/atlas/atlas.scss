@@ -44,3 +44,44 @@
   border-radius: 2px;
   box-shadow: 0 0 1px rgba(0, 0, 0, 0.82), 0 1px 4px rgba(0, 0, 0, 0.1);
 }
+
+.infoPanel {
+  display: flex;
+}
+
+.popupHeader {
+  padding: 5px;
+  border-bottom: 1px solid #ddd;
+  background: steelblue;
+  text-align: center;
+  font-weight: bold;
+  color: white;
+  box-shadow: 0 0 1px rgba(0, 0, 0, 0.82), 0 1px 4px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(0, 0, 0, 0.5);
+}
+
+.infoPanel {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  box-shadow: 0 0 1px rgba(0, 0, 0, 0.82), 0 1px 4px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(0, 0, 0, 0.5);
+  > div {
+    flex: 1;
+  }
+}
+
+.popupStat {
+  flex: 1;
+  text-align: center;
+  width: 100%;
+  border-bottom: 1px solid #ddd;
+  background: aliceblue;
+  padding: 10px;
+  > div:first-child {
+    font-size: 25px;
+    font-weight: bold;
+  }
+}

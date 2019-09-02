@@ -50,8 +50,12 @@ export default function Knobs(props: KnobsProps) {
           })}
         </div>
         <div className={styles.list} key={"roomtype"}>
-          {props.dashboard.meta.roomType.map((roomType: any) => {
-            return <div className={styles.item}>{roomType}</div>;
+          {props.dashboard.meta.roomType.map((roomType: any, i: number) => {
+            return (
+              <div key={i} className={styles.item}>
+                {roomType}
+              </div>
+            );
           })}
         </div>
       </div>

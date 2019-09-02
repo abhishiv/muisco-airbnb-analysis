@@ -56,9 +56,10 @@ export interface PoliticalPathProps {
   active: boolean;
   path: any;
   colorScale: any;
+  dashboardData: DashboardData;
 }
 export function PoliticalPath(props: PoliticalPathProps) {
-  const { datum, d, path, colorScale } = props;
+  const { datum, d, path, colorScale, dashboardData } = props;
   const dataObject = datum;
   const [opacityRecordId, setOpacityRecordId] = useState<string | null>();
 
@@ -75,6 +76,9 @@ export function PoliticalPath(props: PoliticalPathProps) {
   styles;
   placement;
   arrowStyles;
+  const dataItem = (dashboardData as Array<any>).find(
+    el => el.id === d.properties.neighbourhood
+  );
   const st = {};
   return (
     <React.Fragment>
@@ -101,7 +105,24 @@ export function PoliticalPath(props: PoliticalPathProps) {
             className={styles.neighbourhoodPopup}
             data-placement={placement}
           >
-            {d.properties.neighbourhood}
+            <div className={styles.popupHeader}>
+              {" "}
+              {d.properties.neighbourhood}
+            </div>
+            <div className={styles.infoPanel}>
+              {dataItem && (
+                <div className={styles.popupStat}>
+                  <div>${Math.round(dataItem.avgPrice)}</div>
+                  <div>avg price</div>
+                </div>
+              )}
+              {dataItem && (
+                <div className={styles.popupStat}>
+                  <div>${Math.round(dataItem.listingsCount)}</div>
+                  <div>listings</div>
+                </div>
+              )}
+            </div>
           </div>,
           document.body
         )}
@@ -145,6 +166,7 @@ export function Political(props: PoliticalProps) {
               key={i}
               path={p}
               d={d}
+              dashboardData={dashboardData}
               datum={data[i]}
               colorScale={colorScale}
               active={false}
