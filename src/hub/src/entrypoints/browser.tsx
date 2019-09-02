@@ -14,7 +14,6 @@ export function boot() {
   console.log((window as any).__APOLLO_STATE__);
   cache.restore((window as any).__APOLLO_STATE__);
   const client = new ApolloClient({
-    ssrMode: true,
     // Remember that this is the interface the SSR server will use to connect to the
     // API server, so we need to ensure it isn't firewalled, etc
     link: createHttpLink({
