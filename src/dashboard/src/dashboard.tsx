@@ -21,7 +21,6 @@ export interface DashboardViewProps {
 export function DashboardView(props: DashboardViewProps) {
   const { dashboardMap, loading, dashboard } = props;
   const { width, height } = props.size || {};
-  console.log(width, height);
   const [dashboardProjectionParams, setDashboardProjectionParams] = useState<
     DashboardProjectionParams
   >({
@@ -62,7 +61,7 @@ export function DashboardView(props: DashboardViewProps) {
     doAsyncAction();
   }, [loading, width, height]);
   return (
-    !loading && (
+    dashboardMap && (
       <React.Fragment>
         {
           <Layout

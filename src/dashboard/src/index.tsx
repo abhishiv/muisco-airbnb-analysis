@@ -58,10 +58,10 @@ export default function Dashboard(props: DashboardProps) {
   const p = {
     ...props,
     loading: dashboardLoading || topographyLoading,
-    dashboard: dashboardLoading
+    dashboard: !dashboardData
       ? null
       : JSON.parse(dashboardData.dashboardById.definition),
-    dashboardMap: topographyLoading
+    dashboardMap: !topographyData
       ? null
       : JSON.parse(topographyData.topographyById.payload),
     variables,

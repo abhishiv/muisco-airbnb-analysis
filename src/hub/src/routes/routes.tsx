@@ -13,7 +13,7 @@ const routes = [
     path: "/works/airbnb-analysis/:cityName",
     name: "dashboard",
     component: Dashboard,
-    exact: false
+    exact: true
   }
 ];
 
