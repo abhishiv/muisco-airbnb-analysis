@@ -2,11 +2,9 @@ import React, { useState } from "react";
 import {
   DashboardQueryVariables,
   Dashboard,
-  DashboardQueryVariablesSetter,
   DashboardProjectionParams,
   DashboardProjectionParamsSetter,
-  DashboardMap,
-  DashboardData
+  DashboardMap
 } from "../../../specs/index";
 
 import { useDrag } from "react-use-gesture";
@@ -17,7 +15,6 @@ import styles from "./atlas.scss";
 import TilesComponent from "./tiles";
 //import RasterTilesComponent from "./raster_tiles";
 import PoliticalComponent from "./political";
-import GLMap from "./gl";
 
 function floor(k: number) {
   return Math.pow(2, Math.floor(Math.log(k) / Math.LN2));
@@ -94,10 +91,8 @@ export interface AtlasProps {
   dashboardQueryVariables: DashboardQueryVariables;
   dashboardMap: DashboardMap;
   dashboard: Dashboard;
-  dashboardQueryVariablesSetter: DashboardQueryVariablesSetter;
   dashboardProjectionParams: DashboardProjectionParams;
   dashboardProjectionParamsSetter: DashboardProjectionParamsSetter;
-  dashboardData: DashboardData;
 }
 
 export default function Atlas(props: AtlasProps) {
@@ -167,7 +162,6 @@ export default function Atlas(props: AtlasProps) {
         overflow: "hidden"
       }}
     >
-      {center && false && <GLMap {...props} center={center} zoom={zoom} />}
       <svg
         className={styles.svgMap}
         width={width}
@@ -185,19 +179,20 @@ export default function Atlas(props: AtlasProps) {
             }}
             {...{ width, height }}
           >
-            <PoliticalComponent
-              {...props}
-              tileSize={256}
-              {...tilesParams}
-              dashboardProjectionParams={{
-                ...dashboardProjectionParams,
-                translate: [tx + delta[0], ty + delta[1]]
-              }}
-              {...{ width, height }}
-            />
+            {null}
           </TilesComponent>
         )}
       </svg>
     </div>
   );
 }
+//            <PoliticalComponent
+//              {...props}
+//              tileSize={256}
+//              {...tilesParams}
+//              dashboardProjectionParams={{
+//                ...dashboardProjectionParams,
+//                translate: [tx + delta[0], ty + delta[1]]
+//              }}
+//              {...{ width, height }}
+//            />

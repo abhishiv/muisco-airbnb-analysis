@@ -1,6 +1,6 @@
 import knex from "knex";
 import parallelLimit from "async/parallelLimit";
-import boot from "./index";
+import boot, { getDashboard, getTopographies } from "./index";
 type Knex = any;
 export async function getDB(): Promise<Knex> {
   var pg = knex({
@@ -72,6 +72,7 @@ export async function doPublishWork(
   console.log("updateResults");
 }
 export async function createIndex(client: Knex) {
+  console.log("creating schema");
   await client.schema.createTable("reviews", function(table: any) {
     table.string("id").primary();
     table.string("listing_id");
@@ -80,7 +81,7 @@ export async function createIndex(client: Knex) {
     table.string("city");
     table.string("neighbourhood");
     table.string("room_type");
-    table.decimal("price");
+    table.decimal("price"); //
 
     table.index("checksum");
     table.index("date");
@@ -88,11 +89,38 @@ export async function createIndex(client: Knex) {
     table.index("room_type");
     table.index("price");
   });
+  await client.schema.createTable("topographies", function(table: any) {
+    table.string("id").primary();
+    table.jsonb("payload");
+  });
+  await client.schema.createTable("dashboards", function(table: any) {
+    table.string("id").primary();
+    table.jsonb("definition");
+  });
+  const dashboard = await getDashboard();
+
+  await client("dashboards").insert({
+    id: dashboard.id,
+    definition: dashboard
+  });
+  const topographies = await getTopographies(dashboard);
+  await Promise.all(
+    topographies.map(async (t: any) => {
+      await client("topographies").insert(t);
+    })
+  );
+  console.log("created schema");
+  // TODO: add code, code2 queries from bottom of this file as well
 }
 
 (async () => {
   const client = await getDB();
-  //await createIndex(client);
+  try {
+    await createIndex(client);
+  } catch (e) {
+    console.log("index already exists, skipping");
+  }
+
   await boot(client, doPublishWork);
 })();
 
@@ -115,16 +143,12 @@ GROUP BY grouping sets ( (room_type, neighbourhood), (neighbourhood, room_type) 
 
 `;
 
-export const graphQLQuery = `
-query MyQuery {
-  aggregateListings(roomTypeValue: "Entire home/apt", fromDateValue: "2014-02-01", toDateValue: "2024-02-01", cityNameValue: "milano") {
-    nodes {
-      avgPrice
-      listingsCount
-      roomType
-      neighbourhood
-    }
-  }
-}
-
+export const code2 = `
+CREATE FUNCTION group_listings_date(city_name_value text) 
+returns TABLE (count bigint, date TIMESTAMP WITH TIME ZONE) AS $$ 
+SELECT   count(*), 
+         date::timestamp AT TIME ZONE 'UTC' AS date 
+FROM     reviews 
+WHERE    city=$1
+GROUP BY date(date) order by date asc $$ language sql stable;
 `;

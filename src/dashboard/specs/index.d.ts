@@ -1,47 +1,17 @@
+import { ExtendedFeatureCollection } from "d3-geo";
 export interface DashboardQueryVariables {
-  cities: string[];
   cityName: string;
-  roomTypes: string[];
-  date: [string, string];
-  center: [number, number];
-  zoom: number;
+  roomType: string;
+  from: string;
+  to: string;
 }
 
-export interface DashboardData {
-  payload: any;
-}
-
-export interface DashboardMap {
-  city: string;
-  geojson: any;
-}
-
-export interface DashboardQueryVariablesSetter {
-  (query: DashboardQueryVariables): void;
-}
-
-export interface City {
-  name: string;
-  location: [number, number];
-  geojson: any;
-}
-
-export interface Query {
-  name: string;
-  returnType: any;
-}
-
-export interface DashboardResult {
-  data: DashboardData;
-  map: DashboardMap;
-  variables: DashboardQueryVariables;
-}
+export type DashboardMap = ExtendedFeatureCollection;
 
 export interface Dashboard {
   id: string;
   defaultQueryVariables: DashboardQueryVariables;
-  cities: City[];
-  queries: Query[];
+  meta: any;
 }
 
 export interface DashboardProjectionParams {

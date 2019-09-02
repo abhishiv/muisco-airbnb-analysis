@@ -2,6 +2,26 @@ import parse from "csv-parse";
 import fetch from "node-fetch";
 import series from "async/series";
 import crypto from "crypto";
+import airbnbDashboard from "./dashboards/airbnb";
+
+export async function getDashboard() {
+  return airbnbDashboard as typeof airbnbDashboard;
+}
+export async function getTopographies(dashboard: any): Promise<any[]> {
+  const topographies = dashboard.meta.cities.map(function(city: any) {
+    return {
+      id: city.id,
+      url: city.topography
+    };
+  });
+  return await Promise.all(
+    topographies.map(async (t: any) => {
+      const payload = await (await fetch(t.url)).json();
+      return { id: t.id, payload };
+    })
+  );
+}
+
 export function parseCSV(text: string) {
   return new Promise(function(resolve, reject) {
     const output: any[] = [];

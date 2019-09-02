@@ -2,14 +2,13 @@ import React from "react";
 export interface LayoutProps {}
 
 import Timeline from "../../components/timeline/index";
+Timeline;
 import {
   Dashboard,
   DashboardQueryVariables,
-  DashboardQueryVariablesSetter,
   DashboardMap,
   DashboardProjectionParams,
-  DashboardProjectionParamsSetter,
-  DashboardData
+  DashboardProjectionParamsSetter
 } from "../../../specs/index";
 import Atlas from "../atlas/index";
 import styles from "./layout.scss";
@@ -19,13 +18,11 @@ styles;
 export interface LayoutProps {
   dashboardQueryVariables: DashboardQueryVariables;
   dashboard: Dashboard;
-  dashboardQueryVariablesSetter: DashboardQueryVariablesSetter;
   dashboardMap: DashboardMap;
   width: number;
   height: number;
   dashboardProjectionParams: DashboardProjectionParams;
   dashboardProjectionParamsSetter: DashboardProjectionParamsSetter;
-  dashboardData: DashboardData;
 }
 
 function Layout(props: LayoutProps) {
@@ -34,11 +31,11 @@ function Layout(props: LayoutProps) {
       {props.dashboardProjectionParams && (
         <Atlas {...props} height={props.height} width={props.width} />
       )}
-      {props.dashboardProjectionParams && false && (
-        <Timeline {...props} height={props.height} width={props.width} />
-      )}
       <Knobs />
     </React.Fragment>
   );
 }
+//      {props.dashboardProjectionParams && false && (
+//        //<Timeline {...props} height={props.height} width={props.width} />
+//      )}
 export default Layout;

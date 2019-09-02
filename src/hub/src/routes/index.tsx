@@ -1,26 +1,17 @@
 // ./routes/Layout.js
 import { Route, Switch } from "react-router";
-import { Link } from "react-router-dom";
 import React from "react";
 
 // A Routes file is a good shared entry-point between client and server
 import routes from "./routes";
 
 const Layout = () => (
-  <div>
-    <nav>
-      <ul>
-        <li>
-          <Link to="/">Home</Link>
-        </li>
-        <li>
-          <Link to="/works/airbnb-analysis/milan">Milan</Link>
-        </li>
-      </ul>
-    </nav>
-
-    {/* New <Switch> behavior introduced in React Router v4
-       https://reacttraining.com/react-router/web/api/Switch */}
+  <div
+    style={{
+      height: "100vh",
+      width: "100vw"
+    }}
+  >
     <Switch>
       {routes.map(route => (
         <Route key={route.name} {...route} />
