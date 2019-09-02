@@ -4,14 +4,10 @@ import React from "react";
 
 // A Routes file is a good shared entry-point between client and server
 import routes from "./routes";
+import styles from "./index.scss";
 
 const Layout = () => (
-  <div
-    style={{
-      height: "100vh",
-      width: "100vw"
-    }}
-  >
+  <div className={styles.container}>
     <Switch>
       {routes.map(route => {
         console.log("route", route);
