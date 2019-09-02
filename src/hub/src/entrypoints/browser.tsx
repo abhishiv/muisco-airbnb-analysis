@@ -9,8 +9,9 @@ import { createHttpLink } from "apollo-link-http";
 import { InMemoryCache } from "apollo-cache-inmemory";
 
 import Layout from "../routes/index";
-
 export function boot() {
+  const cache = new InMemoryCache();
+  cache.restore((window as any).__APOLLO_STATE__);
   const client = new ApolloClient({
     ssrMode: true,
     // Remember that this is the interface the SSR server will use to connect to the
@@ -19,7 +20,7 @@ export function boot() {
       uri: "/graphql",
       credentials: "same-origin"
     }),
-    cache: new InMemoryCache()
+    cache
   });
 
   const rootElement = document.getElementById("root");

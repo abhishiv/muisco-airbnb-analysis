@@ -30,7 +30,9 @@ export default function Dashboard(props: DashboardProps) {
     data: dashboardData,
     error: dashboardError,
     loading: dashboardLoading
-  } = useQuery(GET_DASH_QUERY, {});
+  } = useQuery(GET_DASH_QUERY, {
+    fetchPolicy: "cache-first"
+  });
   const variables: { [key: string]: any } = {
     cityName: props.match.params.cityName,
     ...(props.location.search ? parse(props.location.search) : {})
@@ -42,6 +44,7 @@ export default function Dashboard(props: DashboardProps) {
     loading: topographyLoading,
     refetch: refetchTopography
   } = useQuery(GET_TOPOGRAPHY_QUERY, {
+    fetchPolicy: "cache-first",
     variables
   });
   React.useEffect(() => {
