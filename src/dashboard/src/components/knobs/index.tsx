@@ -79,7 +79,11 @@ export default function KnobsAnimated(props: KnobsProps) {
   });
   useChain([springRef]);
   return (
-    <animated.div className={styles.container} style={{ ...rest }}>
+    <animated.div
+      native={true}
+      className={styles.container}
+      style={{ ...rest }}
+    >
       <Knobs {...props} />
     </animated.div>
   );

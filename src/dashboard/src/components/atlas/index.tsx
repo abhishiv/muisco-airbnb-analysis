@@ -208,6 +208,7 @@ export function Atlas(props: AtlasProps) {
               style={{
                 ...p
               }}
+              native={true}
               key={key}
             >
               {true && (
