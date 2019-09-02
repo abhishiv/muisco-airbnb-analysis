@@ -125,7 +125,7 @@ export function PoliticalPath(props: PoliticalPathProps) {
               )}
             </div>
           </div>,
-          document.body.firstElementChild
+          document.body.firstElementChild as any
         )}
     </React.Fragment>
   );

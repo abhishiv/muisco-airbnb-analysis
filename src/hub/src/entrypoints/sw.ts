@@ -12,5 +12,10 @@ if (workbox) {
 }
 
 workbox.setConfig({ debug: true });
+// map tiles
+workbox.routing.registerRoute(
+  /https:\/\/[abcd]\.tiles\.mapbox\.com|https:\/\/ecn\.t\d\.tiles\.virtualearth\.net/,
+  new workbox.strategies.CacheFirst()
+);
 
 export default {};
