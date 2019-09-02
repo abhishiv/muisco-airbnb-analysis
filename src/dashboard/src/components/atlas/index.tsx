@@ -9,7 +9,7 @@ import {
 
 import { useDrag } from "react-use-gesture";
 
-import { geoMercator, GeoProjection } from "d3-geo";
+import { geoMercator } from "d3-geo";
 
 import styles from "./atlas.scss";
 import TilesComponent from "./tiles";
@@ -187,6 +187,8 @@ export default function Atlas(props: AtlasProps) {
                 ...dashboardProjectionParams,
                 translate: [tx + delta[0], ty + delta[1]]
               }}
+              dashboardData={null as any}
+              loading={false}
               {...{ width, height }}
             />
           </TilesComponent>

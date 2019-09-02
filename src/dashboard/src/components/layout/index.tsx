@@ -31,7 +31,7 @@ function Layout(props: LayoutProps) {
       {props.dashboardProjectionParams && (
         <Atlas {...props} height={props.height} width={props.width} />
       )}
-      <Knobs />
+      <Knobs {...props} />
     </React.Fragment>
   );
 }
