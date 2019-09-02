@@ -202,7 +202,9 @@ export function Atlas(props: AtlasProps) {
           return transitions.map(({ item, props: p, key }) => (
             <animated.g
               style={{
-                ...p
+                ...p,
+
+                willChange: "opacity"
               }}
               native={true}
               key={key}
@@ -222,7 +224,8 @@ export function Atlas(props: AtlasProps) {
                   <animated.g
                     native={true}
                     style={{
-                      opacity
+                      opacity,
+                      willChange: "opacity"
                     }}
                   >
                     <PoliticalComponent
