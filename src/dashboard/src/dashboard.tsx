@@ -53,7 +53,7 @@ export function DashboardView(props: DashboardViewProps) {
   };
   useEffect(() => {
     doAsyncAction();
-  }, [loading, width, height]);
+  }, [dashboardMap, width, height]);
   return (
     dashboardMap && (
       <React.Fragment>

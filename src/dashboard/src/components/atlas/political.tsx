@@ -22,7 +22,7 @@ export function getRealData(
 ): Array<Datum> {
   return map.features.map((geo: any) => {
     const row = (data as Array<any>).find(
-      (r: any) => r.neighbourhood === geo.properties.neighbourhood
+      (r: any) => r.id === geo.properties.neighbourhood
     );
 
     return {
@@ -198,7 +198,7 @@ const GET_AGGREGATIONS = gql`
       nodes {
         avgPrice
         listingsCount
-        neighbourhood
+        id
         roomType
       }
     }

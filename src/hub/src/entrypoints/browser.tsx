@@ -9,10 +9,10 @@ import { createHttpLink } from "apollo-link-http";
 import { InMemoryCache } from "apollo-cache-inmemory";
 
 import Layout from "../routes/index";
-export function boot() {
-  const cache = new InMemoryCache();
-  console.log((window as any).__APOLLO_STATE__);
+export async function boot() {
+  const cache = new InMemoryCache({});
   cache.restore((window as any).__APOLLO_STATE__);
+  console.log((window as any).__APOLLO_STATE__);
   const client = new ApolloClient({
     // Remember that this is the interface the SSR server will use to connect to the
     // API server, so we need to ensure it isn't firewalled, etc

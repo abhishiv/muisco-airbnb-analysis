@@ -128,8 +128,8 @@ CREATE FUNCTION aggregate_listings(room_type_value text,
 from_date_value date, 
 to_date_value   date, 
 city_name_value text) 
-returns TABLE (listings_count bigint, avg_price numeric, room_type text, neighbourhood text) AS $$ 
-SELECT   count(neighbourhood) AS listings_count, 
+returns TABLE ( listings_count bigint, avg_price numeric, room_type text, id text) AS $$ 
+SELECT    count(neighbourhood) AS listings_count, 
          avg(price)::numeric           AS avg_price, 
          room_type, 
          neighbourhood 

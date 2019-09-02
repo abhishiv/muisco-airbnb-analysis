@@ -41,14 +41,13 @@ export default function Dashboard(props: DashboardProps) {
   const {
     data: topographyData,
     error: topographyError,
-    loading: topographyLoading,
-    refetch: refetchTopography
+    loading: topographyLoading
   } = useQuery(GET_TOPOGRAPHY_QUERY, {
     fetchPolicy: "cache-first",
     variables
   });
   React.useEffect(() => {
-    refetchTopography();
+    //refetchTopography();
   }, Object.keys(variables).map(key => variables[key]));
 
   if (dashboardError || topographyError) {
