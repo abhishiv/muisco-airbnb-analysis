@@ -120,15 +120,6 @@ export default function Tiles(props: TilesProps) {
       const roadJSON = geojson(d, d.layers.road);
       return [
         ...state,
-        <path
-          key={"admin" + i}
-          className={styles.adminPath}
-          d={
-            path(filter(geojson(d, d.layers.admin), (d: any) => {
-              return true;
-            }) as any) || ""
-          }
-        ></path>,
         roadJSON && (
           <path
             key={"road" + i}
