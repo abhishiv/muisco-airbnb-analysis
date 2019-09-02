@@ -223,6 +223,9 @@ function PoliticalApollo(props: PoliticalApolloProps) {
   React.useEffect(() => {
     refetch();
   }, [cityName]);
+  React.useEffect(() => {
+    console.log("PoliticalApollo");
+  }, []);
   const p = {
     ...props,
     loading,
