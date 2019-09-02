@@ -11,6 +11,7 @@ import { InMemoryCache } from "apollo-cache-inmemory";
 import Layout from "../routes/index";
 export function boot() {
   const cache = new InMemoryCache();
+  console.log((window as any).__APOLLO_STATE__);
   cache.restore((window as any).__APOLLO_STATE__);
   const client = new ApolloClient({
     ssrMode: true,

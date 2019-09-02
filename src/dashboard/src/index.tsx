@@ -64,10 +64,7 @@ export default function Dashboard(props: DashboardProps) {
     dashboardMap: !topographyData
       ? null
       : JSON.parse(topographyData.topographyById.payload),
-    variables,
-    setVariables: () => {
-      console.log("setVariables");
-    }
+    variables
   };
   return <DashboardComponent {...p} />;
 }
