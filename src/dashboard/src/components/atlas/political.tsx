@@ -79,13 +79,14 @@ export function PoliticalPath(props: PoliticalPathProps) {
   const dataItem = (dashboardData as Array<any>).find(
     el => el.id === d.properties.neighbourhood
   );
-  const st = { opacity: opacityRecordId ? 0.5 : 1 };
+  const st = {};
   return (
     <React.Fragment>
       <path
         ref={setTargetNode as any}
         d={path(d) as any}
         style={st}
+        fillOpacity={opacityRecordId ? 0.5 : 1}
         className={styles.politicalPath}
         onMouseEnter={() => {
           setOpacityRecordId(d.properties.neighbourhood);
