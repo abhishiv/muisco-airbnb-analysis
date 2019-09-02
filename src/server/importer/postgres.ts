@@ -152,3 +152,6 @@ FROM     reviews
 WHERE    city=$1
 GROUP BY date(date) order by date asc $$ language sql stable;
 `;
+
+// pg_dump airbnb --no-acl --no-privileges > airbnb-milan-berlin.sq
+// psql -d 'postgres://admin:xxx@aws-us-east-1-portal.29.dblayer.com:34428/compose' -f airbnb-milan-berlin.sq
