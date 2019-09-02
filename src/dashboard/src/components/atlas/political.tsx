@@ -1,5 +1,7 @@
 import React, { useState } from "react";
+import ReactDOM from "react-dom";
 import { geoPath, geoMercator } from "d3-geo";
+import usePopper from "../general/popper/index";
 
 import {
   Dashboard,
@@ -46,6 +48,67 @@ export interface PoliticalProps {
   loading: boolean;
 }
 
+export interface PoliticalPathProps {
+  d: any;
+  datum: Datum;
+  active: boolean;
+  path: any;
+  colorScale: any;
+}
+export function PoliticalPath(props: PoliticalPathProps) {
+  const { datum, d, path, colorScale } = props;
+  const dataObject = datum;
+  const [opacityRecordId, setOpacityRecordId] = useState<string | null>();
+
+  const [targetNode, setTargetNode] = useState(null);
+  const [menuNode, setMenuNode] = useState(null);
+  const [arrowNode, setArrowNode] = useState(null);
+
+  const { styles: popperStyles, placement, arrowStyles } = usePopper({
+    referrenceNode: targetNode,
+    popperNode: menuNode,
+    arrowNode
+  });
+  setArrowNode;
+  styles;
+  placement;
+  arrowStyles;
+  const st = {
+    opacity: opacityRecordId === d.properties.neighbourhood ? 1 : 0.5
+  };
+  return (
+    <React.Fragment>
+      <path
+        ref={setTargetNode as any}
+        d={path(d) as any}
+        style={st}
+        className={styles.politicalPath}
+        onMouseEnter={() => {
+          setOpacityRecordId(d.properties.neighbourhood);
+        }}
+        onMouseLeave={() => setOpacityRecordId(null)}
+        onClick={() => {}}
+        fill={colorScale(dataObject.value) as any}
+        //fill="transparent"
+        stroke={"black"}
+        strokeWidth={1}
+      />
+      {opacityRecordId &&
+        ReactDOM.createPortal(
+          <div
+            ref={setMenuNode as any}
+            style={popperStyles}
+            className={styles.neighbourhoodPopup}
+            data-placement={placement}
+          >
+            {d.properties.neighbourhood}
+          </div>,
+          document.body
+        )}
+    </React.Fragment>
+  );
+}
+
 export function Political(props: PoliticalProps) {
   const {
     dashboardMap,
@@ -60,7 +123,7 @@ export function Political(props: PoliticalProps) {
       Math.min.apply(null, data.map((el: any) => el.value)),
       Math.max.apply(null, data.map((el: any) => el.value))
     ];
-    const [opacityRecordId, setOpacityRecordId] = useState<string | null>();
+
     let range = [`rgba(135, 206, 235,${1})`, `rgba(205,92,92,${1})`] as any;
     range = ["#ed3a3c", "#fce14c"].reverse() as any;
     var colorScale = scaleLinear()
@@ -77,26 +140,14 @@ export function Political(props: PoliticalProps) {
     return (
       <g className="counties">
         {dashboardMap.features.map((d: any, i: number) => {
-          const dataObject = data[i];
-
-          const st = {
-            opacity: opacityRecordId === d.properties.neighbourhood ? 1 : 0.5
-          };
           return (
-            <path
+            <PoliticalPath
               key={i}
-              d={p(d) as any}
-              style={st}
-              className={styles.politicalPath}
-              onMouseEnter={() => {
-                setOpacityRecordId(d.properties.neighbourhood);
-              }}
-              onMouseLeave={() => setOpacityRecordId(null)}
-              onClick={() => {}}
-              fill={colorScale(dataObject.value) as any}
-              //fill="transparent"
-              stroke={"black"}
-              strokeWidth={1}
+              path={p}
+              d={d}
+              datum={data[i]}
+              colorScale={colorScale}
+              active={false}
             />
           );
         })}
