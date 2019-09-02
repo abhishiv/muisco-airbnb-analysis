@@ -89,23 +89,6 @@ export default function Tiles(props: TilesProps) {
         ["canal", "drain", "river", "stream"].indexOf(d.properties.kind) > -1;
       return [
         ...state,
-        true && (
-          <path
-            fill="rgba(143, 188, 143, 0.2)"
-            key={"landuse" + i}
-            stroke="rgba(143, 188, 143, 0)"
-            strokeWidth="2"
-            d={
-              path(filter(
-                geojson(d, d.layers.landuse) as any,
-                (dd: any) =>
-                  ["park", "grass", "agriculture"].indexOf(
-                    dd.properties.class
-                  ) > -1
-              ) as any) || ""
-            }
-          ></path>
-        ),
         true && true && (
           <path
             key={"water" + i}
@@ -130,9 +113,28 @@ export default function Tiles(props: TilesProps) {
         ...state,
         roadJSON && (
           <path
+            className={styles.roadPath}
             key={"road" + i}
             d={path(filter(roadJSON, (d: any) => isHighway(d)) as any) || ""}
             stroke="brown"
+          ></path>
+        ),
+        true && (
+          <path
+            fill="rgba(143, 188, 143, 0.2)"
+            key={"landuse" + i}
+            className={styles.parkPath}
+            stroke="rgba(0,0,0,0.4)"
+            strokeWidth="1"
+            d={
+              path(filter(
+                geojson(d, d.layers.landuse) as any,
+                (dd: any) =>
+                  ["park", "grass", "agriculture"].indexOf(
+                    dd.properties.class
+                  ) > -1
+              ) as any) || ""
+            }
           ></path>
         )
       ];

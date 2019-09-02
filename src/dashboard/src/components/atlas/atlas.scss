@@ -93,3 +93,8 @@
     font-weight: bold;
   }
 }
+
+.roadPath,
+.parkPath {
+  pointer-events: none;
+}
