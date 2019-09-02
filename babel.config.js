@@ -14,7 +14,7 @@ module.exports = {
         preprocessCss: "./tools/sass.js",
         extensions: [".css", ".scss", ".less"],
         generateScopedName: "[name]--[local]--[hash:base64:8]",
-        extractCss: "./build/hub.css"
+        extractCss: "./build/hub.bundle.css"
       }
     ]
   ]
