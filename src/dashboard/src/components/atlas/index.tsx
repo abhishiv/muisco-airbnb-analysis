@@ -117,7 +117,7 @@ export function Atlas(props: AtlasProps) {
   const [tx, ty] = dashboardProjectionParams.translate;
   const bind = useDrag(({ down, xy, delta, last, shiftKey }) => {
     if (!shiftKey) {
-      return;
+      //return;
     }
     if (timer) {
       cancelAnimationFrame(timer);
