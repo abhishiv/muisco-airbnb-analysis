@@ -43,16 +43,20 @@
 }
 .item {
   padding: 5px;
-  background: white;
-  border: 1px solid rgba(0, 0, 0, 0.4);
-  box-shadow: 0 0 1px rgba(0, 0, 0, 0.82), 0 1px 4px rgba(0, 0, 0, 0.1);
+  background: darkseagreen;
+  border: 1px solid rgba(0, 0, 0, 0.8);
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.4),
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.47);
   margin: 10px;
   border-radius: 4px;
   cursor: pointer;
   text-align: center;
+  color: black;
+  text-transform: capitalize;
   &:hover {
     transform: scale(1.1);
     transition: transform 200ms ease-in-out;
+    background: white;
   }
 }
 
@@ -64,5 +68,11 @@
     display: block;
     width: 50px;
     height: 50px;
+  }
+}
+.listContainer {
+  > div:first-child {
+    padding: 5px;
+    color: white;
   }
 }

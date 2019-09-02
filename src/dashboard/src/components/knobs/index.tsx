@@ -33,30 +33,37 @@ export default function Knobs(props: KnobsProps) {
     <div className={styles.container}>
       <Header />
       <div className={styles.body}>
-        <div className={styles.list} key={"city"}>
-          {props.dashboard.meta.cities.map((city: any, i) => {
-            return (
-              <Link
-                key={i}
-                to={"/works/airbnb-analysis/" + city.id}
-                className={styles.item}
-              >
-                <span
-                  className={styles.icon}
-                  dangerouslySetInnerHTML={{ __html: city.icon }}
-                ></span>
-              </Link>
-            );
-          })}
+        <div className={styles.listContainer}>
+          <div>City</div>
+          <div className={styles.list} key={"city"}>
+            {props.dashboard.meta.cities.map((city: any, i) => {
+              return (
+                <Link
+                  key={i}
+                  title={city.name}
+                  to={"/works/airbnb-analysis/" + city.id}
+                  className={styles.item}
+                >
+                  <span
+                    className={styles.icon}
+                    dangerouslySetInnerHTML={{ __html: city.icon }}
+                  ></span>
+                </Link>
+              );
+            })}
+          </div>
         </div>
-        <div className={styles.list} key={"roomtype"}>
-          {props.dashboard.meta.roomType.map((roomType: any, i: number) => {
-            return (
-              <div key={i} className={styles.item}>
-                {roomType}
-              </div>
-            );
-          })}
+        <div className={styles.listContainer}>
+          <div>Room Type</div>
+          <div className={styles.list} key={"roomtype"}>
+            {props.dashboard.meta.roomType.map((roomType: any, i: number) => {
+              return (
+                <div key={i} className={styles.item}>
+                  {roomType}
+                </div>
+              );
+            })}
+          </div>
         </div>
       </div>
     </div>
