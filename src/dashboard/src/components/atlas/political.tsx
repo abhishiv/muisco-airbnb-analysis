@@ -75,9 +75,7 @@ export function PoliticalPath(props: PoliticalPathProps) {
   styles;
   placement;
   arrowStyles;
-  const st = {
-    opacity: opacityRecordId === d.properties.neighbourhood ? 1 : 0.5
-  };
+  const st = {};
   return (
     <React.Fragment>
       <path
