@@ -162,26 +162,21 @@ export function Atlas(props: AtlasProps) {
   //console.log(center, zoom);
   //center = [45.4641, 9.1919].reverse();
   const springRef = useRef();
-  const { size, opacity, ...rest } = useSpring({
+  const transitionRef = useRef();
+  const { opacity } = useSpring({
     ref: springRef,
     config: config.stiff,
-    from: { size: "20%", background: "hotpink" },
-    to: { size: open ? "100%" : "20%", background: open ? "white" : "hotpink" }
+    from: { opacity: 0 },
+    to: { opacity: 1 }
   });
-  const springRef2 = useRef();
-  const { size: size2, opacity: opacity2, ...rest2 } = useSpring({
-    ref: springRef2,
-    config: config.stiff,
-    from: { size: "20%", background: "hotpink" },
-    to: { size: open ? "100%" : "20%", background: open ? "white" : "hotpink" }
-  });
-  useChain([springRef, springRef2]);
   const location = props.location;
   const transitions = useTransition(location, location => location.pathname, {
+    ref: transitionRef,
     from: { opacity: 0 },
     enter: { opacity: 1 },
     leave: { opacity: 0 }
   });
+  useChain([transitionRef, springRef]);
 
   return (
     <div
@@ -223,19 +218,26 @@ export function Atlas(props: AtlasProps) {
                   }}
                   {...{ width, height }}
                 >
-                  <PoliticalComponent
-                    key="1"
-                    {...props}
-                    tileSize={256}
-                    {...tilesParams}
-                    dashboardProjectionParams={{
-                      ...dashboardProjectionParams,
-                      translate: [tx + delta[0], ty + delta[1]]
+                  <animated.g
+                    native={true}
+                    style={{
+                      opacity
                     }}
-                    dashboardData={null as any}
-                    loading={false}
-                    {...{ width, height }}
-                  />
+                  >
+                    <PoliticalComponent
+                      key="1"
+                      {...props}
+                      tileSize={256}
+                      {...tilesParams}
+                      dashboardProjectionParams={{
+                        ...dashboardProjectionParams,
+                        translate: [tx + delta[0], ty + delta[1]]
+                      }}
+                      dashboardData={null as any}
+                      loading={false}
+                      {...{ width, height }}
+                    />
+                  </animated.g>
                 </TilesComponent>
               )}
             </animated.g>
