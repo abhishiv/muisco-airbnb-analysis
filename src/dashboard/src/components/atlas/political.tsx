@@ -65,14 +65,14 @@ export interface PopupPrpos {
   dataItem: any;
   placement: any;
 }
-export const Popup = React.forwardRef<PopupPrpos>((props, ref) => {
+export const Popup = React.forwardRef<PopupPrpos>((props: PopupPrpos, ref) => {
   const animatedStyles = useSpring({
     config: config.stiff,
     from: { opacity: 0 },
     to: { ...props.styles, opacity: 1 }
   });
   const { d, dataItem } = props;
-  //console.log(props);
+  console.log(props);
   return (
     <animated.div
       ref={ref}
@@ -132,7 +132,9 @@ export function PoliticalPath(props: PoliticalPathProps) {
         onMouseEnter={() => {
           setOpacityRecordId(d.properties.neighbourhood);
         }}
-        onMouseLeave={() => setOpacityRecordId(null)}
+        onMouseLeave={() => {
+          setOpacityRecordId(null);
+        }}
         onClick={() => {}}
         fill={
           dataObject
@@ -146,6 +148,7 @@ export function PoliticalPath(props: PoliticalPathProps) {
       {opacityRecordId &&
         ReactDOM.createPortal(
           <Popup
+            key={"j"}
             ref={setMenuNode as any}
             styles={popperStyles}
             d={d}
