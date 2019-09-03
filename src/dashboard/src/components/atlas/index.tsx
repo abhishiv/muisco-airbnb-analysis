@@ -206,7 +206,7 @@ export function Atlas(props: AtlasProps) {
 
                 willChange: "opacity"
               }}
-              native={true}
+              native="true"
               key={key}
             >
               {true && (
@@ -222,7 +222,7 @@ export function Atlas(props: AtlasProps) {
                   {...{ width, height }}
                 >
                   <animated.g
-                    native={true}
+                    native="true"
                     style={{
                       opacity,
                       willChange: "opacity"

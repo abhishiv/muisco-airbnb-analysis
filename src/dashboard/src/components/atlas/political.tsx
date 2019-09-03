@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import ReactDOM from "react-dom";
 import { geoPath, geoMercator } from "d3-geo";
 import usePopper from "../general/popper/index";
+import { useSpring, animated, config } from "react-spring";
 
 import {
   Dashboard,
@@ -58,6 +59,46 @@ export interface PoliticalPathProps {
   colorScale: any;
   dashboardData: DashboardData;
 }
+export interface PopupPrpos {
+  d: any;
+  styles: any;
+  dataItem: any;
+  placement: any;
+}
+export const Popup = React.forwardRef<PopupPrpos>((props, ref) => {
+  const animatedStyles = useSpring({
+    config: config.stiff,
+    from: { opacity: 0 },
+    to: { ...props.styles, opacity: 1 }
+  });
+  const { d, dataItem } = props;
+  //console.log(props);
+  return (
+    <animated.div
+      ref={ref}
+      style={animatedStyles}
+      className={styles.neighbourhoodPopup}
+    >
+      <div className={styles.popupHeader}> {d.properties.neighbourhood}</div>
+      <div className={styles.infoPanel}>
+        {!dataItem && <div className={styles.empty}>N/A</div>}
+        {dataItem && (
+          <div className={styles.popupStat}>
+            <div>${Math.round(dataItem.avgPrice)}</div>
+            <div>avg price</div>
+          </div>
+        )}
+        {dataItem && (
+          <div className={styles.popupStat}>
+            <div>{Math.round(dataItem.listingsCount)}</div>
+            <div>listings</div>
+          </div>
+        )}
+      </div>
+    </animated.div>
+  );
+});
+
 export function PoliticalPath(props: PoliticalPathProps) {
   const { data, index, d, path, colorScale, dashboardData } = props;
   const dataObject = data[index];
@@ -104,32 +145,13 @@ export function PoliticalPath(props: PoliticalPathProps) {
       />
       {opacityRecordId &&
         ReactDOM.createPortal(
-          <div
+          <Popup
             ref={setMenuNode as any}
-            style={popperStyles}
-            className={styles.neighbourhoodPopup}
-            data-placement={placement}
-          >
-            <div className={styles.popupHeader}>
-              {" "}
-              {d.properties.neighbourhood}
-            </div>
-            <div className={styles.infoPanel}>
-              {!dataItem && <div className={styles.empty}>N/A</div>}
-              {dataItem && (
-                <div className={styles.popupStat}>
-                  <div>${Math.round(dataItem.avgPrice)}</div>
-                  <div>avg price</div>
-                </div>
-              )}
-              {dataItem && (
-                <div className={styles.popupStat}>
-                  <div>{Math.round(dataItem.listingsCount)}</div>
-                  <div>listings</div>
-                </div>
-              )}
-            </div>
-          </div>,
+            styles={popperStyles}
+            d={d}
+            dataItem={dataItem}
+            placement={placement}
+          ></Popup>,
           document.body.firstElementChild as any
         )}
     </React.Fragment>
