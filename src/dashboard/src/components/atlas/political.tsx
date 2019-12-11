@@ -66,19 +66,10 @@ export interface PopupPrpos {
   placement: any;
 }
 export const Popup = React.forwardRef<PopupPrpos>((props: PopupPrpos, ref) => {
-  const animatedStyles = useSpring({
-    config: config.stiff,
-    from: { opacity: 0 },
-    to: { ...props.styles, opacity: 1 }
-  });
   const { d, dataItem } = props;
   console.log(props);
   return (
-    <animated.div
-      ref={ref}
-      style={animatedStyles}
-      className={styles.neighbourhoodPopup}
-    >
+    <div ref={ref} style={props.styles} className={styles.neighbourhoodPopup}>
       <div className={styles.popupHeader}> {d.properties.neighbourhood}</div>
       <div className={styles.infoPanel}>
         {!dataItem && <div className={styles.empty}>N/A</div>}
@@ -95,7 +86,7 @@ export const Popup = React.forwardRef<PopupPrpos>((props: PopupPrpos, ref) => {
           </div>
         )}
       </div>
-    </animated.div>
+    </div>
   );
 });
 

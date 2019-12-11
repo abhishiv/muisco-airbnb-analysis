@@ -1,3 +1,4 @@
+const path = require("path");
 module.exports = {
   presets: [
     "@babel/preset-env",
@@ -6,16 +7,23 @@ module.exports = {
   ],
   plugins: [
     "@babel/plugin-proposal-class-properties",
-    [
-      "css-modules-transform",
-      {
-        camelCase: false,
-        devMode: false,
-        preprocessCss: "./tools/sass.js",
-        extensions: [".css", ".scss", ".less"],
-        generateScopedName: "[name]--[local]--[hash:base64:8]",
-        extractCss: "./build/hub.bundle.css"
-      }
-    ]
+    ...(process.env.BABEL_ENV === "webpack"
+      ? []
+      : [
+          [
+            "css-modules-transform",
+
+            {
+              append: [],
+              camelCase: false,
+              devMode: false,
+              extensions: [".scss"], // list extensions to process; defaults to .css
+              preprocessCss: path.join(__dirname, "tools", "sass.js"),
+              generateScopedName: "[name]__[local]", // in case you don't want to use a function
+              hashPrefix: "string",
+              extractCss: "./dist/assets/css.css"
+            }
+          ]
+        ])
   ]
 };
