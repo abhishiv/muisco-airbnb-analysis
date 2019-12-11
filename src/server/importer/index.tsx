@@ -143,8 +143,8 @@ export function getCites() {
     {
       name: "milano",
       urls: [
-        "http://localhost:5000/_data/airbnb/italy/lombardy/milan/2019-07-12/visualisations/reviews.csv",
-        "http://localhost:5000/_data/airbnb/italy/lombardy/milan/2019-07-12/visualisations/listings.csv"
+        "https://muisco-airbnb-analysis.herokuapp.com/_data/airbnb/italy/lombardy/milan/2019-07-12/visualisations/reviews.csv",
+        "https://muisco-airbnb-analysis.herokuapp.com/_data/airbnb/italy/lombardy/milan/2019-07-12/visualisations/listings.csv"
       ]
     }
     //    {
