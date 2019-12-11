@@ -1,3 +1,4 @@
+import "babel-polyfill";
 import knex from "knex";
 import parallelLimit from "async/parallelLimit";
 import boot, { getDashboard, getTopographies } from "./index";
