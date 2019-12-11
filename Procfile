@@ -1,2 +1,2 @@
 web: npm run start
-worker: node ./build/server/postgres.js 
+worker: node ./build/server/importer/postgres.js 
