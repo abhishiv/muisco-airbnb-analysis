@@ -11,9 +11,8 @@ import {
   DashboardProjectionParamsSetter
 } from "../../../specs/index";
 import Atlas from "../atlas/index";
-import styles from "./layout.scss";
+//import styles from "./layout.scss";
 import Knobs from "../knobs/index";
-styles;
 
 export interface LayoutProps {
   dashboardQueryVariables: DashboardQueryVariables;

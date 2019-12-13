@@ -10,7 +10,6 @@ const Layout = () => (
   <div className={styles.container}>
     <Switch>
       {routes.map(route => {
-        console.log("route", route);
         return <Route key={route.name} {...route} />;
       })}
     </Switch>

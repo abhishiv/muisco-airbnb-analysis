@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState } from "react";
 import {
   DashboardQueryVariables,
   Dashboard,
@@ -6,7 +6,6 @@ import {
   DashboardProjectionParamsSetter,
   DashboardMap
 } from "../../../specs/index";
-import { RouteComponentProps } from "react-router-dom";
 
 import { useDrag } from "react-use-gesture";
 
@@ -16,14 +15,8 @@ import styles from "./atlas.scss";
 import TilesComponent from "./tiles";
 //import RasterTilesComponent from "./raster_tiles";
 import PoliticalComponent from "./political";
-import { withRouter } from "react-router-dom";
-import {
-  animated,
-  useSpring,
-  config,
-  useTransition,
-  useChain
-} from "react-spring";
+import { useLocation } from "react-router";
+import { animated, useSpring, config, useTransition } from "react-spring";
 
 function floor(k: number) {
   return Math.pow(2, Math.floor(Math.log(k) / Math.LN2));
@@ -94,8 +87,7 @@ export interface ProjectionParams {
 export interface TilesParams {
   delta: [number, number];
 }
-export interface AtlasProps
-  extends RouteComponentProps<AtlasContainerPropsParams> {
+export interface AtlasProps {
   width: number;
   height: number;
   dashboardQueryVariables: DashboardQueryVariables;
@@ -109,7 +101,7 @@ export function Atlas(props: AtlasProps) {
   const {
     width: width,
     height: height,
-    dashboardMap,
+    //dashboardMap,
     dashboardProjectionParams,
     dashboardProjectionParamsSetter
   } = props;
@@ -161,23 +153,17 @@ export function Atlas(props: AtlasProps) {
   //  zoom = Math.pow(2, z - z0) * 512;
   //console.log(center, zoom);
   //center = [45.4641, 9.1919].reverse();
-  const springRef = useRef();
-  const transitionRef = useRef();
   const { opacity } = useSpring({
-    ref: springRef,
-    config: config.stiff,
     from: { opacity: 1 },
     to: { opacity: 1 }
   });
-  const location = props.location;
+  const location = useLocation();
   const transitions = useTransition(location, location => location.pathname, {
-    ref: transitionRef,
     from: { opacity: 0 },
     enter: { opacity: 1 },
     leave: { opacity: 0 },
     config: config.gentle
   });
-  useChain([transitionRef, springRef]);
 
   return (
     <div
@@ -206,7 +192,6 @@ export function Atlas(props: AtlasProps) {
 
                 willChange: "opacity"
               }}
-              native="true"
               key={key}
             >
               {true && (
@@ -222,7 +207,6 @@ export function Atlas(props: AtlasProps) {
                   {...{ width, height }}
                 >
                   <animated.g
-                    native="true"
                     style={{
                       opacity,
                       willChange: "opacity"
@@ -253,11 +237,11 @@ export function Atlas(props: AtlasProps) {
     </div>
   );
 }
-interface AtlasContainerPropsParams {
+export interface AtlasContainerPropsParams {
   cityName: string;
 }
 export interface AtlasContainerProps extends AtlasProps {}
 export function AtlasContainer(props: AtlasContainerProps) {
   return <Atlas {...props} />;
 }
-export default withRouter(AtlasContainer as any);
+export default AtlasContainer;

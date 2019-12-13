@@ -4,6 +4,12 @@
   "description": "",
   "keywords": [],
   "main": "src/index.tsx",
+  "scripts": {
+    "graphql:get-schema": "bash ./tools/scripts/get-schema.sh",
+    "start": "bash ./tools/scripts/start.sh",
+    "webpack": "env BABEL_ENV=webpack ./node_modules/.bin/webpack-dev-server --config ./tools/webpack/webpack.config.js --watch --hot --port 7080",
+    "postinstall": "bash ./tools/scripts/build.sh"
+  },
   "dependencies": {
     "@apollo/react-hooks": "^3.0.1",
     "@elastic/elasticsearch": "^7.3.0",
@@ -27,6 +33,7 @@
     "d3-tile": "^1.0.0",
     "express": "^4.17.1",
     "fast-csv": "^3.4.0",
+    "get-graphql-schema": "^2.1.2",
     "graphql-tag": "^2.10.1",
     "http-proxy-middleware": "^0.19.1",
     "knex": "^0.19.3",
@@ -50,10 +57,10 @@
     "react-dom": "16.8.4",
     "react-mapbox-gl": "^4.6.0",
     "react-measure": "^2.3.0",
-    "react-router": "^5.0.1",
-    "react-router-dom": "^5.0.1",
+    "react-router": "^5.1.2",
+    "react-router-dom": "^5.1.2",
     "react-sizeme": "^2.6.7",
-    "react-spring": "^8.0.27",
+    "react-spring": "^9.0.0-beta.34",
     "react-use-gesture": "^5.2.4",
     "react-with-gesture": "^4.0.8",
     "topojson-client": "3.0.0"
@@ -86,12 +93,13 @@
     "@types/react": "16.8.8",
     "@types/react-dom": "16.8.2",
     "@types/react-measure": "^2.0.5",
-    "@types/react-router": "^5.0.3",
+    "@types/react-router": "^5.1.3",
     "@types/react-router-dom": "^4.3.5",
     "@types/topojson-client": "^3.0.0",
     "babel-loader": "^8.0.6",
     "babel-plugin-css-modules-transform": "^1.6.2",
     "css-loader": "^3.2.0",
+    "graphql-schema-typescript": "^1.3.1",
     "mini-css-extract-plugin": "^0.8.0",
     "node-sass": "^4.12.0",
     "protobufjs": "^6.8.8",
@@ -102,11 +110,6 @@
     "webpack": "^4.39.2",
     "webpack-cli": "^3.3.7",
     "webpack-dev-server": "^3.8.0"
-  },
-  "scripts": {
-    "start": "bash ./tools/scripts/start.sh",
-    "webpack": "./node_modules/.bin/webpack-dev-server --config ./tools/webpack/webpack.config.js --watch --hot --port 7080",
-    "postinstall": "bash ./tools/scripts/build.sh"
   },
   "browserslist": [
     ">0.2%",

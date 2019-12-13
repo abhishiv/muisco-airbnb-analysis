@@ -1,0 +1,1091 @@
+"""A `AggregateListingsRecord` edge in the connection."""
+type AggregateListingEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `AggregateListingsRecord` at the end of the edge."""
+  node: AggregateListingsRecord
+}
+
+"""A connection to a list of `AggregateListingsRecord` values."""
+type AggregateListingsConnection {
+  """A list of `AggregateListingsRecord` objects."""
+  nodes: [AggregateListingsRecord]!
+
+  """
+  A list of edges which contains the `AggregateListingsRecord` and cursor to aid in pagination.
+  """
+  edges: [AggregateListingEdge!]!
+}
+
+"""The return type of our `aggregateListings` query."""
+type AggregateListingsRecord {
+  listingsCount: BigInt
+  avgPrice: BigFloat
+  roomType: String
+  id: String
+}
+
+"""
+A floating point number that requires more precision than IEEE 754 binary 64
+"""
+scalar BigFloat
+
+"""
+A signed eight-byte integer. The upper big integer values are greater than the
+max value for a JavaScript number. Therefore all big integers will be output as
+strings and not numbers.
+"""
+scalar BigInt
+
+"""All input for the create `Dashboard` mutation."""
+input CreateDashboardInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """The `Dashboard` to be created by this mutation."""
+  dashboard: DashboardInput!
+}
+
+"""The output of our create `Dashboard` mutation."""
+type CreateDashboardPayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """The `Dashboard` that was created by this mutation."""
+  dashboard: Dashboard
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+
+  """An edge for our `Dashboard`. May be used by Relay 1."""
+  dashboardEdge(
+    """The method to use when ordering `Dashboard`."""
+    orderBy: [DashboardsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): DashboardsEdge
+}
+
+"""All input for the create `Review` mutation."""
+input CreateReviewInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """The `Review` to be created by this mutation."""
+  review: ReviewInput!
+}
+
+"""The output of our create `Review` mutation."""
+type CreateReviewPayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """The `Review` that was created by this mutation."""
+  review: Review
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+
+  """An edge for our `Review`. May be used by Relay 1."""
+  reviewEdge(
+    """The method to use when ordering `Review`."""
+    orderBy: [ReviewsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): ReviewsEdge
+}
+
+"""All input for the create `Topography` mutation."""
+input CreateTopographyInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """The `Topography` to be created by this mutation."""
+  topography: TopographyInput!
+}
+
+"""The output of our create `Topography` mutation."""
+type CreateTopographyPayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """The `Topography` that was created by this mutation."""
+  topography: Topography
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+
+  """An edge for our `Topography`. May be used by Relay 1."""
+  topographyEdge(
+    """The method to use when ordering `Topography`."""
+    orderBy: [TopographiesOrderBy!] = [PRIMARY_KEY_ASC]
+  ): TopographiesEdge
+}
+
+"""A location in a connection that can be used for resuming pagination."""
+scalar Cursor
+
+type Dashboard implements Node {
+  """
+  A globally unique identifier. Can be used in various places throughout the system to identify this single value.
+  """
+  nodeId: ID!
+  id: String!
+  definition: JSON
+}
+
+"""
+A condition to be used against `Dashboard` object types. All fields are tested
+for equality and combined with a logical ‘and.’
+"""
+input DashboardCondition {
+  """Checks for equality with the object’s `id` field."""
+  id: String
+
+  """Checks for equality with the object’s `definition` field."""
+  definition: JSON
+}
+
+"""An input for mutations affecting `Dashboard`"""
+input DashboardInput {
+  id: String!
+  definition: JSON
+}
+
+"""
+Represents an update to a `Dashboard`. Fields that are set will be updated.
+"""
+input DashboardPatch {
+  id: String
+  definition: JSON
+}
+
+"""A connection to a list of `Dashboard` values."""
+type DashboardsConnection {
+  """A list of `Dashboard` objects."""
+  nodes: [Dashboard]!
+
+  """
+  A list of edges which contains the `Dashboard` and cursor to aid in pagination.
+  """
+  edges: [DashboardsEdge!]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `Dashboard` you could get from the connection."""
+  totalCount: Int!
+}
+
+"""A `Dashboard` edge in the connection."""
+type DashboardsEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `Dashboard` at the end of the edge."""
+  node: Dashboard
+}
+
+"""Methods to use when ordering `Dashboard`."""
+enum DashboardsOrderBy {
+  NATURAL
+  ID_ASC
+  ID_DESC
+  DEFINITION_ASC
+  DEFINITION_DESC
+  PRIMARY_KEY_ASC
+  PRIMARY_KEY_DESC
+}
+
+"""The day, does not include a time."""
+scalar Date
+
+"""
+A point in time as described by the [ISO
+8601](https://en.wikipedia.org/wiki/ISO_8601) standard. May or may not include a timezone.
+"""
+scalar Datetime
+
+"""All input for the `deleteDashboardById` mutation."""
+input DeleteDashboardByIdInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+  id: String!
+}
+
+"""All input for the `deleteDashboard` mutation."""
+input DeleteDashboardInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """
+  The globally unique `ID` which will identify a single `Dashboard` to be deleted.
+  """
+  nodeId: ID!
+}
+
+"""The output of our delete `Dashboard` mutation."""
+type DeleteDashboardPayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """The `Dashboard` that was deleted by this mutation."""
+  dashboard: Dashboard
+  deletedDashboardId: ID
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+
+  """An edge for our `Dashboard`. May be used by Relay 1."""
+  dashboardEdge(
+    """The method to use when ordering `Dashboard`."""
+    orderBy: [DashboardsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): DashboardsEdge
+}
+
+"""All input for the `deleteReviewById` mutation."""
+input DeleteReviewByIdInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+  id: String!
+}
+
+"""All input for the `deleteReview` mutation."""
+input DeleteReviewInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """
+  The globally unique `ID` which will identify a single `Review` to be deleted.
+  """
+  nodeId: ID!
+}
+
+"""The output of our delete `Review` mutation."""
+type DeleteReviewPayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """The `Review` that was deleted by this mutation."""
+  review: Review
+  deletedReviewId: ID
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+
+  """An edge for our `Review`. May be used by Relay 1."""
+  reviewEdge(
+    """The method to use when ordering `Review`."""
+    orderBy: [ReviewsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): ReviewsEdge
+}
+
+"""All input for the `deleteTopographyById` mutation."""
+input DeleteTopographyByIdInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+  id: String!
+}
+
+"""All input for the `deleteTopography` mutation."""
+input DeleteTopographyInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """
+  The globally unique `ID` which will identify a single `Topography` to be deleted.
+  """
+  nodeId: ID!
+}
+
+"""The output of our delete `Topography` mutation."""
+type DeleteTopographyPayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """The `Topography` that was deleted by this mutation."""
+  topography: Topography
+  deletedTopographyId: ID
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+
+  """An edge for our `Topography`. May be used by Relay 1."""
+  topographyEdge(
+    """The method to use when ordering `Topography`."""
+    orderBy: [TopographiesOrderBy!] = [PRIMARY_KEY_ASC]
+  ): TopographiesEdge
+}
+
+"""A connection to a list of `GroupListingsDateRecord` values."""
+type GroupListingsDateConnection {
+  """A list of `GroupListingsDateRecord` objects."""
+  nodes: [GroupListingsDateRecord]!
+
+  """
+  A list of edges which contains the `GroupListingsDateRecord` and cursor to aid in pagination.
+  """
+  edges: [GroupListingsDateEdge!]!
+}
+
+"""A `GroupListingsDateRecord` edge in the connection."""
+type GroupListingsDateEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `GroupListingsDateRecord` at the end of the edge."""
+  node: GroupListingsDateRecord
+}
+
+"""The return type of our `groupListingsDate` query."""
+type GroupListingsDateRecord {
+  count: BigInt
+  date: Datetime
+}
+
+"""
+A JavaScript object encoded in the JSON format as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
+"""
+scalar JSON
+
+"""
+The root mutation type which contains root level fields which mutate data.
+"""
+type Mutation {
+  """Creates a single `Dashboard`."""
+  createDashboard(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: CreateDashboardInput!
+  ): CreateDashboardPayload
+
+  """Creates a single `Review`."""
+  createReview(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: CreateReviewInput!
+  ): CreateReviewPayload
+
+  """Creates a single `Topography`."""
+  createTopography(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: CreateTopographyInput!
+  ): CreateTopographyPayload
+
+  """Updates a single `Dashboard` using its globally unique id and a patch."""
+  updateDashboard(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: UpdateDashboardInput!
+  ): UpdateDashboardPayload
+
+  """Updates a single `Dashboard` using a unique key and a patch."""
+  updateDashboardById(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: UpdateDashboardByIdInput!
+  ): UpdateDashboardPayload
+
+  """Updates a single `Review` using its globally unique id and a patch."""
+  updateReview(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: UpdateReviewInput!
+  ): UpdateReviewPayload
+
+  """Updates a single `Review` using a unique key and a patch."""
+  updateReviewById(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: UpdateReviewByIdInput!
+  ): UpdateReviewPayload
+
+  """
+  Updates a single `Topography` using its globally unique id and a patch.
+  """
+  updateTopography(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: UpdateTopographyInput!
+  ): UpdateTopographyPayload
+
+  """Updates a single `Topography` using a unique key and a patch."""
+  updateTopographyById(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: UpdateTopographyByIdInput!
+  ): UpdateTopographyPayload
+
+  """Deletes a single `Dashboard` using its globally unique id."""
+  deleteDashboard(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: DeleteDashboardInput!
+  ): DeleteDashboardPayload
+
+  """Deletes a single `Dashboard` using a unique key."""
+  deleteDashboardById(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: DeleteDashboardByIdInput!
+  ): DeleteDashboardPayload
+
+  """Deletes a single `Review` using its globally unique id."""
+  deleteReview(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: DeleteReviewInput!
+  ): DeleteReviewPayload
+
+  """Deletes a single `Review` using a unique key."""
+  deleteReviewById(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: DeleteReviewByIdInput!
+  ): DeleteReviewPayload
+
+  """Deletes a single `Topography` using its globally unique id."""
+  deleteTopography(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: DeleteTopographyInput!
+  ): DeleteTopographyPayload
+
+  """Deletes a single `Topography` using a unique key."""
+  deleteTopographyById(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: DeleteTopographyByIdInput!
+  ): DeleteTopographyPayload
+}
+
+"""An object with a globally unique `ID`."""
+interface Node {
+  """
+  A globally unique identifier. Can be used in various places throughout the system to identify this single value.
+  """
+  nodeId: ID!
+}
+
+"""Information about pagination in a connection."""
+type PageInfo {
+  """When paginating forwards, are there more items?"""
+  hasNextPage: Boolean!
+
+  """When paginating backwards, are there more items?"""
+  hasPreviousPage: Boolean!
+
+  """When paginating backwards, the cursor to continue."""
+  startCursor: Cursor
+
+  """When paginating forwards, the cursor to continue."""
+  endCursor: Cursor
+}
+
+"""The root query type which gives access points into the data universe."""
+type Query implements Node {
+  """
+  Exposes the root query type nested one level down. This is helpful for Relay 1
+  which can only query top level fields if they are in a particular form.
+  """
+  query: Query!
+
+  """
+  The root query type must be a `Node` to work well with Relay 1 mutations. This just resolves to `query`.
+  """
+  nodeId: ID!
+
+  """Fetches an object given its globally unique `ID`."""
+  node(
+    """The globally unique `ID`."""
+    nodeId: ID!
+  ): Node
+
+  """Reads and enables pagination through a set of `Dashboard`."""
+  allDashboards(
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """The method to use when ordering `Dashboard`."""
+    orderBy: [DashboardsOrderBy!] = [PRIMARY_KEY_ASC]
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: DashboardCondition
+  ): DashboardsConnection
+
+  """Reads and enables pagination through a set of `Review`."""
+  allReviews(
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """The method to use when ordering `Review`."""
+    orderBy: [ReviewsOrderBy!] = [PRIMARY_KEY_ASC]
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: ReviewCondition
+  ): ReviewsConnection
+
+  """Reads and enables pagination through a set of `Topography`."""
+  allTopographies(
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """The method to use when ordering `Topography`."""
+    orderBy: [TopographiesOrderBy!] = [PRIMARY_KEY_ASC]
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: TopographyCondition
+  ): TopographiesConnection
+  dashboardById(id: String!): Dashboard
+  reviewById(id: String!): Review
+  topographyById(id: String!): Topography
+  aggregateListings(
+    roomTypeValue: String
+    fromDateValue: Date
+    toDateValue: Date
+    cityNameValue: String
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+  ): AggregateListingsConnection!
+  groupListingsDate(
+    cityNameValue: String
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+  ): GroupListingsDateConnection!
+
+  """Reads a single `Dashboard` using its globally unique `ID`."""
+  dashboard(
+    """The globally unique `ID` to be used in selecting a single `Dashboard`."""
+    nodeId: ID!
+  ): Dashboard
+
+  """Reads a single `Review` using its globally unique `ID`."""
+  review(
+    """The globally unique `ID` to be used in selecting a single `Review`."""
+    nodeId: ID!
+  ): Review
+
+  """Reads a single `Topography` using its globally unique `ID`."""
+  topography(
+    """
+    The globally unique `ID` to be used in selecting a single `Topography`.
+    """
+    nodeId: ID!
+  ): Topography
+}
+
+type Review implements Node {
+  """
+  A globally unique identifier. Can be used in various places throughout the system to identify this single value.
+  """
+  nodeId: ID!
+  id: String!
+  listingId: String
+  checksum: String
+  date: Date
+  city: String
+  neighbourhood: String
+  roomType: String
+  price: BigFloat
+}
+
+"""
+A condition to be used against `Review` object types. All fields are tested for equality and combined with a logical ‘and.’
+"""
+input ReviewCondition {
+  """Checks for equality with the object’s `id` field."""
+  id: String
+
+  """Checks for equality with the object’s `listingId` field."""
+  listingId: String
+
+  """Checks for equality with the object’s `checksum` field."""
+  checksum: String
+
+  """Checks for equality with the object’s `date` field."""
+  date: Date
+
+  """Checks for equality with the object’s `city` field."""
+  city: String
+
+  """Checks for equality with the object’s `neighbourhood` field."""
+  neighbourhood: String
+
+  """Checks for equality with the object’s `roomType` field."""
+  roomType: String
+
+  """Checks for equality with the object’s `price` field."""
+  price: BigFloat
+}
+
+"""An input for mutations affecting `Review`"""
+input ReviewInput {
+  id: String!
+  listingId: String
+  checksum: String
+  date: Date
+  city: String
+  neighbourhood: String
+  roomType: String
+  price: BigFloat
+}
+
+"""
+Represents an update to a `Review`. Fields that are set will be updated.
+"""
+input ReviewPatch {
+  id: String
+  listingId: String
+  checksum: String
+  date: Date
+  city: String
+  neighbourhood: String
+  roomType: String
+  price: BigFloat
+}
+
+"""A connection to a list of `Review` values."""
+type ReviewsConnection {
+  """A list of `Review` objects."""
+  nodes: [Review]!
+
+  """
+  A list of edges which contains the `Review` and cursor to aid in pagination.
+  """
+  edges: [ReviewsEdge!]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `Review` you could get from the connection."""
+  totalCount: Int!
+}
+
+"""A `Review` edge in the connection."""
+type ReviewsEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `Review` at the end of the edge."""
+  node: Review
+}
+
+"""Methods to use when ordering `Review`."""
+enum ReviewsOrderBy {
+  NATURAL
+  ID_ASC
+  ID_DESC
+  LISTING_ID_ASC
+  LISTING_ID_DESC
+  CHECKSUM_ASC
+  CHECKSUM_DESC
+  DATE_ASC
+  DATE_DESC
+  CITY_ASC
+  CITY_DESC
+  NEIGHBOURHOOD_ASC
+  NEIGHBOURHOOD_DESC
+  ROOM_TYPE_ASC
+  ROOM_TYPE_DESC
+  PRICE_ASC
+  PRICE_DESC
+  PRIMARY_KEY_ASC
+  PRIMARY_KEY_DESC
+}
+
+"""A connection to a list of `Topography` values."""
+type TopographiesConnection {
+  """A list of `Topography` objects."""
+  nodes: [Topography]!
+
+  """
+  A list of edges which contains the `Topography` and cursor to aid in pagination.
+  """
+  edges: [TopographiesEdge!]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `Topography` you could get from the connection."""
+  totalCount: Int!
+}
+
+"""A `Topography` edge in the connection."""
+type TopographiesEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `Topography` at the end of the edge."""
+  node: Topography
+}
+
+"""Methods to use when ordering `Topography`."""
+enum TopographiesOrderBy {
+  NATURAL
+  ID_ASC
+  ID_DESC
+  PAYLOAD_ASC
+  PAYLOAD_DESC
+  PRIMARY_KEY_ASC
+  PRIMARY_KEY_DESC
+}
+
+type Topography implements Node {
+  """
+  A globally unique identifier. Can be used in various places throughout the system to identify this single value.
+  """
+  nodeId: ID!
+  id: String!
+  payload: JSON
+}
+
+"""
+A condition to be used against `Topography` object types. All fields are tested
+for equality and combined with a logical ‘and.’
+"""
+input TopographyCondition {
+  """Checks for equality with the object’s `id` field."""
+  id: String
+
+  """Checks for equality with the object’s `payload` field."""
+  payload: JSON
+}
+
+"""An input for mutations affecting `Topography`"""
+input TopographyInput {
+  id: String!
+  payload: JSON
+}
+
+"""
+Represents an update to a `Topography`. Fields that are set will be updated.
+"""
+input TopographyPatch {
+  id: String
+  payload: JSON
+}
+
+"""All input for the `updateDashboardById` mutation."""
+input UpdateDashboardByIdInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """
+  An object where the defined keys will be set on the `Dashboard` being updated.
+  """
+  dashboardPatch: DashboardPatch!
+  id: String!
+}
+
+"""All input for the `updateDashboard` mutation."""
+input UpdateDashboardInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """
+  The globally unique `ID` which will identify a single `Dashboard` to be updated.
+  """
+  nodeId: ID!
+
+  """
+  An object where the defined keys will be set on the `Dashboard` being updated.
+  """
+  dashboardPatch: DashboardPatch!
+}
+
+"""The output of our update `Dashboard` mutation."""
+type UpdateDashboardPayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """The `Dashboard` that was updated by this mutation."""
+  dashboard: Dashboard
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+
+  """An edge for our `Dashboard`. May be used by Relay 1."""
+  dashboardEdge(
+    """The method to use when ordering `Dashboard`."""
+    orderBy: [DashboardsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): DashboardsEdge
+}
+
+"""All input for the `updateReviewById` mutation."""
+input UpdateReviewByIdInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """
+  An object where the defined keys will be set on the `Review` being updated.
+  """
+  reviewPatch: ReviewPatch!
+  id: String!
+}
+
+"""All input for the `updateReview` mutation."""
+input UpdateReviewInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """
+  The globally unique `ID` which will identify a single `Review` to be updated.
+  """
+  nodeId: ID!
+
+  """
+  An object where the defined keys will be set on the `Review` being updated.
+  """
+  reviewPatch: ReviewPatch!
+}
+
+"""The output of our update `Review` mutation."""
+type UpdateReviewPayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """The `Review` that was updated by this mutation."""
+  review: Review
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+
+  """An edge for our `Review`. May be used by Relay 1."""
+  reviewEdge(
+    """The method to use when ordering `Review`."""
+    orderBy: [ReviewsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): ReviewsEdge
+}
+
+"""All input for the `updateTopographyById` mutation."""
+input UpdateTopographyByIdInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """
+  An object where the defined keys will be set on the `Topography` being updated.
+  """
+  topographyPatch: TopographyPatch!
+  id: String!
+}
+
+"""All input for the `updateTopography` mutation."""
+input UpdateTopographyInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """
+  The globally unique `ID` which will identify a single `Topography` to be updated.
+  """
+  nodeId: ID!
+
+  """
+  An object where the defined keys will be set on the `Topography` being updated.
+  """
+  topographyPatch: TopographyPatch!
+}
+
+"""The output of our update `Topography` mutation."""
+type UpdateTopographyPayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """The `Topography` that was updated by this mutation."""
+  topography: Topography
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+
+  """An edge for our `Topography`. May be used by Relay 1."""
+  topographyEdge(
+    """The method to use when ordering `Topography`."""
+    orderBy: [TopographiesOrderBy!] = [PRIMARY_KEY_ASC]
+  ): TopographiesEdge
+}
+

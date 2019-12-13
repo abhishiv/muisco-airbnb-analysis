@@ -1,9 +1,11 @@
-import React, { useRef } from "react";
+import React from "react";
 
 import styles from "./knobs.scss";
 import { Dashboard } from "../../../specs/index";
-import { RouteComponentProps } from "react-router";
-import { useSpring, useChain, animated, config } from "react-spring";
+//import { useLocation } from "react-router";
+import { useSpring, animated, config } from "react-spring";
+import { Link } from "react-router-dom";
+
 interface HeaderProps {}
 
 export function Header(props: HeaderProps) {
@@ -17,15 +19,10 @@ export function Header(props: HeaderProps) {
   );
 }
 
-type PathParamsType = {
-  cityName: string;
-};
-
 // Your component own properties
-type KnobsProps = RouteComponentProps<PathParamsType> & {
+type KnobsProps = {
   dashboard: Dashboard;
 };
-import { Link } from "react-router-dom";
 
 function Knobs(props: KnobsProps) {
   return (
@@ -35,7 +32,7 @@ function Knobs(props: KnobsProps) {
         <div className={styles.listContainer}>
           <div>City</div>
           <div className={styles.list} key={"city"}>
-            {props.dashboard.meta.cities.map((city: any, i) => {
+            {props.dashboard.meta.cities.map((city, i) => {
               return (
                 <Link
                   key={i}
@@ -52,38 +49,20 @@ function Knobs(props: KnobsProps) {
             })}
           </div>
         </div>
-        <div className={styles.listContainer}>
-          <div>Room Type</div>
-          <div className={styles.list} key={"roomtype"}>
-            {props.dashboard.meta.roomType.map((roomType: any, i: number) => {
-              return (
-                <div key={i} className={styles.item}>
-                  {roomType}
-                </div>
-              );
-            })}
-          </div>
-        </div>
+        <div className={styles.listContainer}></div>
       </div>
     </React.Fragment>
   );
 }
 
 export default function KnobsAnimated(props: KnobsProps) {
-  const springRef = useRef();
-  const { size, opacity, ...rest } = useSpring({
-    ref: springRef as any,
+  const { ...rest } = useSpring({
     config: config.stiff,
-    from: { transform: "translateY(-100%)", opacity: 0 },
-    to: { transform: " translateY(0%)", opacity: 1 }
+    from: { transform: "translateY(-10px)", opacity: 0 },
+    to: { transform: " translateY(0px)", opacity: 1 }
   });
-  useChain([springRef]);
   return (
-    <animated.div
-      native="true"
-      className={styles.container}
-      style={{ ...rest }}
-    >
+    <animated.div className={styles.container} style={{ ...rest }}>
       <Knobs {...props} />
     </animated.div>
   );

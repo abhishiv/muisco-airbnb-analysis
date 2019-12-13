@@ -11,7 +11,9 @@ export type DashboardMap = ExtendedFeatureCollection;
 export interface Dashboard {
   id: string;
   defaultQueryVariables: DashboardQueryVariables;
-  meta: any;
+  meta: {
+    cities: { name: string; id: string; icon: string }[];
+  };
 }
 
 export interface DashboardProjectionParams {

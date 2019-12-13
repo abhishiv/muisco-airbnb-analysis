@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import ReactDOM from "react-dom";
 import { geoPath, geoMercator } from "d3-geo";
 import usePopper from "../general/popper/index";
-import { useSpring, animated, config } from "react-spring";
+import { useSpring, animated } from "react-spring";
 
 import {
   Dashboard,
@@ -65,30 +65,31 @@ export interface PopupPrpos {
   dataItem: any;
   placement: any;
 }
-export const Popup = React.forwardRef<PopupPrpos>((props: PopupPrpos, ref) => {
-  const { d, dataItem } = props;
-  console.log(props);
-  return (
-    <div ref={ref} style={props.styles} className={styles.neighbourhoodPopup}>
-      <div className={styles.popupHeader}> {d.properties.neighbourhood}</div>
-      <div className={styles.infoPanel}>
-        {!dataItem && <div className={styles.empty}>N/A</div>}
-        {dataItem && (
-          <div className={styles.popupStat}>
-            <div>${Math.round(dataItem.avgPrice)}</div>
-            <div>avg price</div>
-          </div>
-        )}
-        {dataItem && (
-          <div className={styles.popupStat}>
-            <div>{Math.round(dataItem.listingsCount)}</div>
-            <div>listings</div>
-          </div>
-        )}
+export const Popup = React.forwardRef<any, PopupPrpos>(
+  (props: PopupPrpos, ref) => {
+    const { d, dataItem } = props;
+    return (
+      <div ref={ref} style={props.styles} className={styles.neighbourhoodPopup}>
+        <div className={styles.popupHeader}> {d.properties.neighbourhood}</div>
+        <div className={styles.infoPanel}>
+          {!dataItem && <div className={styles.empty}>N/A</div>}
+          {dataItem && (
+            <div className={styles.popupStat}>
+              <div>${Math.round(dataItem.avgPrice)}</div>
+              <div>avg price</div>
+            </div>
+          )}
+          {dataItem && (
+            <div className={styles.popupStat}>
+              <div>{Math.round(dataItem.listingsCount)}</div>
+              <div>listings</div>
+            </div>
+          )}
+        </div>
       </div>
-    </div>
-  );
-});
+    );
+  }
+);
 
 export function PoliticalPath(props: PoliticalPathProps) {
   const { data, index, d, path, colorScale, dashboardData } = props;
@@ -112,13 +113,13 @@ export function PoliticalPath(props: PoliticalPathProps) {
   const dataItem = ((dashboardData || []) as Array<any>).find(
     el => el.id === d.properties.neighbourhood
   );
-  const st = { opacity: opacityRecordId ? 1 : 1 };
+  const style = useSpring({ opacity: 1 });
   return (
     <React.Fragment>
-      <path
+      <animated.path
+        style={style}
         ref={setTargetNode as any}
         d={path(d) as any}
-        style={st}
         className={styles.politicalPath}
         onMouseEnter={() => {
           setOpacityRecordId(d.properties.neighbourhood);
@@ -235,9 +236,6 @@ function PoliticalApollo(props: PoliticalApolloProps) {
     variables: { cityName: cityName }
   });
   error;
-  React.useEffect(() => {
-    console.log("PoliticalApollo");
-  }, []);
   const p = {
     ...props,
     loading,
